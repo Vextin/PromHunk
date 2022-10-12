@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!-- Game settings -->
+
+<settings>
+  <game name="Top Down Game Prototype" />
+  <renderer width="1024" height="768"/>
+   
+  <font file="Media\Fonts\AverageSans_24.spritefont"/>
+
+  <!-- sprites -->
+   
+  <sprites path="Media\Images">
+    <sprite name="floor" file="floor.png"/>
+    <sprite name="player" file="player.png"/>
+    <sprite name="turret" file="turret.png"/>
+    <sprite name="bullet" file="bullet.png"/>
+    <sprite name="bullet2" file="bullet2.png"/>
+    <sprite name="smoke" file="graysmoke.png"/>
+    <sprite name="spark" file="spark.png"/>
+  </sprites>
+
+  <!-- sound -->
+  
+  <sounds  path="Media\Sounds">
+    <sound name="gun" file="44magnum.wav" instances="8"/>
+    <sound name="ricochet" file="ricochet.wav" instances="8"/>
+    <sound name="clang" file="clang.wav" instances="4"/>
+    <sound name="grunt" file="umph.wav" instances="4"/>
+  </sounds>
+</settings>
