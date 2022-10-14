@@ -131,7 +131,7 @@ void CGame::KeyboardHandler(){
     if(m_pKeyboard->TriggerUp(VK_LEFT)) //stop rotating counterclockwise
       m_pPlayer->SetRotSpeed(0.0f);
 */
-    if(m_pKeyboard->TriggerDown(VK_SPACE)) //fire gun
+    if(m_pKeyboard->Down(VK_SPACE)) //fire gun
       m_pObjectManager->FireGun(m_pPlayer, eSprite::Bullet);
     /*
     if(m_pKeyboard->Down('D')) //strafe right
