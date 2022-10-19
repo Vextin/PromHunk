@@ -3,16 +3,22 @@
 
 #include "Player.h"
 #include "ComponentIncludes.h"
+#include "ObjectManager.h"
 #include "Helpers.h"
 
 /// Create and initialize an player object given its initial position.
 /// \param p Initial position of player.
-
-CPlayer::CPlayer(const Vector2& p): CObject(eSprite::Player, p){ 
+CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
   moveVector = new Vector2(0, 0);
+  //weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
+  weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
+
+CPlayer::~CPlayer() {
+    delete weapon;
+}
 
 /// Move and rotate in response to device input. The amount of motion and
 /// rotation speed is proportional to the frame time.
@@ -41,24 +47,29 @@ void CPlayer::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
 
 
 
-void CPlayer::CalculateMovement()
+void CPlayer::ProcessInput()
 {
-    moveVector = new Vector2(0, 0);
-    m_pKeyboard->GetState();
+    //Set movement vector
+    moveVector->x = 0;
+    moveVector->y = 0;
     if (m_pKeyboard->Down('W')) moveVector->y += 1;
     if (m_pKeyboard->Down('A')) moveVector->x -= 1;
     if (m_pKeyboard->Down('S')) moveVector->y -= 1;
     if (m_pKeyboard->Down('D')) moveVector->x += 1;
 
-    if(moveVector->Length() > .01f)
+    //Set sprite rotation
+    if (moveVector->Length() > .01f) {
         m_fRoll = atan2(moveVector->y, moveVector->x);
+    }
 
-
-}
+    //Fire weapon
+    if (m_pKeyboard->Down(VK_SPACE)) {
+        weapon->FireWeapon();
+    }
+}//ProcessInput
 
 /// Reader function for position.
-/// \return Position.
-
+/// \return Position
 const Vector2& CPlayer::GetPos() const{
   return m_vPos;
 } //GetPos
