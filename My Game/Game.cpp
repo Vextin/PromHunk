@@ -44,7 +44,7 @@ void CGame::Initialize(){
 void CGame::LoadImages(){  
   m_pRenderer->BeginResourceUpload();
 
-  m_pRenderer->Load(eSprite::Background, "floor"); 
+  m_pRenderer->Load(eSprite::Background, "floor");
   m_pRenderer->Load(eSprite::Player,  "player");
   m_pRenderer->Load(eSprite::Bullet,  "bullet");
   m_pRenderer->Load(eSprite::Bullet2, "bullet2");
@@ -56,7 +56,6 @@ void CGame::LoadImages(){
 } //LoadImages
 
 /// Initialize the audio player and load game sounds.
-
 void CGame::LoadSounds(){
   m_pAudio->Initialize(eSound::Size);
 
@@ -97,7 +96,7 @@ void CGame::BeginGame(){
 /// the last frame.
 
 void CGame::KeyboardHandler(){
-  m_pKeyboard->GetState(); //get current keyboard state 
+  m_pKeyboard->GetState(); //get current keyboard state (only call once per frame or inputs will get cleared breaking TriggerDown())
   
   if(m_pKeyboard->TriggerDown(VK_F1)) //help
     ShellExecute(0, 0, "https://larc.unt.edu/code/topdown/", 0, 0, SW_SHOW);
@@ -110,7 +109,7 @@ void CGame::KeyboardHandler(){
   
 
   //ATTN: Movement code added to Player.cpp instead of Game.cpp ~Austin Carlin
-  if (m_pPlayer) m_pPlayer->CalculateMovement();
+  if (m_pPlayer) m_pPlayer->ProcessInput();
   /*
   if(m_pPlayer){ //safety
     if(m_pKeyboard->TriggerDown(VK_UP)) //move forwards
@@ -130,10 +129,10 @@ void CGame::KeyboardHandler(){
 
     if(m_pKeyboard->TriggerUp(VK_LEFT)) //stop rotating counterclockwise
       m_pPlayer->SetRotSpeed(0.0f);
-*/
-    if(m_pKeyboard->Down(VK_SPACE)) //fire gun
+
+    if(m_pKeyboard->TriggerDown(VK_SPACE)) //fire gun
       m_pObjectManager->FireGun(m_pPlayer, eSprite::Bullet);
-    /*
+    
     if(m_pKeyboard->Down('D')) //strafe right
       m_pPlayer->StrafeRight();
   

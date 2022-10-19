@@ -23,7 +23,9 @@ class CObjectManager:
 
   public:
     CObject* create(eSprite, const Vector2&); ///< Create new object.
-    void FireGun(CObject*, eSprite); ///< Fire object's gun.
+    void FireGun(CObject*, eSprite); ///Default enemy weapon
+    void PlayerDefaultWeapon(CObject*, eSprite);///Default player weapon
+    void PlayerTestShotgun(CObject*, eSprite);
 }; //CObjectManager
 
 #endif //__L4RC_GAME_OBJECTMANAGER_H__
