@@ -35,7 +35,9 @@ class CGame:
     void RenderFrame(); ///< Render an animation frame.
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
     void CreateObjects(); ///< Create game objects.
-    void SpawnEnemy(); ///< Spawn enemy
+    void SpawnEnemy(float x, float y); ///< Spawn enemy
+    void SpawnCenterBox(); ///< Spawn enemy in each corner
+    void SpawnNearPlayer();
     void FollowCamera(); ///< Make camera follow player character.
 
   public:

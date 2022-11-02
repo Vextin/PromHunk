@@ -1,5 +1,5 @@
 /// \file BasicShooterEnemy.cpp
-/// \brief Code for the BasicShooterEnemy object class CBasicShooterEnemy.
+/// \brief Code for the BasicShooterEnemy object class CBasicRunnerEnemy.
 
 #include "BasicRunnerEnemy.h"
 #include "ComponentIncludes.h"
@@ -7,11 +7,11 @@
 #include "Player.h"
 #include "Helpers.h"
 
-/// Create and initialize a BasicShooterEnemy object given its position.
-/// \param p Position of BasicShooterEnemy.
+/// Create and initialize a BasicRunnerEnemy object given its position.
+/// \param p Position of BasicRunnerEnemy.
 
 CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEntity(eSprite::BasicRunnerEnemy, p) {
-    m_bStatic = false; //BasicShooterEnemys are not static
+    m_bStatic = false; //BasicRunnerEnemys are not static
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
 } //constructor
 
@@ -19,14 +19,14 @@ CBasicRunnerEnemy::~CBasicRunnerEnemy() {
     delete weapon;
 }
 
-/// Rotate the BasicShooterEnemy and fire the gun at at the closest available target if
+/// Rotate the BasicRunnerEnemy and fire the gun at at the closest available target if
 /// there is one, and rotate the BasicShooterEnemy at a constant speed otherwise.
 
 void CBasicRunnerEnemy::move() {
     if (m_pPlayer) {
         const Vector2 vDiff = m_vPos - m_pPlayer->m_vPos; //vector from player to BasicShooterEnemy
         const float dSq = vDiff.LengthSquared(); //distance to player squared
-        const float dMin = 256.0f; //minimum distance at which player is invisible
+        const float dMin = 5.0f; //minimum distance at which player is invisible
         const float dMinSq = dMin * dMin; //that squared
 
 

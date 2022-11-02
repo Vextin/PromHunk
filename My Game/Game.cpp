@@ -79,8 +79,8 @@ void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
-  m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
-  m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(550.0f, 550.0f));
+  //m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
+  //m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(550.0f, 550.0f));
 } //CreateObjects
 
 /// Call this function to start a new game. This should be re-entrant so that
@@ -88,14 +88,29 @@ void CGame::CreateObjects(){
 /// program. Clear the particle engine to get rid of any existing particles,
 /// delete any old objects out of the object manager and create some new ones.
 
-void CGame::SpawnEnemy() {
-    m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y);  //init worldsize
-
-    float sp_x = 430.0f;    //TODO: Find random X around desired spawn points
-    float sp_y = 430.0f;   //TODO: Find random Y around desired spawn points
-
-    m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(sp_x, sp_y));
+void CGame::SpawnEnemy(float x, float y) {
+    m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(x, y));
 }   //spawn enemy at a location
+
+void CGame::SpawnCenterBox() {
+    //TODO: max X and Y of a zone/map
+    float max_X = 1000;
+    float max_Y = 1000;
+
+    SpawnEnemy(1.0, max_Y / 2);    //LEFT
+    SpawnEnemy(max_X - 1.0, max_Y / 2);   //RIGHT
+    
+    SpawnEnemy(max_X / 2, max_Y);   //TOP
+    SpawnEnemy(max_X / 2, 1.0);   //BOTTOM
+}   //spawn one enemy at each corner
+
+void CGame::SpawnNearPlayer() {
+    float playerx = m_pPlayer->m_vPos.x;
+    float playery = m_pPlayer->m_vPos.y;
+    float randx = m_pRandom->randf() * 550.0f;    //random distance needs to be pos/neg as well
+    float randy = m_pRandom->randf() * 550.0f;    //random distance needs to be pos/neg as well
+    SpawnEnemy(playerx + randx, playery + randy);
+}
 
 void CGame::BeginGame(){  
   m_pParticleEngine->clear(); //clear old particles
@@ -119,7 +134,10 @@ void CGame::KeyboardHandler(){
     BeginGame();
   
   if (m_pKeyboard->TriggerDown('U')) //spawn enemy
-      SpawnEnemy();
+      SpawnNearPlayer();
+
+  if (m_pKeyboard->TriggerDown('I')) //spawn enemy
+      SpawnCenterBox();
 
   //ATTN: Movement code added to Player.cpp instead of Game.cpp ~Austin Carlin
   if (m_pPlayer) m_pPlayer->ProcessInput();

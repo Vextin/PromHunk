@@ -172,8 +172,10 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BasicShooterEnemy.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
+    <ClCompile Include="BasicRunnerEnemy.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BasicRunnerEnemy.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
