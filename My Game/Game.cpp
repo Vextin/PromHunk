@@ -51,6 +51,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::Smoke,   "smoke");
   m_pRenderer->Load(eSprite::Spark,   "spark");
   m_pRenderer->Load(eSprite::BasicShooterEnemy,  "turret");
+  m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
 
   m_pRenderer->EndResourceUpload();
 } //LoadImages
@@ -79,12 +80,22 @@ void CGame::CreateObjects(){
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
+  m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(550.0f, 550.0f));
 } //CreateObjects
 
 /// Call this function to start a new game. This should be re-entrant so that
 /// you can restart a new game without having to shut down and restart the
 /// program. Clear the particle engine to get rid of any existing particles,
 /// delete any old objects out of the object manager and create some new ones.
+
+void CGame::SpawnEnemy() {
+    m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y);  //init worldsize
+
+    float sp_x = 430.0f;    //TODO: Find random X around desired spawn points
+    float sp_y = 430.0f;   //TODO: Find random Y around desired spawn points
+
+    m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(sp_x, sp_y));
+}   //spawn enemy at a location
 
 void CGame::BeginGame(){  
   m_pParticleEngine->clear(); //clear old particles
@@ -107,6 +118,8 @@ void CGame::KeyboardHandler(){
   if(m_pKeyboard->TriggerDown(VK_BACK)) //start game
     BeginGame();
   
+  if (m_pKeyboard->TriggerDown('U')) //spawn enemy
+      SpawnEnemy();
 
   //ATTN: Movement code added to Player.cpp instead of Game.cpp ~Austin Carlin
   if (m_pPlayer) m_pPlayer->ProcessInput();
