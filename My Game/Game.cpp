@@ -107,9 +107,21 @@ void CGame::SpawnCenterBox() {
 void CGame::SpawnNearPlayer() {
     float playerx = m_pPlayer->m_vPos.x;
     float playery = m_pPlayer->m_vPos.y;
-    float randx = m_pRandom->randf() * 550.0f;    //random distance needs to be pos/neg as well
-    float randy = m_pRandom->randf() * 550.0f;    //random distance needs to be pos/neg as well
+
+    float randx = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
+    float randy = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
     SpawnEnemy(playerx + randx, playery + randy);
+}
+
+float CGame::RandomNegative() {
+    float randpos;
+    if (m_pRandom->randf() < 0.5f) {
+        randpos = -1.0f;
+    }
+    else {
+        randpos = 1.0f;
+    }
+    return randpos;
 }
 
 void CGame::BeginGame(){  

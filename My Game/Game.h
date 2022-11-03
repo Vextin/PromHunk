@@ -38,6 +38,7 @@ class CGame:
     void SpawnEnemy(float x, float y); ///< Spawn enemy
     void SpawnCenterBox(); ///< Spawn enemy in each corner
     void SpawnNearPlayer();
+    float RandomNegative();
     void FollowCamera(); ///< Make camera follow player character.
 
   public:
