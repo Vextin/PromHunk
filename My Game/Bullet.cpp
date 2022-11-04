@@ -6,12 +6,14 @@
 #include "Particle.h"
 #include "ParticleEngine.h"
 #include "Helpers.h"
+#include "Player.h"
 
 /// Create and initialize a bullet object given its initial position.
 /// \param t Sprite type of bullet.
 /// \param p Initial position of bullet.
 
 CBullet::CBullet(eSprite t, const Vector2& p): CObject(t, p){
+    soundFalloff = 4.0f;
   m_bIsBullet = true;
   m_bStatic = false;
   m_bIsTarget = false;
@@ -24,8 +26,13 @@ CBullet::CBullet(eSprite t, const Vector2& p): CObject(t, p){
 /// \param pObj Pointer to object being collided with (defaults to nullptr).
 
 void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
-  if(pObj == nullptr) //collide with edge of world
-    m_pAudio->play(eSound::Ricochet);
+  
+    float dist = Vector2::Distance(m_vPos, m_pPlayer->m_vPos);
+    float vol = 1000 / pow(dist, 2);
+
+    if(pObj == nullptr) //collide with edge of world
+    m_pAudio->play(eSound::Ricochet, vol);
+
 
   //bullets die on collision
 

@@ -13,6 +13,7 @@
 
 class CBullet: public CObject{
   protected:
+      float soundFalloff;
     virtual void CollisionResponse(const Vector2&, float,
       CObject* = nullptr); ///< Collision response.
     virtual void DeathFX(); ///< Death special effects.
