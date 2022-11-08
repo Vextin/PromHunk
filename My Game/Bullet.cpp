@@ -26,14 +26,13 @@ CBullet::CBullet(eSprite t, const Vector2& p): CObject(t, p){
 /// \param pObj Pointer to object being collided with (defaults to nullptr).
 
 void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
-  
-    float dist = Vector2::Distance(m_vPos, m_pPlayer->m_vPos);
-    float vol = 1000 / pow(dist, 2);
 
-    if(pObj == nullptr) //collide with edge of world
-    m_pAudio->play(eSound::Ricochet, vol);
+    if (pObj == nullptr) //collide with edge of world
+        m_pAudio->SetScale(75.0f);
+    m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
 
 
+    //m_pAudio->SetListenerPos();
   //bullets die on collision
 
   if(!m_bDead){
