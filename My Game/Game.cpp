@@ -52,6 +52,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::Spark,   "spark");
   m_pRenderer->Load(eSprite::BasicShooterEnemy,  "turret");
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
+  m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
 
   m_pRenderer->EndResourceUpload();
 } //LoadImages

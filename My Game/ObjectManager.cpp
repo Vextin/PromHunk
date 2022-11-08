@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "BasicShooterEnemy.h"
 #include "BasicRunnerEnemy.h"
+#include "CheerleaderEnemy.h"
 #include "Bullet.h"
 #include "ParticleEngine.h"
 #include "Helpers.h"
@@ -25,6 +26,7 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
         case eSprite::Player:  pObj = new CPlayer(pos); break;
         case eSprite::BasicShooterEnemy:  pObj = new CBasicShooterEnemy(pos); break;
         case eSprite::BasicRunnerEnemy: pObj = new CBasicRunnerEnemy(pos); break;
+        case eSprite::CheerleaderEnemy: pObj = new CCheerleaderEnemy(pos); break;
         case eSprite::Bullet:  pObj = new CBullet(eSprite::Bullet,  pos); break;
         case eSprite::Bullet2: pObj = new CBullet(eSprite::Bullet2, pos); break;
         default: pObj = new CObject(t, pos);

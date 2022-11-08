@@ -10,7 +10,8 @@ class CEntity :
     public CObject
 {
 protected:
-    float health = 0;
+    float health = 0.0f;
+    float speed = 50.0f;
 public:
     CEntity(eSprite t, const Vector2&); //constructor
 };

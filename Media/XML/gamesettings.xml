@@ -19,6 +19,7 @@
     <sprite name="smoke" file="graysmoke.png"/>
     <sprite name="spark" file="spark.png"/>
 	<sprite name="runman" file="runman.png"/>
+	<sprite name="cheerleader" file="cheerleader.png"/>
   </sprites>
 
   <!-- sound -->
