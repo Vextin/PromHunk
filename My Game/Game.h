@@ -26,7 +26,7 @@ class CGame:
 
   private:
     bool m_bDrawFrameRate = false; ///< Draw the frame rate.
-    
+
     void LoadImages(); ///< Load images.
     void LoadSounds(); ///< Load sounds.
     void BeginGame(); ///< Begin playing the game.
