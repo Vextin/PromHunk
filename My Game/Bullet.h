@@ -14,12 +14,13 @@
 class CBullet: public CObject{
   protected:
       float soundFalloff;
+      int m_damage;
     virtual void CollisionResponse(const Vector2&, float,
       CObject* = nullptr); ///< Collision response.
     virtual void DeathFX(); ///< Death special effects.
 
   public:
-    CBullet(eSprite t, const Vector2& p); ///< Constructor.
+    CBullet(eSprite t, const Vector2& p, int damage = 1); ///< Constructor.
 }; //CBullet
 
 #endif //__L4RC_GAME_BULLET_H__
