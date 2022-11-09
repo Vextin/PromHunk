@@ -10,7 +10,8 @@ class CEntity :
     public CObject
 {
 protected:
-    float health = 0;
+    float health = 0.0f;
+    float speed = 50.0f;
 public:
     CEntity(eSprite t, const Vector2&); //constructor
     virtual bool TakeDamage(int d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
