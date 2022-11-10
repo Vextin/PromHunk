@@ -106,6 +106,19 @@ void CCheerleaderEnemy::CollisionResponse(const Vector2& norm, float d, CObject*
 void CCheerleaderEnemy::CheerBuff() { //do something to allies (enemies to player) in aoe
     //steps:
     //get list of all enemies in certain aoe
-    //modify one of their stats health/speed
+    
+    //do timer stuff.
+    /*
+    for (auto i = m_stdEnemyObjectList.begin(); i != m_stdEnemyObjectList.end(); i++) {
+        const Vector2 vDiff = m_vPos - i->m_vPos; //vector from player to BasicShooterEnemy
+        const float dSq = vDiff.LengthSquared(); //distance to cheerleader squared
+        const float dMin = 75.0f; //max distance to buff
+        const float dMinSq = dMin * dMin; //that distance squared
+
+
+        if (dSq < dMinSq) //cheerleader is close enough to enemy to buff
+            //buff that enemy
+    } //if
+    */
 }
 

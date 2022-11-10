@@ -12,16 +12,16 @@
 ///
 /// A collection of all of the game objects.
 
-class CObjectManager: 
-  public LBaseObjectManager<CObject>,
-  public CCommon
+class CObjectManager :
+    public LBaseObjectManager<CObject>,
+    public CCommon
 {
-  private:
+private:
     void BroadPhase(); ///< Broad phase collision detection and response.
     void NarrowPhase(CObject*, CObject*); ///< Narrow phase collision detection and response.
     bool AtWorldEdge(CObject*, Vector2&, float&) const; ///< Test whether at the edge of the world.
 
-  public:
+public:
     CObject* create(eSprite, const Vector2&); ///< Create new object.
     void FireGun(CObject*, eSprite); ///Default enemy weapon
     void PlayerDefaultWeapon(CObject*, eSprite);///Default player weapon
