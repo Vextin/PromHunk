@@ -46,7 +46,10 @@ void CObject::move(){
 /// sprite descriptor.
 
 void CObject::draw(){ 
+    //m_pRenderer->DrawScreenText("OUCH", m_vPos, Colors::Black);
   m_pRenderer->Draw(this);
+  
+
 } //draw
 
 /// Response to collision. Move back the overlap distance along the collision

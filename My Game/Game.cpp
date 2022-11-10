@@ -53,6 +53,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::BasicShooterEnemy,  "turret");
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
+  m_pRenderer->Load(eSprite::Dummy, "dummy");
 
   m_pRenderer->EndResourceUpload();
 } //LoadImages
@@ -80,6 +81,10 @@ void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
+  m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
+  m_pTargetDummy->m_fRoll = 0;
+
+  
   //m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
   //m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(550.0f, 550.0f));
 } //CreateObjects
@@ -235,6 +240,7 @@ void CGame::RenderFrame(){
 
   m_pRenderer->Draw(eSprite::Background, m_vWorldSize/2.0f);  //draw background
   m_pObjectManager->draw(); //draw objects
+
   m_pParticleEngine->Draw(); //draw particles
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
 

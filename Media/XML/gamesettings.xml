@@ -4,7 +4,7 @@
 
 <settings>
   <game name="Top Down Game Prototype" />
-  <renderer width="1024" height="768"/>
+  <renderer width="1280" height="720"/>
    
   <font file="Media\Fonts\AverageSans_24.spritefont"/>
 
@@ -20,6 +20,7 @@
     <sprite name="spark" file="spark.png"/>
 	<sprite name="runman" file="runman.png"/>
 	<sprite name="cheerleader" file="cheerleader.png"/>
+	<sprite name="dummy" file="dummy.png"/>
   </sprites>
 
   <!-- sound -->

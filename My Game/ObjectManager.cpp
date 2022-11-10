@@ -24,6 +24,7 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
 
     switch(t){ //create object of type t
         case eSprite::Player:  pObj = new CPlayer(pos); break;
+        case eSprite::Dummy:    pObj = new CEntity(eSprite::Dummy, pos); break;
         case eSprite::BasicShooterEnemy:  pObj = new CBasicShooterEnemy(pos); break;
         case eSprite::BasicRunnerEnemy: pObj = new CBasicRunnerEnemy(pos); break;
         case eSprite::CheerleaderEnemy: pObj = new CCheerleaderEnemy(pos); break;
