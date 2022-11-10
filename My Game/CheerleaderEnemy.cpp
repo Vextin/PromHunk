@@ -1,6 +1,8 @@
 /// \file BasicShooterEnemy.cpp
 /// \brief Code for the BasicShooterEnemy object class CCheerleaderEnemy.
 
+#include <list>
+
 #include "CheerleaderEnemy.h"
 #include "ComponentIncludes.h"
 #include "ObjectManager.h"
@@ -103,22 +105,27 @@ void CCheerleaderEnemy::CollisionResponse(const Vector2& norm, float d, CObject*
         m_pAudio->play(eSound::Clang);
 } //CollisionResponse
 
-void CCheerleaderEnemy::CheerBuff() { //do something to allies (enemies to player) in aoe
+void CCheerleaderEnemy::CheerBuff(std::list<CObject*> m_stdObjectList) { //do something to allies (enemies to player) in aoe
     //steps:
     //get list of all enemies in certain aoe
     
     //do timer stuff.
-    /*
-    for (auto i = m_stdEnemyObjectList.begin(); i != m_stdEnemyObjectList.end(); i++) {
-        const Vector2 vDiff = m_vPos - i->m_vPos; //vector from player to BasicShooterEnemy
-        const float dSq = vDiff.LengthSquared(); //distance to cheerleader squared
-        const float dMin = 75.0f; //max distance to buff
-        const float dMinSq = dMin * dMin; //that distance squared
+    BuffCooldown -= m_pTimer->GetFrameTime();
+    
+    if (BuffCooldown <= 0) {
+        for (auto const& p : m_stdObjectList) {
+            if (dynamic_cast<CEntity*>(p) != nullptr) {
+                const Vector2 vDiff = m_vPos - p->m_vPos; //vector from player to BasicShooterEnemy
+                const float dSq = vDiff.LengthSquared(); //distance to cheerleader squared
+                const float dMin = 75.0f; //max distance to buff
+                const float dMinSq = dMin * dMin; //that distance squared
 
 
-        if (dSq < dMinSq) //cheerleader is close enough to enemy to buff
-            //buff that enemy
-    } //if
-    */
+                if (dSq < dMinSq) //cheerleader is close enough to enemy to buff
+                    float test = 0.0f;//buff that enemy
+            }
+        }
+    }
+    
 }
 

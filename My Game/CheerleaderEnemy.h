@@ -16,7 +16,9 @@ protected:
 	void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
 	void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
-	void CheerBuff();
+
+	float BuffCooldown = 0.0f;
+	void CheerBuff(std::list<CObject*>);
 
 public:
 	CRangedWeapon* weapon;
