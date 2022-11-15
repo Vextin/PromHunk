@@ -12,6 +12,10 @@
 /// integer and used for the index of the corresponding texture in graphics
 /// memory. `Size` must be last.
 
+enum class eGameState {
+	Menu, Playing
+}; //eGameState
+
 enum class eSprite: UINT{
   Background, Bullet, Bullet2, Player, BasicShooterEnemy, Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy,
   Size  //MUST BE LAST

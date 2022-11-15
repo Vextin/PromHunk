@@ -12,8 +12,8 @@ CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){
   m_bIsTarget = true;
   m_bStatic = false;
   moveVector = new Vector2(0, 0);
-  //weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
-  weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
+  weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
+  //weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
 
 CPlayer::~CPlayer() {

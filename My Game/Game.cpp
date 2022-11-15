@@ -85,8 +85,8 @@ void CGame::CreateObjects(){
   m_pTargetDummy->m_fRoll = 0;
 
   
-  //m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
-  //m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(550.0f, 550.0f));
+  m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
+  m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
 } //CreateObjects
 
 /// Call this function to start a new game. This should be re-entrant so that
@@ -276,9 +276,27 @@ void CGame::FollowCamera(){
 /// multiple copies of a sound from starting on the same frame.  
 /// Move the game objects. Render a frame of animation.
 
+void CGame::ProcessGameState() {
+    static float t = 0;
+    switch (m_eGameState) {
+    case eGameState::Playing:
+        if (m_pPlayer == nullptr)
+        {
+            m_eGameState = eGameState::Menu;
+            t = m_pTimer->GetTime();
+        } //if
+        break;
+    case eGameState::Menu:
+        if (m_pTimer->GetTime() - t > 3.0f)
+            BeginGame();
+        break;
+    } //switch
+} //ProcessGameState
+
 void CGame::ProcessFrame(){
   KeyboardHandler(); //handle keyboard input
   ControllerHandler(); //handle controller input
+  
   m_pAudio->BeginFrame(); //notify audio player that frame has begun
   
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
@@ -287,5 +305,6 @@ void CGame::ProcessFrame(){
     m_pParticleEngine->step(); //advance particle animation
   });
 
+  ProcessGameState();
   RenderFrame(); //render a frame of animation
 } //ProcessFrame

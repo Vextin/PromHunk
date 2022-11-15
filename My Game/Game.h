@@ -42,9 +42,12 @@ class CGame:
     void FollowCamera(); ///< Make camera follow player character.
 
   public:
+
+    eGameState m_eGameState = eGameState::Playing;
     ~CGame(); ///< Destructor.
 
     void Initialize(); ///< Initialize the game.
+    void ProcessGameState(); ///< Process Game State
     void ProcessFrame(); ///< Process an animation frame.
     void Release(); ///< Release the renderer.
 }; //CGame
