@@ -106,26 +106,24 @@ void CCheerleaderEnemy::CollisionResponse(const Vector2& norm, float d, CObject*
 } //CollisionResponse
 
 void CCheerleaderEnemy::CheerBuff(std::list<CObject*> m_stdObjectList) { //do something to allies (enemies to player) in aoe
-    //steps:
-    //get list of all enemies in certain aoe
     
-    //do timer stuff.
     BuffCooldown -= m_pTimer->GetFrameTime();
     
     if (BuffCooldown <= 0) {
-        for (auto const& p : m_stdObjectList) {
-            if (dynamic_cast<CEntity*>(p) != nullptr) {
-                const Vector2 vDiff = m_vPos - p->m_vPos; //vector from player to BasicShooterEnemy
+        for (auto const& p : m_stdObjectList) { 
+            if (dynamic_cast<CEntity*>(p) != nullptr) { //every enemy in ObjectList
+
+                const Vector2 vDiff = m_vPos - p->m_vPos; //vector from Cheerleader to Enemy
                 const float dSq = vDiff.LengthSquared(); //distance to cheerleader squared
                 const float dMin = 75.0f; //max distance to buff
                 const float dMinSq = dMin * dMin; //that distance squared
 
 
                 if (dSq < dMinSq) //cheerleader is close enough to enemy to buff
-                    float test = 0.0f;//buff that enemy
-            }
-        }
-    }
-    
+                    dynamic_cast<CEntity*>(p)->health += 5; //buff that enemy
+            } //if
+        } //for
+        BuffCooldown = 10.0f;
+    } //if
 }
 

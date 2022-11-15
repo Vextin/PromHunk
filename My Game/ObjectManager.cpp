@@ -83,6 +83,14 @@ bool CObjectManager::AtWorldEdge(CObject* p, Vector2& norm, float& d) const{
 /// edges and for all objects with another object, making sure that each pair
 /// of objects is processed only once.
 
+void CObjectManager::CheckBuffs() {
+    for (auto const& p : m_stdObjectList) //for each object
+        if (dynamic_cast<CCheerleaderEnemy*>(p) != nullptr)
+        {
+            dynamic_cast<CCheerleaderEnemy*>(p)->CheerBuff(m_stdObjectList); //buff
+        }
+}
+
 void CObjectManager::BroadPhase(){
     LBaseObjectManager::BroadPhase(); //collide with other objects
 

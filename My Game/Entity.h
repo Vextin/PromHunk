@@ -10,7 +10,7 @@ class CEntity :
     public CObject
 {
 protected:
-    float health = 1.0f;
+    
     float speed = 50.0f;
     
     int flatDamageIncrease;
@@ -24,6 +24,7 @@ public:
     CEntity(eSprite t, const Vector2&); //constructor
     virtual bool TakeDamage(int d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
     virtual void Die();
+    float health = 5.0f;
     void SetFlatDamageIncrease(int d);
     void SetPercentDamageIncrease(float d);
     void SetFlatSpeedIncrease( float s);

@@ -17,8 +17,7 @@ protected:
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
 	void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
 
-	float BuffCooldown = 0.0f;
-	void CheerBuff(std::list<CObject*>);
+	float BuffCooldown = 10.0f;
 
 public:
 	CRangedWeapon* weapon;
@@ -26,6 +25,7 @@ public:
 	CCheerleaderEnemy(const Vector2& p); ///< Constructor.
 	~CCheerleaderEnemy();///Deconstructor
 
+	void CheerBuff(std::list<CObject*>);
 	void move() override; ///< Move CheerleaderEnemy
 }; //CBullet
 

@@ -26,6 +26,8 @@ public:
     void FireGun(CObject*, eSprite); ///Default enemy weapon
     void PlayerDefaultWeapon(CObject*, eSprite);///Default player weapon
     void PlayerTestShotgun(CObject*, eSprite);
+
+    void CheckBuffs();
 }; //CObjectManager
 
 #endif //__L4RC_GAME_OBJECTMANAGER_H__
