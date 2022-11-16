@@ -13,6 +13,12 @@ protected:
     
     float speed = 50.0f;
     
+    float baseDamage;
+    float baseHealth;
+    float baseSpeed;
+    float baseAuraDamage;
+
+
     int flatDamageIncrease;
     float percentDamageIncrease;
     float percentSpeedIncrease;
