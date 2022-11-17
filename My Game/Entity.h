@@ -17,28 +17,30 @@ protected:
     float baseHealth;
     float baseSpeed;
     float baseAuraDamage;
+    float baseAttackSpeed;
 
-
-    int flatDamageIncrease;
+    float flatDamageIncrease;
     float percentDamageIncrease;
     float percentSpeedIncrease;
-    int flatHealthIncrease;
+    float flatHealthIncrease;
     float percentHealthIncrease;
-    int flatAuraDamageIncrease;
+    float flatAuraDamageIncrease;
     float percentAuraDamageIncrase;
 public:
     CEntity(eSprite t, const Vector2&); //constructor
     virtual bool TakeDamage(int d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
     virtual void Die();
     float health = 5.0f;
-    void SetFlatDamageIncrease(int d);
+    void SetFlatDamageIncrease(float d);
     void SetPercentDamageIncrease(float d);
     void SetFlatSpeedIncrease( float s);
     void SetPercentSpeedIncrease( float s);
-    void SetFlatHealthIncrease(int h);
+    void SetFlatAttackSpeedIncrease(float s);
+    void SetPercentAttackSpeedIncrease(float s);
+    void SetFlatHealthIncrease(float h);
     void SetPercentHealthIncrease(float h );
-    void SetFlatAuraDamageIncrease( int d);
-    void SetFlatAuraIncrease(int r);
+    void SetFlatAuraDamageIncrease( float d);
+    void SetFlatAuraIncrease(float r);
 };
 
 #endif //__L4RC_GAME_ENTITY_H__

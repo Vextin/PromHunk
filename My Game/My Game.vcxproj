@@ -175,6 +175,7 @@
     <ClCompile Include="BasicShooterEnemy.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="BasicRunnerEnemy.cpp" />
+    <ClCompile Include="Shop.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRunnerEnemy.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BasicShooterEnemy.h" />
     <ClInclude Include="RangedWeapon.h" />
+    <ClInclude Include="Shop.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My Game.rc" />
