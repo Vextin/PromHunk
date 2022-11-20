@@ -176,6 +176,9 @@
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="BasicRunnerEnemy.cpp" />
     <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="ShopItem.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="UIMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRunnerEnemy.h" />
@@ -193,6 +196,9 @@
     <ClInclude Include="BasicShooterEnemy.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="Shop.h" />
+    <ClInclude Include="ShopItem.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="UIMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My Game.rc" />

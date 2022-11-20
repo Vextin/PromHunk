@@ -21,6 +21,7 @@
 	<sprite name="runman" file="runman.png"/>
 	<sprite name="cheerleader" file="cheerleader.png"/>
 	<sprite name="dummy" file="dummy.png"/>
+  <sprite name="ShopCard_Damage_1" file="ShopCard_Damage_1.png"/>
   </sprites>
 
   <!-- sound -->

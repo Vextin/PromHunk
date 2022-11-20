@@ -7,7 +7,7 @@
 #include "SpriteRenderer.h"
 #include "ComponentIncludes.h"
 #include "ParticleEngine.h"
-
+#include "Shop.h"
 #include "shellapi.h"
 
 /// Delete the particle engine and the object manager. The renderer needs to
@@ -54,7 +54,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
-
+  m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
   m_pRenderer->EndResourceUpload();
 } //LoadImages
 
@@ -81,6 +81,10 @@ void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
+
+  Shop::LoadJSON();
+  Shop::ShowShopScreen();
+  m_eGameState = eGameState::Menu;
   m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
   m_pTargetDummy->m_fRoll = 0;
 

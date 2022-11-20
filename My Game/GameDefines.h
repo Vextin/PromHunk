@@ -17,7 +17,9 @@ enum class eGameState {
 }; //eGameState
 
 enum class eSprite: UINT{
-  Background, Bullet, Bullet2, Player, BasicShooterEnemy, Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy,
+  Background, Bullet, Bullet2, Player, BasicShooterEnemy, Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, 
+  //Keeping shop cards together for cleanliness
+  ShopCard_Damage1,
   Size  //MUST BE LAST
 }; //eSprite
 

@@ -1,0 +1,29 @@
+#PromHunkObject format
+#Hashes are comments
+#semicolon after each object's definition
+#first line of an object definition is its id, second line is the stat it modifies, third line is the value of the buff.
+#
+damage_1
+FlatDamage
+2
+;
+damage_2
+FlatDamage
+4
+;
+damage_3
+FlatDamage
+8
+;
+damage_4
+FlatDamage
+16
+;
+pctDamage_1
+PctDamage
+.10
+;
+pctDamage_2
+PctDamage
+.25
+;
