@@ -80,18 +80,23 @@ void Shop::ShowShopScreen()
 	const int xSpaceLeft = 1280 / 2 - shopSize;
 	const int spaceBeforeFirstCard = xSpaceLeft / 2 + 311 / 2;
 	const int verticalCenter = 720 / 2;
+	const Vector2 halfRes(1280 / 2, 720 / 2);
+	Vector2 camPos = m_pRenderer->GetCameraPos();
+	camPos -= halfRes;
+
+
 
 	//Generate all of the cards, create objects for them centered on the screen.
 	std::vector<ShopItem*> items = Shop::GenerateRandomCards();
 	CObject* card1 = m_pObjectManager->create(items[0]->m_upgradeCard, Vector2(311.0f, 452.0f));
 	card1->m_fRoll = 0.f;
-	card1->m_vPos = Vector2(static_cast<float>(spaceBeforeFirstCard), verticalCenter);
+	card1->m_vPos = camPos + Vector2(static_cast<float>(spaceBeforeFirstCard), verticalCenter);
 	CObject* card2 = m_pObjectManager->create(items[1]->m_upgradeCard, Vector2(311.0f, 452.0f));
 	card2->m_fRoll = 0.f;
-	card2->m_vPos = Vector2(spaceBeforeFirstCard + cardOffset, verticalCenter);
+	card2->m_vPos = camPos + Vector2(spaceBeforeFirstCard + cardOffset, verticalCenter);
 	CObject* card3 = m_pObjectManager->create(items[2]->m_upgradeCard, Vector2(311.0f, 452.0f));
 	card3->m_fRoll = 0.f;
-	card3->m_vPos = Vector2(spaceBeforeFirstCard + (cardOffset * 2), verticalCenter);
+	card3->m_vPos = camPos + Vector2(spaceBeforeFirstCard + (cardOffset * 2), verticalCenter);
 
 	Shop::s_CardObjects.push_back(card1);
 	Shop::s_CardObjects.push_back(card2);
