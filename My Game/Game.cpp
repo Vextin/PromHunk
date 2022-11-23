@@ -31,6 +31,8 @@ void CGame::Initialize(){
 
   m_pParticleEngine = new LParticleEngine2D(m_pRenderer);
 
+  Shop::LoadJSON();
+  m_pShop = new Shop;
   BeginGame();
 } //Initialize
 
@@ -82,9 +84,8 @@ void CGame::CreateObjects(){
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
 
-  Shop::LoadJSON();
-  Shop::ShowShopScreen();
-  m_eGameState = eGameState::Menu;
+  
+  
   m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
   m_pTargetDummy->m_fRoll = 0;
 
@@ -133,6 +134,11 @@ float CGame::RandomNegative() {
     }
     return randpos;
 }
+void CGame::ShowShop()
+{
+    m_eGameState = eGameState::Shop;
+    m_pShop->ShowShopScreen();
+}
 
 void CGame::BeginGame(){  
   m_pParticleEngine->clear(); //clear old particles
@@ -152,6 +158,12 @@ void CGame::KeyboardHandler(){
   if(m_pKeyboard->TriggerDown(VK_F2)) //toggle frame rate
     m_bDrawFrameRate = !m_bDrawFrameRate;
 
+  if (m_pKeyboard->TriggerDown(VK_F3)) //toggle frame rate
+      m_bDrawDamage = !m_bDrawDamage;
+
+  if (m_pKeyboard->TriggerDown(VK_F4)) //toggle frame rate
+      m_pShop->ShowShopScreen();
+
   if(m_pKeyboard->TriggerDown(VK_BACK)) //start game
     BeginGame();
   
@@ -161,40 +173,28 @@ void CGame::KeyboardHandler(){
   if (m_pKeyboard->TriggerDown('I')) //spawn enemy
       SpawnCenterBox();
 
+  if (m_eGameState == eGameState::Shop)
+  {
+      if (m_pKeyboard->TriggerDown('1'))
+      {
+          m_pShop->BuyItem(0);
+          m_eGameState = eGameState::Playing;
+      } else
+      if (m_pKeyboard->TriggerDown('2'))
+      {
+          m_pShop->BuyItem(1);
+          m_eGameState = eGameState::Playing;
+      } else
+      if (m_pKeyboard->TriggerDown('3'))
+      {
+          m_pShop->BuyItem(2);
+          m_eGameState = eGameState::Playing;
+      }
+  }
+
   //ATTN: Movement code added to Player.cpp instead of Game.cpp ~Austin Carlin
-  if (m_pPlayer) m_pPlayer->ProcessInput();
-  /*
-  if(m_pPlayer){ //safety
-    if(m_pKeyboard->TriggerDown(VK_UP)) //move forwards
-      m_pPlayer->SetSpeed(100.0f);
-
-    if(m_pKeyboard->TriggerUp(VK_UP)) //stop
-      m_pPlayer->SetSpeed(0.0f);
+  if (m_pPlayer && m_eGameState == eGameState::Playing) m_pPlayer->ProcessInput();
   
-    if(m_pKeyboard->TriggerDown(VK_RIGHT)) //rotate clockwise
-      m_pPlayer->SetRotSpeed(-1.0f);
-
-    if(m_pKeyboard->TriggerUp(VK_RIGHT)) //stop rotating clockwise
-      m_pPlayer->SetRotSpeed(0.0f);
-  
-    if(m_pKeyboard->TriggerDown(VK_LEFT)) //rotate counterclockwise
-      m_pPlayer->SetRotSpeed(1.0f);
-
-    if(m_pKeyboard->TriggerUp(VK_LEFT)) //stop rotating counterclockwise
-      m_pPlayer->SetRotSpeed(0.0f);
-
-    if(m_pKeyboard->TriggerDown(VK_SPACE)) //fire gun
-      m_pObjectManager->FireGun(m_pPlayer, eSprite::Bullet);
-    
-    if(m_pKeyboard->Down('D')) //strafe right
-      m_pPlayer->StrafeRight();
-  
-    if(m_pKeyboard->Down('A')) //strafe left
-      m_pPlayer->StrafeLeft();
-
-    if(m_pKeyboard->Down(VK_DOWN)) //strafe back
-      m_pPlayer->StrafeBack();
-  } //if */
 } //KeyboardHandler
 
 /// Poll the XBox controller state and respond to the controls there.
@@ -235,6 +235,12 @@ void CGame::DrawFrameRateText(){
   m_pRenderer->DrawScreenText(s.c_str(), pos); //draw to screen
 } //DrawFrameRateText
 
+void CGame::DrawDamageText() {
+    const std::string s = std::to_string(m_pPlayer->getDamage()) + " damage"; //frame rate
+    const Vector2 pos(m_nWinWidth - 128.0f, 60.0f); //hard-coded position
+    m_pRenderer->DrawScreenText(s.c_str(), pos); //draw to screen
+} //DrawFrameRateText
+
 /// Ask the object manager to draw the game objects. The renderer is notified of
 /// the start and end of the frame so that it can let Direct3D do its
 /// pipelining jiggery-pokery.
@@ -247,7 +253,7 @@ void CGame::RenderFrame(){
 
   m_pParticleEngine->Draw(); //draw particles
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
-
+  if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
   m_pRenderer->EndFrame(); //required after rendering
 } //RenderFrame
 
@@ -288,11 +294,19 @@ void CGame::ProcessGameState() {
         {
             m_eGameState = eGameState::Menu;
             t = m_pTimer->GetTime();
-        } //if
+        }
+        else
+            if (m_pShop->IsDisplaying())
+                m_eGameState = eGameState::Shop;
         break;
     case eGameState::Menu:
-        if (m_pTimer->GetTime() - t > 3.0f)
+        if (m_pTimer->GetTime() - t > .01f)
             BeginGame();
+        break;
+
+    case eGameState::Shop:
+        if (!m_pShop->IsDisplaying())
+            m_eGameState = eGameState::Playing;
         break;
     } //switch
 } //ProcessGameState
@@ -304,7 +318,7 @@ void CGame::ProcessFrame(){
   m_pAudio->BeginFrame(); //notify audio player that frame has begun
   
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
-    m_pObjectManager->move(); //move all objects
+    if(m_eGameState == eGameState::Playing) m_pObjectManager->move(); //move all objects
     m_pObjectManager->CheckBuffs(); //check for buffs, and apply them
     FollowCamera(); //make camera follow player
     m_pParticleEngine->step(); //advance particle animation

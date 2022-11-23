@@ -12,7 +12,7 @@
 /// \param t Sprite type of bullet.
 /// \param p Initial position of bullet.
 
-CBullet::CBullet(eSprite t, const Vector2& p, int damage): CObject(t, p){
+CBullet::CBullet(eSprite t, const Vector2& p, float damage): CObject(t, p){
     soundFalloff = 4.0f;
     m_damage = damage;
   m_bIsBullet = true;
@@ -37,7 +37,10 @@ void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
     if (dynamic_cast<CEntity*>(pObj) != nullptr)
     {
         CEntity *ent = dynamic_cast<CEntity*>(pObj);
-        ent->TakeDamage(m_damage);
+        if (ent->TakeDamage(m_damage))
+        {
+            m_pShop->ShowShopScreen();
+        }
     }
     //m_pAudio->SetListenerPos();
   //bullets die on collision

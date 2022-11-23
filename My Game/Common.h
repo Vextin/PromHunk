@@ -13,7 +13,7 @@ class LSpriteRenderer;
 class LParticleEngine2D;
 class CPlayer;
 class CEntity;
-
+class Shop;
 /// \brief The common variables class.
 ///
 /// CCommon is a singleton class that encapsulates things that are common to
@@ -27,7 +27,7 @@ class CCommon{
     static LSpriteRenderer* m_pRenderer; ///< Pointer to renderer.
     static CObjectManager* m_pObjectManager; ///< Pointer to object manager.
     static LParticleEngine2D* m_pParticleEngine; ///< Pointer to particle engine.    
-
+    static Shop* m_pShop;
     static Vector2 m_vWorldSize; ///< World height and width.
     static CPlayer* m_pPlayer; ///< Pointer to player character.
     static CEntity* m_pTargetDummy;

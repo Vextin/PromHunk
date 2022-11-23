@@ -13,7 +13,7 @@
 /// memory. `Size` must be last.
 
 enum class eGameState {
-	Menu, Playing
+	Menu, Playing, Shop
 }; //eGameState
 
 enum class eSprite: UINT{

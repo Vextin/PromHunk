@@ -49,6 +49,7 @@ void CPlayer::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
 
 void CPlayer::ProcessInput()
 {
+    if (dynamic_cast<CPlayer*>(m_pPlayer) == nullptr) return;
     //Set movement vector
     moveVector->x = 0;
     moveVector->y = 0;
@@ -59,7 +60,7 @@ void CPlayer::ProcessInput()
 
     //Set sprite rotation
     if (moveVector->Length() > .01f) {
-        m_fRoll = atan2(moveVector->y, moveVector->x);
+        m_fRoll = static_cast<float>(atan2(moveVector->y, moveVector->x));
     }
 
     //Fire weapon

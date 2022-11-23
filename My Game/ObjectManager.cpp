@@ -39,6 +39,18 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
     return pObj; //return pointer to created object
 } //create
 
+CObject* CObjectManager::createBullet(eSprite t, const Vector2& pos, float damage) {
+    CObject* pObj = nullptr;
+
+    switch (t) { //create object of type t
+    case eSprite::Bullet:  pObj = new CBullet(eSprite::Bullet, pos, damage); break;
+
+    } //switch
+
+    m_stdObjectList.push_back(pObj); //push pointer onto object list
+    return pObj; //return pointer to created object
+} //create
+
 /// Test whether an object's left, right, top or bottom edge has crossed the 
 /// left, right, top, bottom edge of the world, respectively. If so, then the
 /// object's position is corrected. This function assumes that the bottom left
@@ -187,7 +199,7 @@ void CObjectManager::PlayerDefaultWeapon(CObject* pObj, eSprite bullet) {
     const Vector2 pos = pObj->m_vPos + (w0 + w1) * view; //bullet initial position
 
     //create bullet object
-    CObject* pBullet = create(bullet, pos); //create bullet
+    CObject* pBullet = createBullet(bullet, pos, player->getDamage()); //create bullet
 
     const Vector2 norm = VectorNormalCC(view); //normal to view direction
     const float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude

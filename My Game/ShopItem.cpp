@@ -7,7 +7,7 @@ const std::map<std::string, eSprite> ShopItem::idToSprite =
 	{"damage_3",eSprite::ShopCard_Damage1},
 	{"damage_4",eSprite::ShopCard_Damage1},
 	{"pctDamage_1",eSprite::ShopCard_Damage1},
-	{"pctDamage_2",eSprite::ShopCard_Damage1}
+	{"pctDamage_2",eSprite::ShopCard_Damage1},
 };
 
 //Complete constructor if you know all of the fields

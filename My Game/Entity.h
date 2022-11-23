@@ -13,22 +13,25 @@ protected:
     
     float speed = 50.0f;
     
-    float baseDamage;
-    float baseHealth;
-    float baseSpeed;
-    float baseAuraDamage;
-    float baseAttackSpeed;
+    float baseDamage = 1.0f;
+    float baseHealth = 3.0f;
+    float baseSpeed = 1.0f;
+    float baseAuraDamage = 0.0f;
+    float baseAttackSpeed = 1.0f;
 
-    float flatDamageIncrease;
-    float percentDamageIncrease;
-    float percentSpeedIncrease;
-    float flatHealthIncrease;
-    float percentHealthIncrease;
-    float flatAuraDamageIncrease;
-    float percentAuraDamageIncrase;
+    float flatDamageIncrease = 0.0f;
+    float percentDamageIncrease = 0.0f;
+    float flatSpeedIncrease = 0.0f;
+    float percentSpeedIncrease = 0.0f;
+    float flatAttackSpeedIncrease = 0.0f;
+    float percentAttackSpeedIncrease = 0.0f;
+    float flatHealthIncrease = 0.0f;
+    float percentHealthIncrease = 0.0f;
+    float flatAuraDamageIncrease = 0.0f;
+    float percentAuraDamageIncrease = 0.0f;
 public:
     CEntity(eSprite t, const Vector2&); //constructor
-    virtual bool TakeDamage(int d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
+    virtual bool TakeDamage(float d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
     virtual void Die();
     float health = 5.0f;
     void SetFlatDamageIncrease(float d);
@@ -40,7 +43,13 @@ public:
     void SetFlatHealthIncrease(float h);
     void SetPercentHealthIncrease(float h );
     void SetFlatAuraDamageIncrease( float d);
-    void SetFlatAuraIncrease(float r);
+    void SetPercentAuraDamageIncrease(float d);
+
+    float getDamage() { return ((baseDamage + flatDamageIncrease) + (baseDamage + flatDamageIncrease) * percentDamageIncrease); }
+    float getMaxHealth(){ return ((baseHealth + flatHealthIncrease) * (1 + percentHealthIncrease)); }
+    float getSpeed(){ return ((baseSpeed + flatSpeedIncrease) * (1 + percentSpeedIncrease)); }
+    float getAuraDamage(){ return ((baseAuraDamage + flatAuraDamageIncrease) * (1 + percentAuraDamageIncrease)); }
+    float getAttackSpeed() { return ((baseAttackSpeed + flatAttackSpeedIncrease) * (1 + percentAttackSpeedIncrease)); }
 };
 
 #endif //__L4RC_GAME_ENTITY_H__
