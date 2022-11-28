@@ -159,7 +159,7 @@ void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
 
     //create bullet object
 
-    CObject* pBullet = create(bullet, pos); //create bullet
+    CObject* pBullet = createBullet(bullet, pos, enemy->getDamage()); //create bullet
 
     const Vector2 norm = VectorNormalCC(view); //normal to view direction
     const float m = 2.0f*m_pRandom->randf() - 1.0f; //random deflection magnitude
@@ -207,7 +207,7 @@ void CObjectManager::PlayerDefaultWeapon(CObject* pObj, eSprite bullet) {
     float minAngle = -((bulletCount-1) * spread) / 2.0f; //angle of first bullet
     for (int i = 0; i < bulletCount; i++)
     {
-        CObject* pBullet = create(bullet, pos); //create bullet
+        CObject* pBullet = createBullet(bullet, pos, m_pPlayer->getDamage()); //create bullet
 
         float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude
         Vector2 deflection = 0.01f * m * norm; //random deflection
@@ -249,7 +249,7 @@ void CObjectManager::PlayerTestShotgun(CObject* pObj, eSprite bullet) {
     for (int i = -1; i <= 1; i++) {
 
         Vector2 bulletPos = pos + (norm * 5.0f * i);
-        CObject* pBullet = create(bullet, bulletPos); //create bullet
+        CObject* pBullet = createBullet(bullet, bulletPos, m_pPlayer->getDamage()); //create bullet
 
         const float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude
         const Vector2 deflection = 0.01f * m * norm; //random deflection
