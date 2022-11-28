@@ -12,7 +12,9 @@
 /// The abstract representation of the player object. The player differs from
 /// the other objects in the game in that it moves in respond to device inputs.
 
-class CPlayer: public CEntity{
+class CPlayer: 
+    public CEntity,
+    public LSettings{
     protected:  
         //bool m_bStrafeLeft = false; ///< Strafe left.
         //bool m_bStrafeRight = false; ///< Strafe right.

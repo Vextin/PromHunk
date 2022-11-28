@@ -50,7 +50,7 @@ class CObject:
 
     void move(); ///< Move object.
     void draw(); ///< Draw object.
-
+    void Die() { m_bDead = true; } //set isDead to true
     const bool isBullet() const; ///< Is a bullet.
 }; //CObject
 

@@ -26,7 +26,7 @@ class CGame:
 
   private:
     bool m_bDrawFrameRate = false; ///< Draw the frame rate.
-
+    bool m_bDrawDamage = false; // draw damage for testing
     void LoadImages(); ///< Load images.
     void LoadSounds(); ///< Load sounds.
     void BeginGame(); ///< Begin playing the game.
@@ -34,6 +34,7 @@ class CGame:
     void ControllerHandler(); ///< The controller handler.
     void RenderFrame(); ///< Render an animation frame.
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
+    void DrawDamageText(); ///< Draw frame rate text to screen.
     void CreateObjects(); ///< Create game objects.
     void SpawnEnemy(float x, float y); ///< Spawn enemy
     void SpawnCenterBox(); ///< Spawn enemy in each corner
@@ -45,11 +46,12 @@ class CGame:
 
     eGameState m_eGameState = eGameState::Playing;
     ~CGame(); ///< Destructor.
-
+    void ShowShop();
     void Initialize(); ///< Initialize the game.
     void ProcessGameState(); ///< Process Game State
     void ProcessFrame(); ///< Process an animation frame.
     void Release(); ///< Release the renderer.
+    void SetGameState(eGameState state);
 }; //CGame
 
 #endif //__L4RC_GAME_GAME_H__

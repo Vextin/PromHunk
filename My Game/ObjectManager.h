@@ -23,6 +23,7 @@ private:
 
 public:
     CObject* create(eSprite, const Vector2&); ///< Create new object.
+    CObject* createBullet(eSprite, const Vector2&, float damage=1.f); ///< Create new object.
     void FireGun(CObject*, eSprite); ///Default enemy weapon
     void PlayerDefaultWeapon(CObject*, eSprite);///Default player weapon
     void PlayerTestShotgun(CObject*, eSprite);

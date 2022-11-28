@@ -14,7 +14,7 @@
     <ProjectGuid>{B17DD474-1083-417F-82FA-F698D98CB918}</ProjectGuid>
     <RootNamespace>
     </RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CheerleaderEnemy.cpp" />
+    <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Common.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -175,10 +176,15 @@
     <ClCompile Include="BasicShooterEnemy.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="BasicRunnerEnemy.cpp" />
+    <ClCompile Include="Shop.cpp" />
+    <ClCompile Include="ShopItem.cpp" />
+    <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="UIMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicRunnerEnemy.h" />
     <ClInclude Include="CheerleaderEnemy.h" />
+    <ClInclude Include="Mouse.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="Entity.h" />
@@ -191,6 +197,10 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BasicShooterEnemy.h" />
     <ClInclude Include="RangedWeapon.h" />
+    <ClInclude Include="Shop.h" />
+    <ClInclude Include="ShopItem.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="UIMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="My Game.rc" />

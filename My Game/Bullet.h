@@ -5,22 +5,22 @@
 #define __L4RC_GAME_BULLET_H__
 
 #include "Object.h"
-
+#include "Shop.h"
 /// \brief The bullet object. 
 ///
 /// The abstract representation of a bullet object. Bullet objects die in a
 /// cloud of smoke when they collide with anything.
 
-class CBullet: public CObject{
+class CBullet: public CObject, CCommon{
   protected:
       float soundFalloff;
-      int m_damage;
+      float m_damage;
     virtual void CollisionResponse(const Vector2&, float,
       CObject* = nullptr); ///< Collision response.
     virtual void DeathFX(); ///< Death special effects.
 
   public:
-    CBullet(eSprite t, const Vector2& p, int damage = 1); ///< Constructor.
+    CBullet(eSprite t, const Vector2& p, float damage = 1); ///< Constructor.
 }; //CBullet
 
 #endif //__L4RC_GAME_BULLET_H__
