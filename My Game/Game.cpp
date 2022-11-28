@@ -9,6 +9,7 @@
 #include "ParticleEngine.h"
 #include "Shop.h"
 #include "shellapi.h"
+#include "Mouse.h"
 
 /// Delete the particle engine and the object manager. The renderer needs to
 /// be deleted before this destructor runs so it will be done elsewhere.
@@ -33,6 +34,8 @@ void CGame::Initialize(){
 
   Shop::LoadJSON();
   m_pShop = new Shop;
+  m_pMouse = new CMouse;
+  m_pMouse->Initialize();
   BeginGame();
 } //Initialize
 

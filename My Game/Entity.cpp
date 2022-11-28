@@ -64,3 +64,15 @@ void CEntity::SetPercentAuraDamageIncrease(float d)
 {
 	percentAuraDamageIncrease += d;
 }
+void CEntity::SetFlatBulletCountIncrease(int c)
+{
+	flatProjectileCountIncrease += c;
+}
+void CEntity::SetFlatProjectileSpeedIncrease(float ps)
+{
+	flatProjectileSpeedIncrease += ps;
+}
+void CEntity::SetPercentProjectileSpeedIncrease(float ps)
+{
+	percentProjectileSpeedIncrease += ps;
+}

@@ -43,8 +43,12 @@ void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
         }
     }
     //m_pAudio->SetListenerPos();
+    //bullets do not die if they hit other bullets
+    if (dynamic_cast<CBullet*>(pObj) != nullptr) {
+        return;
+    }
+  
   //bullets die on collision
-
   if(!m_bDead){
     m_bDead = true; //mark object for deletion
     DeathFX();

@@ -5,6 +5,7 @@
 #define __L4RC_GAME_COMMON_H__
 
 #include "Defines.h"
+#include "Mouse.h"
 
 //forward declarations to make the compiler less stroppy
 
@@ -31,6 +32,8 @@ class CCommon{
     static Vector2 m_vWorldSize; ///< World height and width.
     static CPlayer* m_pPlayer; ///< Pointer to player character.
     static CEntity* m_pTargetDummy;
+    static CMouse* m_pMouse;
+
 }; //CCommon
 
 #endif //__L4RC_GAME_COMMON_H__

@@ -187,33 +187,41 @@ void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
 
 void CObjectManager::PlayerDefaultWeapon(CObject* pObj, eSprite bullet) {
     CPlayer* player = dynamic_cast<CPlayer*>(pObj);
-    if (player) {
-        player->weapon->SetCooldown(0.3f);
+    if (!player) {
+        return; //this function should never be called with anything other than the player
     }
+
+    player->weapon->SetCooldown(1.0f / player->getAttackSpeed()); //set time until player can fire again (inverse of speed)
 
     m_pAudio->play(eSound::Gun);
 
     const Vector2 view = pObj->GetViewVector(); //firing object view vector
     const float w0 = 0.5f * m_pRenderer->GetWidth(pObj->m_nSpriteIndex); //firing object width
     const float w1 = m_pRenderer->GetWidth(bullet); //bullet width
-    const Vector2 pos = pObj->m_vPos + (w0 + w1) * view; //bullet initial position
+    const Vector2 pos = pObj->m_vPos + (w0 + w1) * view; //firing position
+    const Vector2 norm = VectorNormalCC(view); //normal to view direction
 
     //create bullet object
-    CObject* pBullet = createBullet(bullet, pos, player->getDamage()); //create bullet
+    int bulletCount = player->getProjectileCount(); //number of bullets to fire
+    float spread = M_PI / 18.0f; //angle between bullets 10 degrees TODO - eventually should be dynamic based on bullet count
+    float minAngle = -((bulletCount-1) * spread) / 2.0f; //angle of first bullet
+    for (int i = 0; i < bulletCount; i++)
+    {
+        CObject* pBullet = create(bullet, pos); //create bullet
 
-    const Vector2 norm = VectorNormalCC(view); //normal to view direction
-    const float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude
-    const Vector2 deflection = 0.01f * m * norm; //random deflection
-
-    pBullet->m_vVelocity = pObj->m_vVelocity + 500.0f * (view + deflection);
-    pBullet->m_fRoll = pObj->m_fRoll;
+        float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude
+        Vector2 deflection = 0.01f * m * norm; //random deflection
+        Vector2 finalAngle = Vector2::TransformNormal(view, Matrix::CreateRotationZ(minAngle + i * spread)) + deflection;
+        pBullet->m_vVelocity = pObj->m_vVelocity + player->getProjectileSpeed() * finalAngle;
+        pBullet->m_fRoll = pObj->m_fRoll;
+    }
 
     //particle effect for gun fire
     LParticleDesc2D d;
 
     d.m_nSpriteIndex = (UINT)eSprite::Spark;
     d.m_vPos = pos;
-    d.m_vVel = pObj->m_fSpeed * view;
+    d.m_vVel = pObj->m_vVelocity + (player->getProjectileSpeed() / 10.0f) * view; //particles inherit some of bullet speed
     d.m_fLifeSpan = 0.25f;
     d.m_fScaleInFrac = 0.4f;
     d.m_fFadeOutFrac = 0.5f;
@@ -234,18 +242,21 @@ void CObjectManager::PlayerTestShotgun(CObject* pObj, eSprite bullet) {
     const Vector2 view = pObj->GetViewVector(); //firing object view vector
     const float w0 = 0.5f * m_pRenderer->GetWidth(pObj->m_nSpriteIndex); //firing object width
     const float w1 = m_pRenderer->GetWidth(bullet); //bullet width
-    const Vector2 pos = pObj->m_vPos + (w0 + w1) * view; //bullet initial position
+    const Vector2 pos = pObj->m_vPos + (w0 + w1) * view; //firing position
+    const Vector2 norm = VectorNormalCC(view); //normal to view direction
 
     //create bullet object
     for (int i = -1; i <= 1; i++) {
-        CObject* pBullet = create(bullet, pos); //create bullet
 
-        const Vector2 norm = VectorNormalCC(view); //normal to view direction
+        Vector2 bulletPos = pos + (norm * 5.0f * i);
+        CObject* pBullet = create(bullet, bulletPos); //create bullet
+
         const float m = 2.0f * m_pRandom->randf() - 1.0f; //random deflection magnitude
         const Vector2 deflection = 0.01f * m * norm; //random deflection
         Vector2 bulletAngle = i*norm; //TODO - this is dumb rewrite this
-
-        pBullet->m_vVelocity = pObj->m_vVelocity + 500.0f * (view + deflection + bulletAngle);
+        Vector2 finalAngle = view + deflection + bulletAngle;
+        finalAngle.Normalize();
+        pBullet->m_vVelocity = pObj->m_vVelocity + 500.0f * finalAngle;
         pBullet->m_fRoll = pObj->m_fRoll;
     }
 

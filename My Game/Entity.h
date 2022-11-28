@@ -18,6 +18,8 @@ protected:
     float baseSpeed = 1.0f;
     float baseAuraDamage = 0.0f;
     float baseAttackSpeed = 1.0f;
+    int baseProjectileCount = 1; //number of bullets fired with each shot
+    float baseProjectileSpeed = 1.0f;
 
     float flatDamageIncrease = 0.0f;
     float percentDamageIncrease = 0.0f;
@@ -29,6 +31,10 @@ protected:
     float percentHealthIncrease = 0.0f;
     float flatAuraDamageIncrease = 0.0f;
     float percentAuraDamageIncrease = 0.0f;
+    int flatProjectileCountIncrease = 0;
+    float flatProjectileSpeedIncrease = 0.0f;
+    float percentProjectileSpeedIncrease = 0.0f;
+
 public:
     CEntity(eSprite t, const Vector2&); //constructor
     virtual bool TakeDamage(float d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
@@ -44,12 +50,17 @@ public:
     void SetPercentHealthIncrease(float h );
     void SetFlatAuraDamageIncrease( float d);
     void SetPercentAuraDamageIncrease(float d);
+    void SetFlatBulletCountIncrease(int d);
+    void SetFlatProjectileSpeedIncrease(float ps);
+    void SetPercentProjectileSpeedIncrease(float ps);
 
-    float getDamage() { return ((baseDamage + flatDamageIncrease) + (baseDamage + flatDamageIncrease) * percentDamageIncrease); }
-    float getMaxHealth(){ return ((baseHealth + flatHealthIncrease) * (1 + percentHealthIncrease)); }
-    float getSpeed(){ return ((baseSpeed + flatSpeedIncrease) * (1 + percentSpeedIncrease)); }
-    float getAuraDamage(){ return ((baseAuraDamage + flatAuraDamageIncrease) * (1 + percentAuraDamageIncrease)); }
-    float getAttackSpeed() { return ((baseAttackSpeed + flatAttackSpeedIncrease) * (1 + percentAttackSpeedIncrease)); }
+    float getDamage() { return ((baseDamage + flatDamageIncrease) + (1.0f * percentDamageIncrease)); }
+    float getMaxHealth(){ return ((baseHealth + flatHealthIncrease) * (1.0f + percentHealthIncrease)); }
+    float getSpeed(){ return ((baseSpeed + flatSpeedIncrease) * (1.0f + percentSpeedIncrease)); }
+    float getAuraDamage(){ return ((baseAuraDamage + flatAuraDamageIncrease) * (1.0f + percentAuraDamageIncrease)); }
+    float getAttackSpeed() { return ((baseAttackSpeed + flatAttackSpeedIncrease) * (1.0f + percentAttackSpeedIncrease)); }
+    float getProjectileCount() { return (baseProjectileCount + flatProjectileCountIncrease); }
+    float getProjectileSpeed() { return ((baseProjectileSpeed + flatProjectileSpeedIncrease) * (1.0f + percentProjectileSpeedIncrease)); }
 };
 
 #endif //__L4RC_GAME_ENTITY_H__

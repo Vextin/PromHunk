@@ -13,3 +13,4 @@ Shop* CCommon::m_pShop = nullptr;
 Vector2 CCommon::m_vWorldSize = Vector2::Zero;
 CPlayer* CCommon::m_pPlayer = nullptr;
 CEntity* CCommon::m_pTargetDummy = nullptr;
+CMouse* CCommon::m_pMouse = nullptr;

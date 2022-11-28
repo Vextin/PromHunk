@@ -12,6 +12,9 @@ CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){
   m_bIsTarget = true;
   m_bStatic = false;
   moveVector = new Vector2(0, 0);
+  baseProjectileCount = 1;
+  baseProjectileSpeed = 500.0f;
+  baseAttackSpeed = 2.0f;
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
   //weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
@@ -50,6 +53,7 @@ void CPlayer::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
 void CPlayer::ProcessInput()
 {
     if (dynamic_cast<CPlayer*>(m_pPlayer) == nullptr) return;
+    //TODO - add controller support
     //Set movement vector
     moveVector->x = 0;
     moveVector->y = 0;
@@ -58,13 +62,38 @@ void CPlayer::ProcessInput()
     if (m_pKeyboard->Down('S')) moveVector->y -= 1;
     if (m_pKeyboard->Down('D')) moveVector->x += 1;
 
-    //Set sprite rotation
-    if (moveVector->Length() > .01f) {
+    //Set aim direction (sprite rotation)
+    Vector2 aimVector = Vector2::Zero;
+
+    m_pMouse->GetState(); //Update mouse state   
+    if (m_pMouse->TriggerDown(eMouseButton::Left)) { //only use mouse aim if using left click to fire
+        //mouse pos origin top left
+        Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
+        Vector2 bottomLeftOfScreen = camPos - Vector2(m_nWinWidth/2, m_nWinHeight/2); //bottom left corner of screen in world space
+        Vector2 playerDistFromBottomLeft = m_vPos - bottomLeftOfScreen; //essentially player position in screen space, origin at bottom left
+        Vector2 flippedMousePos = Vector2(m_pMouse->Position.x, m_nWinHeight - m_pMouse->Position.y); //mouse pos in screen space with origin at bottom left
+
+        aimVector = flippedMousePos - playerDistFromBottomLeft;
+    }
+
+    //otherwise if pressing arrow keys, aim with those
+    if (m_pKeyboard->Down(38)) aimVector.y += 1; //up
+    if (m_pKeyboard->Down(40)) aimVector.y -= 1; //down
+    if (m_pKeyboard->Down(37)) aimVector.x -= 1; //left
+    if (m_pKeyboard->Down(39)) aimVector.x += 1; //right
+    if (aimVector != Vector2::Zero) {
+        m_fRoll = static_cast<float>(atan2(aimVector.y, aimVector.x));
+    }
+    //otherwise, use the movement direction as aim direction
+    else if (moveVector->Length() > .01f) {
         m_fRoll = static_cast<float>(atan2(moveVector->y, moveVector->x));
     }
 
     //Fire weapon
     if (m_pKeyboard->Down(VK_SPACE)) {
+        weapon->FireWeapon();
+    }
+    if (m_pMouse->TriggerDown(eMouseButton::Left)) {
         weapon->FireWeapon();
     }
 }//ProcessInput
