@@ -102,3 +102,7 @@ void CBasicShooterEnemy::CollisionResponse(const Vector2& norm, float d, CObject
     if(pObj && pObj->isBullet())
         m_pAudio->play(eSound::Clang);
 } //CollisionResponse
+
+void CBasicShooterEnemy::Update() {
+    weapon->ReduceCooldown(m_pTimer->GetFrameTime());
+}

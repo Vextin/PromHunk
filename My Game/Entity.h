@@ -39,7 +39,8 @@ public:
     CEntity(eSprite t, const Vector2&); //constructor
     virtual bool TakeDamage(float d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
     virtual void Die();
-    float health = 5.0f;
+    virtual void Update();
+    float health;
     void SetFlatDamageIncrease(float d);
     void SetPercentDamageIncrease(float d);
     void SetFlatSpeedIncrease( float s);

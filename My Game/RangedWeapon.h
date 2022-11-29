@@ -17,6 +17,7 @@ protected:
 public:
 	CRangedWeapon(CEntity*, WeaponFunction);///Constructor
 	void SetCooldown(float);
+	void ReduceCooldown(float);
 	void FireWeapon();
 };
 

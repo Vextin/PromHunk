@@ -3,7 +3,7 @@
 
 CEntity::CEntity(eSprite t, const Vector2& p) : CObject(t, p) {
 	if (t == eSprite::Dummy)
-		health = FLT_MAX;
+		health = baseHealth;
 } //constructor
 
 bool CEntity::TakeDamage(float d)
@@ -18,6 +18,10 @@ bool CEntity::TakeDamage(float d)
 		return true;
 	}
 	return false;
+}
+
+void CEntity::Update() {
+
 }
 
 void CEntity::Die()

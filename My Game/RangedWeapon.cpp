@@ -11,8 +11,11 @@ void CRangedWeapon::SetCooldown(float cooldown) {
     weaponCooldown = cooldown;
 }//SetCooldown
 
+void CRangedWeapon::ReduceCooldown(float cooldownDelta) {
+    weaponCooldown -= cooldownDelta;
+}
+
 void CRangedWeapon::FireWeapon() {
-    weaponCooldown -= m_pTimer->GetFrameTime();
     if (weaponCooldown <= 0) {
         std::invoke(fireWeapon, m_pObjectManager, owner, eSprite::Bullet);
     }

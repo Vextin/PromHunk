@@ -24,6 +24,7 @@ class CBasicShooterEnemy: public CEntity{
 		~CBasicShooterEnemy();///Deconstructor
 
 		void move() override; ///< Move BasicShooterEnemy.
+		void Update() override;
 }; //CBullet
 
 #endif //__L4RC_GAME_BasicShooterEnemy_H__

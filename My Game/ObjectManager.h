@@ -29,6 +29,7 @@ public:
     void PlayerTestShotgun(CObject*, eSprite);
 
     void CheckBuffs();
+    void Update();
 }; //CObjectManager
 
 #endif //__L4RC_GAME_OBJECTMANAGER_H__

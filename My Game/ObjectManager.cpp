@@ -91,10 +91,6 @@ bool CObjectManager::AtWorldEdge(CObject* p, Vector2& norm, float& d) const{
   return d > 0;
 } //AtWorldEdge
 
-/// Perform collision detection and response for each object with the world
-/// edges and for all objects with another object, making sure that each pair
-/// of objects is processed only once.
-
 void CObjectManager::CheckBuffs() {
     for (auto const& p : m_stdObjectList) //for each object
         if (dynamic_cast<CCheerleaderEnemy*>(p) != nullptr)
@@ -103,6 +99,22 @@ void CObjectManager::CheckBuffs() {
         }
 }
 
+/// <summary>
+/// Calls the update event for every entity each tick
+/// </summary>
+void CObjectManager::Update() {
+    for (auto const& p : m_stdObjectList) { //for each object
+        CEntity* ent = dynamic_cast<CEntity*>(p);
+        if (ent != nullptr)
+        {
+            ent->Update();
+        }
+    }
+}
+
+/// Perform collision detection and response for each object with the world
+/// edges and for all objects with another object, making sure that each pair
+/// of objects is processed only once.
 void CObjectManager::BroadPhase(){
     LBaseObjectManager::BroadPhase(); //collide with other objects
 

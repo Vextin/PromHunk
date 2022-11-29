@@ -323,6 +323,7 @@ void CGame::ProcessFrame(){
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
     if(m_eGameState == eGameState::Playing) m_pObjectManager->move(); //move all objects
     m_pObjectManager->CheckBuffs(); //check for buffs, and apply them
+    m_pObjectManager->Update();
     FollowCamera(); //make camera follow player
     m_pParticleEngine->step(); //advance particle animation
   });

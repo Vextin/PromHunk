@@ -11,10 +11,12 @@
 CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
+  baseHealth = FLT_MAX;
   moveVector = new Vector2(0, 0);
-  baseProjectileCount = 1;
-  baseProjectileSpeed = 500.0f;
-  baseAttackSpeed = 2.0f;
+  baseProjectileCount = 4;
+  baseProjectileSpeed = 1000.0f;
+  baseAttackSpeed = 4.0f;
+  health = baseHealth;
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
   //weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
@@ -48,7 +50,9 @@ void CPlayer::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
   else CObject::CollisionResponse(norm, d, pObj);
 } //CollisionResponse
 
-
+void CPlayer::Update() {
+    weapon->ReduceCooldown(m_pTimer->GetFrameTime());
+}
 
 void CPlayer::ProcessInput()
 {
