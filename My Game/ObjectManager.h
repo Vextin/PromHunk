@@ -17,9 +17,25 @@ class CObjectManager :
     public CCommon
 {
 private:
+    struct EnemyStruct {
+        int BasicShooter = 1;
+        int BasicRunner = 1;
+        int Cheerleader = 1;
+    } EnemyCount, MaxEnemyCount;
+    int CurrentEnemyCount = 0; //current number of all types of enemies
+    int TotalEnemyCount = 0; //max number of enemies we want on screen
+    int WaveNumber = 0;
+    bool BossWave = false;
+    float WaveTimer = 0.0f;
+    float RefillTimer = 9.0f;
+
     void BroadPhase(); ///< Broad phase collision detection and response.
     void NarrowPhase(CObject*, CObject*); ///< Narrow phase collision detection and response.
     bool AtWorldEdge(CObject*, Vector2&, float&) const; ///< Test whether at the edge of the world.
+
+    void SpawnEnemy(float x, float y, int z);
+    void SpawnNearPlayer(int z);
+    float RandomNegative();
 
 public:
     CObject* create(eSprite, const Vector2&); ///< Create new object.
@@ -29,6 +45,11 @@ public:
     void PlayerTestShotgun(CObject*, eSprite);
 
     void CheckBuffs();
+
+    void CheckEnemies();    //called when Refill happens
+    void WaveManager();     //needs to be called whenever we want data for next wave
+    void SpawnNextWave();   //called on ~30s timer
+    void RefillWave();      //called on ~9s timer
     void Update();
 }; //CObjectManager
 

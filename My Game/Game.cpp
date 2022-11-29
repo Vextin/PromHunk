@@ -102,41 +102,21 @@ void CGame::CreateObjects(){
 /// program. Clear the particle engine to get rid of any existing particles,
 /// delete any old objects out of the object manager and create some new ones.
 
-void CGame::SpawnEnemy(float x, float y) {
-    m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(x, y));
-}   //spawn enemy at a location
 
-void CGame::SpawnCenterBox() {
-    //TODO: max X and Y of a zone/map
-    float max_X = 1000;
-    float max_Y = 1000;
+//void CGame::SpawnCenterBox() {
+//    //TODO: max X and Y of a zone/map
+//    float max_X = 1000;
+//    float max_Y = 1000;
+//
+//    SpawnEnemy(1.0, max_Y / 2);    //LEFT
+//    SpawnEnemy(max_X - 1.0, max_Y / 2);   //RIGHT
+//    
+//    SpawnEnemy(max_X / 2, max_Y);   //TOP
+//    SpawnEnemy(max_X / 2, 1.0);   //BOTTOM
+//}   //spawn one enemy at each corner
 
-    SpawnEnemy(1.0, max_Y / 2);    //LEFT
-    SpawnEnemy(max_X - 1.0, max_Y / 2);   //RIGHT
-    
-    SpawnEnemy(max_X / 2, max_Y);   //TOP
-    SpawnEnemy(max_X / 2, 1.0);   //BOTTOM
-}   //spawn one enemy at each corner
 
-void CGame::SpawnNearPlayer() {
-    float playerx = m_pPlayer->m_vPos.x;
-    float playery = m_pPlayer->m_vPos.y;
 
-    float randx = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
-    float randy = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
-    SpawnEnemy(playerx + randx, playery + randy);
-}
-
-float CGame::RandomNegative() {
-    float randpos;
-    if (m_pRandom->randf() < 0.5f) {
-        randpos = -1.0f;
-    }
-    else {
-        randpos = 1.0f;
-    }
-    return randpos;
-}
 void CGame::ShowShop()
 {
     m_eGameState = eGameState::Shop;
@@ -147,6 +127,7 @@ void CGame::BeginGame(){
   m_pParticleEngine->clear(); //clear old particles
   m_pObjectManager->clear(); //clear old objects
   CreateObjects(); //create new objects 
+  m_pObjectManager->SpawnNextWave();
 } //BeginGame
 
 /// Poll the keyboard state and respond to the key presses that happened since
@@ -169,12 +150,7 @@ void CGame::KeyboardHandler(){
 
   if(m_pKeyboard->TriggerDown(VK_BACK)) //start game
     BeginGame();
-  
-  if (m_pKeyboard->TriggerDown('U')) //spawn enemy
-      SpawnNearPlayer();
 
-  if (m_pKeyboard->TriggerDown('I')) //spawn enemy
-      SpawnCenterBox();
 
   if (m_eGameState == eGameState::Shop)
   {
@@ -323,6 +299,8 @@ void CGame::ProcessFrame(){
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
     if(m_eGameState == eGameState::Playing) m_pObjectManager->move(); //move all objects
     m_pObjectManager->CheckBuffs(); //check for buffs, and apply them
+    m_pObjectManager->SpawnNextWave();
+    m_pObjectManager->RefillWave();
     m_pObjectManager->Update();
     FollowCamera(); //make camera follow player
     m_pParticleEngine->step(); //advance particle animation

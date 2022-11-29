@@ -36,10 +36,7 @@ class CGame:
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
     void DrawDamageText(); ///< Draw frame rate text to screen.
     void CreateObjects(); ///< Create game objects.
-    void SpawnEnemy(float x, float y); ///< Spawn enemy
-    void SpawnCenterBox(); ///< Spawn enemy in each corner
-    void SpawnNearPlayer();
-    float RandomNegative();
+    //void SpawnCenterBox(); ///< Spawn enemy in each corner
     void FollowCamera(); ///< Make camera follow player character.
 
   public:
@@ -47,6 +44,8 @@ class CGame:
     eGameState m_eGameState = eGameState::Playing;
     ~CGame(); ///< Destructor.
     void ShowShop();
+
+    
     void Initialize(); ///< Initialize the game.
     void ProcessGameState(); ///< Process Game State
     void ProcessFrame(); ///< Process an animation frame.

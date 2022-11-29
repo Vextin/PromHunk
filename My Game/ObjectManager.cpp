@@ -12,6 +12,8 @@
 #include "ParticleEngine.h"
 #include "Helpers.h"
 #include "GameDefines.h"
+#include <string>
+#include <map>
 
 /// Create an object and put a pointer to it at the back of the object list
 /// `m_stdObjectList`, which it inherits from `LBaseObjectManager`.
@@ -91,12 +93,145 @@ bool CObjectManager::AtWorldEdge(CObject* p, Vector2& norm, float& d) const{
   return d > 0;
 } //AtWorldEdge
 
+/// Perform collision detection and response for each object with the world
+/// edges and for all objects with another object, making sure that each pair
+/// of objects is processed only once.
+void CObjectManager::SpawnEnemy(float x, float y, int z) {
+    switch (z) {
+    case 1:
+        m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(x, y));
+        break;
+    case 2:
+        m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(x, y));
+        break;
+    case 3:
+        m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(x, y));
+        break;
+    } //switch
+}
+
+void CObjectManager::SpawnNearPlayer(int z) {
+    float playerx = m_pPlayer->m_vPos.x;
+    float playery = m_pPlayer->m_vPos.y;
+
+    float randx = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
+    float randy = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
+    SpawnEnemy(playerx + randx, playery + randy, z);
+}
+
+float CObjectManager::RandomNegative() {
+    float randpos;
+    if (m_pRandom->randf() < 0.5f) {
+        randpos = -1.0f;
+    }
+    else {
+        randpos = 1.0f;
+    }
+    return randpos;
+}
+
 void CObjectManager::CheckBuffs() {
     for (auto const& p : m_stdObjectList) //for each object
+    {
         if (dynamic_cast<CCheerleaderEnemy*>(p) != nullptr)
         {
             dynamic_cast<CCheerleaderEnemy*>(p)->CheerBuff(m_stdObjectList); //buff
         }
+    }
+}
+
+void CObjectManager::CheckEnemies() {
+    EnemyCount.BasicRunner = 0;
+    EnemyCount.BasicShooter = 0;
+    EnemyCount.Cheerleader = 0;
+    CurrentEnemyCount = 0;
+
+    for (auto const& p : m_stdObjectList) //for each object
+    {
+        if (dynamic_cast<CCheerleaderEnemy*>(p) != nullptr)
+        {
+            EnemyCount.Cheerleader += 1;
+            CurrentEnemyCount += 1;
+        }
+        if (dynamic_cast<CBasicRunnerEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicRunner += 1;
+            CurrentEnemyCount += 1;
+        }
+        if (dynamic_cast<CBasicShooterEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicShooter += 1;
+            CurrentEnemyCount += 1;
+        }
+    }
+}
+
+void CObjectManager::WaveManager() {
+    //enemyCount is max number of enemies
+    if (0 <= WaveNumber < 25) {
+        TotalEnemyCount = 10 * log(WaveNumber) + 5;
+    }
+    else if (25 <= WaveNumber < 50) {
+        TotalEnemyCount = 25 * log(WaveNumber) + 5;
+    }
+    else if (50 <= WaveNumber < 100) {
+        TotalEnemyCount = 50 * log(WaveNumber) + 5;
+    }
+    else {
+        TotalEnemyCount = pow(WaveNumber, 1.15) + 505;
+    }
+
+
+    if (WaveNumber % 10 == 0) {
+        BossWave = true;
+    }
+
+    // this roughly gets us to our desired goal of enemy mashup types, we use floor so that we can call re-fill early on to make the game seem more oppressively spawning enemies
+    MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
+    MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
+    MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);   //spawns at least 1 cheerleader
+}
+
+void CObjectManager::SpawnNextWave() {
+    WaveTimer -= m_pTimer->GetFrameTime();
+    
+    if (WaveTimer <= 0)
+    {
+        for (int i = 0; i < MaxEnemyCount.BasicRunner; i++) {
+            SpawnNearPlayer(1);
+        }
+        for (int i = 0; i < MaxEnemyCount.BasicShooter; i++) {
+            SpawnNearPlayer(2);
+        }
+        for (int i = 0; i < MaxEnemyCount.Cheerleader; i++) {
+            SpawnNearPlayer(3);
+        }
+        /*if (BossWave == true) {
+            SpawnNearPlayer(4)
+        }*/
+        WaveTimer = 30.0f;
+        WaveNumber += 1;
+        WaveManager();
+    }
+}
+
+void CObjectManager::RefillWave() {
+    RefillTimer -= m_pTimer->GetFrameTime();
+
+    if (RefillTimer <= 0)
+    {
+        CheckEnemies();
+        int numShooters = (MaxEnemyCount.BasicShooter - EnemyCount.BasicShooter) / 2;
+        int numRunner = (MaxEnemyCount.BasicRunner - EnemyCount.BasicRunner) / 2;
+
+        for (int i = 0; i < numRunner; i++) {
+            SpawnNearPlayer(1);
+        }
+        for (int i = 0; i < numShooters; i++) {
+            SpawnNearPlayer(2);
+        }
+        RefillTimer = 9.0f;
+    }
 }
 
 /// <summary>
