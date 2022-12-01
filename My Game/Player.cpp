@@ -11,7 +11,7 @@
 CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
-  baseHealth = FLT_MAX;
+  baseHealth = 10.0f;
   moveVector = new Vector2(0, 0);
   baseProjectileCount = 4;
   baseProjectileSpeed = 1000.0f;

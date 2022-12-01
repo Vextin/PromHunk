@@ -59,6 +59,8 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
+  m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
+  m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
   m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
   m_pRenderer->EndResourceUpload();
 } //LoadImages
@@ -86,7 +88,7 @@ void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
-
+  
   
   
   m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
@@ -204,6 +206,32 @@ void CGame::ControllerHandler(){
 } //ControllerHandler
 
 
+/// Draws a health bar for the player
+void CGame::DrawHealthBar() 
+{
+    if (m_pPlayer->health > 0)
+    {
+        float hp = m_pPlayer->health / m_pPlayer->getMaxHealth();
+        Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
+        Vector2 origin = camPos - Vector2(m_nWinWidth / 2, m_nWinHeight / 2); //bottom left corner of screen in world space
+        float y = m_nWinHeight * 1 / 10;
+        float left = m_nWinWidth * 1 / 10;
+        float right = m_nWinWidth * 3 / 10;
+        float lenhp = (right - left) * hp + left;
+
+        const Vector2 barp1 = origin + Vector2(left, y);
+        const Vector2 barp2 = origin + Vector2(right, y);
+        const Vector2 barpd = origin + Vector2(lenhp, y);
+        const Vector2 bartext = Vector2(left, m_nWinHeight - y);
+
+        const std::string s = "Health: " + std::to_string(hp);
+        m_pRenderer->DrawScreenText(s.c_str(), bartext);
+        m_pRenderer->DrawLine(eSprite::HealthBarRD, barp1, barp2);
+        m_pRenderer->DrawLine(eSprite::HealthBarGR, barp1, barpd);
+    }
+    
+}
+
 /// Draw the current frame rate to a hard-coded position in the window.
 /// The frame rate will be drawn in a hard-coded position using the font
 /// specified in `gamesettings.xml`.
@@ -231,6 +259,7 @@ void CGame::RenderFrame(){
   m_pObjectManager->draw(); //draw objects
 
   m_pParticleEngine->Draw(); //draw particles
+  DrawHealthBar();
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
   m_pRenderer->EndFrame(); //required after rendering
