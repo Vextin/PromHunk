@@ -59,6 +59,8 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
+  m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
+  m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
   m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
   m_pRenderer->EndResourceUpload();
 } //LoadImages
@@ -86,7 +88,7 @@ void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
-
+  
   
   
   m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
@@ -204,6 +206,32 @@ void CGame::ControllerHandler(){
 } //ControllerHandler
 
 
+/// Draws a health bar for the player
+void CGame::DrawHealthBar() 
+{
+    if (m_pPlayer->health > 0)
+    {
+        float hpratio = m_pPlayer->health / m_pPlayer->getMaxHealth(); //Current hp/max hp
+        Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
+        Vector2 origin = camPos - Vector2(m_nWinWidth / 2, m_nWinHeight / 2); //bottom left corner of screen in world space
+        float y_pos = m_nWinHeight * 1 / 10; //Y position of health bar from bottom of screen
+        float left = m_nWinWidth * 1 / 10; //Left starting position of both health bars from left of screen
+        float right = m_nWinWidth * 3 / 10; //Right ending position of max health bar from left of screen
+        float rightc = (right - left) * hpratio + left; //Right position of current health bar
+
+        const Vector2 lbar = origin + Vector2(left, y_pos); //Vector for left starting position of both health bars
+        const Vector2 rbar = origin + Vector2(right, y_pos); //Vector for right ending position of max health bar
+        const Vector2 cbar = origin + Vector2(rightc, y_pos); //Vector for right ending position of current health bar
+        const Vector2 bartext = Vector2(left, m_nWinHeight - y_pos); //Vector position of health text
+
+        const std::string s = "Health: " + std::to_string(hpratio);
+        m_pRenderer->DrawScreenText(s.c_str(), bartext);
+        m_pRenderer->DrawLine(eSprite::HealthBarRD, lbar, rbar);
+        m_pRenderer->DrawLine(eSprite::HealthBarGR, lbar, cbar);
+    }
+    
+}
+
 /// Draw the current frame rate to a hard-coded position in the window.
 /// The frame rate will be drawn in a hard-coded position using the font
 /// specified in `gamesettings.xml`.
@@ -231,6 +259,7 @@ void CGame::RenderFrame(){
   m_pObjectManager->draw(); //draw objects
 
   m_pParticleEngine->Draw(); //draw particles
+  DrawHealthBar();
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
   m_pRenderer->EndFrame(); //required after rendering
