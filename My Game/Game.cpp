@@ -211,23 +211,23 @@ void CGame::DrawHealthBar()
 {
     if (m_pPlayer->health > 0)
     {
-        float hp = m_pPlayer->health / m_pPlayer->getMaxHealth();
+        float hpratio = m_pPlayer->health / m_pPlayer->getMaxHealth(); //Current hp/max hp
         Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
         Vector2 origin = camPos - Vector2(m_nWinWidth / 2, m_nWinHeight / 2); //bottom left corner of screen in world space
-        float y = m_nWinHeight * 1 / 10;
-        float left = m_nWinWidth * 1 / 10;
-        float right = m_nWinWidth * 3 / 10;
-        float lenhp = (right - left) * hp + left;
+        float y_pos = m_nWinHeight * 1 / 10; //Y position of health bar from bottom of screen
+        float left = m_nWinWidth * 1 / 10; //Left starting position of both health bars from left of screen
+        float right = m_nWinWidth * 3 / 10; //Right ending position of max health bar from left of screen
+        float rightc = (right - left) * hpratio + left; //Right position of current health bar
 
-        const Vector2 barp1 = origin + Vector2(left, y);
-        const Vector2 barp2 = origin + Vector2(right, y);
-        const Vector2 barpd = origin + Vector2(lenhp, y);
-        const Vector2 bartext = Vector2(left, m_nWinHeight - y);
+        const Vector2 lbar = origin + Vector2(left, y_pos); //Vector for left starting position of both health bars
+        const Vector2 rbar = origin + Vector2(right, y_pos); //Vector for right ending position of max health bar
+        const Vector2 cbar = origin + Vector2(rightc, y_pos); //Vector for right ending position of current health bar
+        const Vector2 bartext = Vector2(left, m_nWinHeight - y_pos); //Vector position of health text
 
-        const std::string s = "Health: " + std::to_string(hp);
+        const std::string s = "Health: " + std::to_string(hpratio);
         m_pRenderer->DrawScreenText(s.c_str(), bartext);
-        m_pRenderer->DrawLine(eSprite::HealthBarRD, barp1, barp2);
-        m_pRenderer->DrawLine(eSprite::HealthBarGR, barp1, barpd);
+        m_pRenderer->DrawLine(eSprite::HealthBarRD, lbar, rbar);
+        m_pRenderer->DrawLine(eSprite::HealthBarGR, lbar, cbar);
     }
     
 }
