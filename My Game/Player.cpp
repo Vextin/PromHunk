@@ -25,10 +25,6 @@ CPlayer::~CPlayer() {
     delete moveVector;
 }
 
-void CPlayer::Die() {
-    exit(0);
-}
-
 /// Move and rotate in response to device input. The amount of motion and
 /// rotation speed is proportional to the frame time.
 
