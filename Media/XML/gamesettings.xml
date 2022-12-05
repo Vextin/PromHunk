@@ -12,13 +12,28 @@
    
   <sprites path="Media\Images">
     <sprite name="floor" file="floor.png"/>
-    <sprite name="player" file="player.png"/>
+      
+
+    <sprite name="crosshair" file="crosshair.png"/>
     <sprite name="turret" file="turret.png"/>
     <sprite name="bullet" file="bullet.png"/>
     <sprite name="bullet2" file="bullet2.png"/>
     <sprite name="smoke" file="graysmoke.png"/>
     <sprite name="spark" file="spark.png"/>
-	<sprite name="runman" file="runman.png"/>
+    <sprite name="gameover" file="gameover.png"/>
+
+	<sprite name="runmanSheet" file="RunnerEnemySheet.png"/>
+    <sprite name="runman" sheet="runmanSheet" frames="2">
+        <frame index="0" left="0" top="0" right="80" bottom="116"/>
+        <frame index="1" left="80" top="0" right="160" bottom="116"/>
+    </sprite>
+
+    <sprite name="playerSheet" file="PlayerSheet.png"/>
+    <sprite name="player" sheet="playerSheet" frames="2">
+      <frame index="0" left="0" top="0" right="83" bottom="128"/>
+      <frame index="1" left="83" top="0" right="166" bottom="128"/>
+    </sprite>
+
 	<sprite name="cheerleader" file="cheerleader.png"/>
 	<sprite name="dummy" file="dummy.png"/>
 	<sprite name="healthbarrd" file="healthbarrd.png"/>

@@ -71,6 +71,7 @@ void Shop::GenerateRandomCards()
 void Shop::ShowShopScreen()
 {
 	isDisplaying = true;
+	isPaused = true;
 	
 	//these can be condensed but i needed fewer magic numbers
 	const int padding = 20;
@@ -180,6 +181,7 @@ void Shop::BuyItem(ShopItem* item)
 		break;
 	}
 	isDisplaying = false;
+	isPaused = false;
 	Shop::DeleteCards();
 }
 

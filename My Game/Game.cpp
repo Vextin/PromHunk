@@ -51,6 +51,11 @@ void CGame::Initialize(){
 void CGame::LoadImages(){  
   m_pRenderer->BeginResourceUpload();
 
+  m_pRenderer->Load(eSprite::PlayerSheet, "playerSheet");
+  m_pRenderer->Load(eSprite::RunmanSheet, "runmanSheet");
+
+  m_pRenderer->Load(eSprite::GameOver, "gameover");
+  m_pRenderer->Load(eSprite::Crosshair, "crosshair");
   m_pRenderer->Load(eSprite::Background, "floor");
   m_pRenderer->Load(eSprite::Player,  "player");
   m_pRenderer->Load(eSprite::Bullet,  "bullet");
@@ -94,12 +99,21 @@ void CGame::CreateObjects(){
   
   
   
-  m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
-  m_pTargetDummy->m_fRoll = 0;
+  //m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
+  //m_pTargetDummy->m_fRoll = 0;
 
   
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
   m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
+
+  gameOverScreen = new LSpriteDesc2D(
+      (UINT)eSprite::GameOver, 
+      m_pRenderer->GetCameraPos().x * Vector2::UnitX + 
+      m_pRenderer->GetCameraPos().y * Vector2::UnitY
+  );
+
+  gameOverScreen->m_fAlpha = 0.f;
+
 } //CreateObjects
 
 /// Call this function to start a new game. This should be re-entrant so that
@@ -131,6 +145,9 @@ void CGame::ShowShop()
 void CGame::BeginGame(){  
   m_pParticleEngine->clear(); //clear old particles
   m_pObjectManager->clear(); //clear old objects
+  gameOver = false;
+  isPaused = false;
+  m_eGameState = eGameState::Playing;
   CreateObjects(); //create new objects 
   m_pObjectManager->SpawnNextWave();
 } //BeginGame
@@ -153,7 +170,7 @@ void CGame::KeyboardHandler(){
   if (m_pKeyboard->TriggerDown(VK_F4)) //toggle frame rate
       m_pShop->ShowShopScreen();
 
-  if(m_pKeyboard->TriggerDown(VK_BACK)) //start game
+  if(m_pKeyboard->TriggerDown('R')) //start game
     BeginGame();
 
 
@@ -177,7 +194,7 @@ void CGame::KeyboardHandler(){
   }
 
   //ATTN: Movement code added to Player.cpp instead of Game.cpp ~Austin Carlin
-  if (m_pPlayer && m_eGameState == eGameState::Playing) m_pPlayer->ProcessInput();
+  if (!isPaused && m_pPlayer && m_eGameState == eGameState::Playing) m_pPlayer->ProcessInput();
   
 } //KeyboardHandler
 
@@ -272,6 +289,9 @@ void CGame::RenderFrame(){
 
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
+
+  m_pRenderer->Draw(gameOverScreen);
+
   m_pRenderer->EndFrame(); //required after rendering
 } //RenderFrame
 
@@ -280,7 +300,7 @@ void CGame::RenderFrame(){
 /// center everything.
 
 void CGame::FollowCamera(){
-  if(m_pPlayer == nullptr)return; //safety
+  if(m_pPlayer == nullptr  ||  gameOver)return; //safety
   Vector3 vCameraPos(m_pPlayer->GetPos()); //player position
 
   if(m_vWorldSize.x > m_nWinWidth){ //world wider than screen
@@ -330,6 +350,12 @@ void CGame::ProcessGameState() {
 } //ProcessGameState
 
 void CGame::ProcessFrame(){
+    if (gameOver)
+    {
+        gameOverScreen->m_vPos = m_pRenderer->GetCameraPos().x * Vector2::UnitX + m_pRenderer->GetCameraPos().y * Vector2::UnitY;
+        gameOverScreen->m_fAlpha += m_pTimer->GetFrameTime() * 1;
+
+    }
   KeyboardHandler(); //handle keyboard input
   ControllerHandler(); //handle controller input
   
@@ -348,3 +374,4 @@ void CGame::ProcessFrame(){
   ProcessGameState();
   RenderFrame(); //render a frame of animation
 } //ProcessFrame
+

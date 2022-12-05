@@ -34,7 +34,7 @@ CObject::~CObject(){
 /// Move object an amount that depends on its velocity and the frame time.
 
 void CObject::move(){
-  if(!m_bDead && !m_bStatic)
+  if(!m_bDead && !m_bStatic && !isPaused)
     m_vPos += m_vVelocity*m_pTimer->GetFrameTime();
 } //move
 

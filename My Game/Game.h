@@ -27,6 +27,7 @@ class CGame:
   private:
     bool m_bDrawFrameRate = false; ///< Draw the frame rate.
     bool m_bDrawDamage = false; // draw damage for testing
+    LSpriteDesc2D* gameOverScreen;
     void LoadImages(); ///< Load images.
     void LoadSounds(); ///< Load sounds.
     void BeginGame(); ///< Begin playing the game.
@@ -39,6 +40,7 @@ class CGame:
     void CreateObjects(); ///< Create game objects.
     //void SpawnCenterBox(); ///< Spawn enemy in each corner
     void FollowCamera(); ///< Make camera follow player character.
+
 
   public:
 

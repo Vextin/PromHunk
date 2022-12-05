@@ -15,11 +15,14 @@ CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){
   health = baseHealth;
   moveVector = new Vector2(0, 0);
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
+  crosshair = new LSpriteDesc2D((UINT)eSprite::Crosshair, m_vPos);
   //weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
 
 CPlayer::~CPlayer() {
     delete weapon;
+    delete crosshair;
+    delete moveVector;
 }
 
 void CPlayer::Die() {
@@ -32,8 +35,10 @@ void CPlayer::Die() {
 void CPlayer::move(){
   const float t = m_pTimer->GetFrameTime(); //time
   const Vector2 view = GetViewVector(); //view vector
+
   m_vPos.x += moveVector->x * t * getSpeed();
   m_vPos.y += moveVector->y * t * getSpeed();
+  crosshair->m_vPos = m_vPos;
 } //move
 
 /// Response to collision. If the object being collided with is a bullet, then
@@ -55,6 +60,9 @@ void CPlayer::Update() {
 void CPlayer::ProcessInput()
 {
     if (dynamic_cast<CPlayer*>(m_pPlayer) == nullptr) return;
+    if (!m_pPlayer) return;
+    if (m_bDead) return;
+    if (isPaused) return;
     //TODO - add controller support
     //Set movement vector
     moveVector->x = 0;
@@ -67,7 +75,7 @@ void CPlayer::ProcessInput()
     //Set aim direction (sprite rotation)
     Vector2 aimVector = Vector2::Zero;
 
-    m_pMouse->GetState(); //Update mouse state   
+    m_pMouse->GetState(); //Update mouse state   aaaaaaadd
     if (m_pMouse->TriggerDown(eMouseButton::Left)) { //only use mouse aim if using left click to fire
         //mouse pos origin top left
         Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
@@ -85,10 +93,12 @@ void CPlayer::ProcessInput()
     if (m_pKeyboard->Down(39)) aimVector.x += 1; //right
     if (aimVector != Vector2::Zero) {
         m_fRoll = static_cast<float>(atan2(aimVector.y, aimVector.x));
+        crosshair->m_fRoll = m_fRoll;
     }
     //otherwise, use the movement direction as aim direction
     else if (moveVector->Length() > .01f) {
         m_fRoll = static_cast<float>(atan2(moveVector->y, moveVector->x));
+        crosshair->m_fRoll = m_fRoll;
     }
 
     //Fire weapon
@@ -98,6 +108,26 @@ void CPlayer::ProcessInput()
     if (m_pMouse->TriggerDown(eMouseButton::Left)) {
         weapon->FireWeapon();
     }
+    
+    m_fRoll = 0;
+
+    //the dot product of the move vector and the unit X vector returns a scalar value
+    //that is positive if the player is moving to the right, and negative if the 
+    //player is moving to the left. Math!
+    //there's a little bit of wiggle room so that moving almost exactly down with a 
+    //gamepad doesn't cause jitter. Anticipating the bug, not even sure if it would happen.
+    if (moveVector->Dot(Vector2::UnitX) >= 0.1f)
+    {
+        m_nCurrentFrame = 0;
+    }
+    if (moveVector->Dot(Vector2::UnitX) <= -0.1f)
+    {
+        m_nCurrentFrame = 1;
+    }
+
+    //Spawn a crosshair particle that lasts 1 frame
+    
+
 }//ProcessInput
 
 /// Reader function for position.
@@ -105,3 +135,16 @@ void CPlayer::ProcessInput()
 const Vector2& CPlayer::GetPos() const{
   return m_vPos;
 } //GetPos
+
+void CPlayer::draw()
+{
+    __super::draw();
+    m_pRenderer->Draw(crosshair);
+}
+
+void CPlayer::Die()
+{
+    isPaused = true;
+    gameOver = true;
+    //__super::Die();
+}
