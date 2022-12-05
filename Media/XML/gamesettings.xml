@@ -28,6 +28,18 @@
         <frame index="1" left="80" top="0" right="160" bottom="116"/>
     </sprite>
 
+    <sprite name="cheerleaderSheet" file="cheerleader.png"/>
+    <sprite name="cheerleader" sheet="cheerleaderSheet" frames="2">
+      <frame index="0" left="0" top="0" right="69" bottom="100"/>
+      <frame index="1" left="69" top="0" right="138" bottom="100"/>
+    </sprite>
+
+    <sprite name="shooterSheet" file="shooter.png"/>
+    <sprite name="shooter" sheet="shooterSheet" frames="2">
+      <frame index="0" left="0" top="0" right="43" bottom="100"/>
+      <frame index="1" left="43" top="0" right="86" bottom="100"/>
+    </sprite>
+
     <sprite name="playerSheet" file="PlayerSheet.png"/>
     <sprite name="player" sheet="playerSheet" frames="2">
       <frame index="0" left="0" top="0" right="83" bottom="128"/>

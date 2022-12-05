@@ -21,7 +21,7 @@ enum class eSprite: UINT{
   Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, Crosshair, GameOver,
   HealthBarRD, HealthBarGR,
 
-  PlayerSheet, RunmanSheet,
+  PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet,
   //Keeping shop cards together for cleanliness
   ShopCard_Damage1,
   ShopCard_Blank,
