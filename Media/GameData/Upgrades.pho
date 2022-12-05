@@ -3,27 +3,153 @@
 #semicolon after each object's definition
 #first line of an object definition is its id, second line is the stat it modifies, third line is the value of the buff.
 #
-damage_1
+Flat Damage I
+Deal an additional 0.5 damage per shot
+FlatDamage
+0.5
+10
+;
+Flat Damage II
+Deal an additional 1 damage per shot
 FlatDamage
 1
+5
 ;
-damage_2
+Flat Damage III
+Deal an additional 2 damage per shot
 FlatDamage
 2
+1
 ;
-damage_3
-FlatDamage
+Percent Damage I
+Deal an additional 10% damage per shot
+PctDamage
+0.10
+5
+;
+Percent Damage II
+Deal an additional 25% damage per shot
+PctDamage
+0.25
 3
 ;
-damage_4
-FlatDamage
-4
+Flat Health I
+Increase max health by 1
+FlatHealth
+1
+10
 ;
-pctDamage_1
-PctDamage
-.10
+Flat Health II
+Increase max health by 3
+FlatHealth
+3
+3
 ;
-pctDamage_2
-PctDamage
-.25
+Flat Health III
+Increase max health by 5
+FlatHealth
+5
+1
+;
+Percent Health I
+Increase max health by 5%
+PctHealth
+0.05
+5
+;
+Percent Health II
+Increase max health by 10%
+PctHealth
+0.1
+2
+;
+Flat Speed I
+Increase movement speed by 10
+FlatSpeed
+10
+10
+;
+Flat Speed II
+Increase movement speed by 25
+FlatSpeed
+25
+5
+;
+Percent Speed I
+Increase movement speed by 5%
+PctSpeed
+0.05
+5
+;
+Percent Speed II
+Increase movement speed by 10%
+PctSpeed
+0.1
+2
+;
+Flat Attack Speed I
+Increase attack speed by 0.5
+FlatAttackSpeed
+0.5
+10
+;
+Flat Attack Speed II
+Increase attack speed by 1
+FlatAttackSpeed
+1
+5
+;
+Percent Attack Speed I
+Increase attack speed by 10%
+PctAttackSpeed
+0.1
+5
+;
+Percent Attack Speed II
+Increase attack speed by 25%
+PctAttackSpeed
+0.25
+2
+;
+Flat Bullet Count I
+Increase number of bullets fired by 1
+FlatBulletCount
+1
+5
+;
+Flat Bullet Count II
+Increase number of bullets fired by 2
+FlatBulletCount
+2
+1
+;
+Flat Bullet Speed I
+Increase speed of bullets by 100
+FlatProjectileSpeed
+0.5
+10
+;
+Flat Bullet Speed II
+Increase speed of bullets by 200
+FlatProjectileSpeed
+1
+5
+;
+Percent Bullet Speed I
+Increase speed of bullets by 10%
+PctProjectileSpeed
+0.1
+5
+;
+Percent Bullet Speed II
+Increase speed of bullets by 20%
+PctProjectileSpeed
+0.2
+2
+;
+Full Heal
+Restore all health
+FullHeal
+0
+20
 ;

@@ -62,6 +62,10 @@ void CObject::draw(){
 void CObject::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
   if(m_bDead)return; //dead, bail out
 
+  if (isBullet() || (pObj && pObj->isBullet())) { //don't run overlap check if one obj is bullet
+      return;
+  }
+
   const Vector2 vOverlap = d*norm; //overlap in direction of this
   const bool bStatic = !pObj || pObj->m_bStatic; //whether other object is static
 

@@ -5,17 +5,16 @@
 #define __L4RC_GAME_BasicRunnerEnemy_H__
 
 #include "RangedWeapon.h"	//TODO: Change for meleeweapon
-#include "Entity.h"
+#include "Enemy.h"
 
 /// \brief The BasicRunnerEnemy object. 
 ///
 /// CBasicRunnerEnemy is the abstract representation of a BasicRunnerEnemy object.
 
-class CBasicRunnerEnemy : public CEntity {
+class CBasicRunnerEnemy : public CEnemy {
 protected:
 	void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
-	void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
 
 public:
 	CRangedWeapon* weapon;

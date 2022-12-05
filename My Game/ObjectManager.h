@@ -14,7 +14,8 @@
 
 class CObjectManager :
     public LBaseObjectManager<CObject>,
-    public CCommon
+    public CCommon,
+    public LSettings
 {
 private:
     struct EnemyStruct {
@@ -38,8 +39,12 @@ private:
     float RandomNegative();
 
 public:
+    CObjectManager(); //Constructor
+    static int totalEnemiesKilled;
+    static int enemiesKilled;
+    static int nextShopEnemyCount;
     CObject* create(eSprite, const Vector2&); ///< Create new object.
-    CObject* createBullet(eSprite, const Vector2&, float damage=1.f); ///< Create new object.
+    CObject* createBullet(eSprite, const Vector2&, float damage=1.f, bool isEnemyBullet=false); ///< Create new object.
     void FireGun(CObject*, eSprite); ///Default enemy weapon
     void PlayerDefaultWeapon(CObject*, eSprite);///Default player weapon
     void PlayerTestShotgun(CObject*, eSprite);

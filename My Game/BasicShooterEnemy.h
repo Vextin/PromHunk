@@ -5,17 +5,16 @@
 #define __L4RC_GAME_BasicShooterEnemy_H__
 
 #include "RangedWeapon.h"
-#include "Entity.h"
+#include "Enemy.h"
 
 /// \brief The BasicShooterEnemy object. 
 ///
 /// CBasicShooterEnemy is the abstract representation of a BasicShooterEnemy object.
 
-class CBasicShooterEnemy: public CEntity{
+class CBasicShooterEnemy: public CEnemy{
 	protected:
 		void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 		void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
-		void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
   
 	public:
 		CRangedWeapon* weapon;

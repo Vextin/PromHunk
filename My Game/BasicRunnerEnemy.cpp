@@ -10,9 +10,10 @@
 /// Create and initialize a BasicRunnerEnemy object given its position.
 /// \param p Position of BasicRunnerEnemy.
 
-CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEntity(eSprite::BasicRunnerEnemy, p) {
-    m_bStatic = false; //BasicRunnerEnemys are not static
+CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEnemy(eSprite::BasicRunnerEnemy, p) {
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
+    baseHealth = 2;
+    health = baseHealth;
 } //constructor
 
 CBasicRunnerEnemy::~CBasicRunnerEnemy() {
@@ -94,14 +95,3 @@ void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
         m_vPos += speed * t * view;
     }
 }
-
-/// Response to collision. If colliding with an object, play a sound.
-/// \param norm Collision normal.
-/// \param d Overlap distance.
-/// \param pObj Pointer to object being collided with (defaults to `nullptr`,
-/// which means collision with a wall).
-
-void CBasicRunnerEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) {
-    if (pObj && pObj->isBullet())
-        m_pAudio->play(eSound::Clang);
-} //CollisionResponse
