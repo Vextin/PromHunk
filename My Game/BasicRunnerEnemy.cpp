@@ -5,7 +5,6 @@
 #include "ComponentIncludes.h"
 #include "ObjectManager.h"
 #include "Player.h"
-#include "PlayerBullet.h"
 #include "Helpers.h"
 
 /// Create and initialize a BasicRunnerEnemy object given its position.
@@ -100,6 +99,6 @@ void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
 /// which means collision with a wall).
 
 void CBasicRunnerEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) {
-    if (dynamic_cast<CPlayerBullet*>(pObj) != nullptr && pObj->isBullet())
+    if (pObj && pObj->isBullet())
         m_pAudio->play(eSound::Clang);
 } //CollisionResponse
