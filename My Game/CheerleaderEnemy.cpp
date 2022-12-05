@@ -12,7 +12,7 @@
 /// Create and initialize a CheerleaderEnemy object given its position.
 /// \param p Position of CheerleaderEnemy.
 
-CCheerleaderEnemy::CCheerleaderEnemy(const Vector2& p) : CEntity(eSprite::CheerleaderEnemy, p) {
+CCheerleaderEnemy::CCheerleaderEnemy(const Vector2& p) : CEnemy(eSprite::CheerleaderEnemy, p) {
     m_bStatic = false; //CheerleaderEnemys are not static
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weaponm
 } //constructor

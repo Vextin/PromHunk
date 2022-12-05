@@ -10,7 +10,7 @@
 /// Create and initialize a BasicRunnerEnemy object given its position.
 /// \param p Position of BasicRunnerEnemy.
 
-CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEntity(eSprite::BasicRunnerEnemy, p) {
+CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEnemy(eSprite::BasicRunnerEnemy, p) {
     m_bStatic = false; //BasicRunnerEnemys are not static
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
 } //constructor
