@@ -19,7 +19,6 @@ class CPlayer:
         //bool m_bStrafeLeft = false; ///< Strafe left.
         //bool m_bStrafeRight = false; ///< Strafe right.
         //bool m_bStrafeBack = false; ///< Strafe back.
-        float maxMoveSpeed = 100;
         Vector2* moveVector;
 
         void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.

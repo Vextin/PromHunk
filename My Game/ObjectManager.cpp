@@ -15,6 +15,16 @@
 #include <string>
 #include <map>
 
+int CObjectManager::totalEnemiesKilled = 0;
+int CObjectManager::enemiesKilled = 0;
+int CObjectManager::nextShopEnemyCount = 5;
+
+CObjectManager::CObjectManager() {
+    CObjectManager::totalEnemiesKilled = 0;
+    CObjectManager::enemiesKilled = 0;
+    CObjectManager::nextShopEnemyCount = 5;
+}
+
 /// Create an object and put a pointer to it at the back of the object list
 /// `m_stdObjectList`, which it inherits from `LBaseObjectManager`.
 /// \param t Sprite type.
@@ -193,7 +203,9 @@ void CObjectManager::WaveManager() {
 }
 
 void CObjectManager::SpawnNextWave() {
-    WaveTimer -= m_pTimer->GetFrameTime();
+    if (!m_pShop->IsDisplaying()) {
+        WaveTimer -= m_pTimer->GetFrameTime();
+    }
     
     if (WaveTimer <= 0)
     {
@@ -216,7 +228,9 @@ void CObjectManager::SpawnNextWave() {
 }
 
 void CObjectManager::RefillWave() {
-    RefillTimer -= m_pTimer->GetFrameTime();
+    if (!m_pShop->IsDisplaying()) {
+        RefillTimer -= m_pTimer->GetFrameTime();
+    }
 
     if (RefillTimer <= 0)
     {

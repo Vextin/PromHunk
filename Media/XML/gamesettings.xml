@@ -6,7 +6,7 @@
   <game name="Top Down Game Prototype" />
   <renderer width="1280" height="720"/>
    
-  <font file="Media\Fonts\AverageSans_24.spritefont"/>
+  <font file="Media\Fonts\Helvetica_16.spritefont"/>
 
   <!-- sprites -->
    
@@ -23,7 +23,8 @@
 	<sprite name="dummy" file="dummy.png"/>
 	<sprite name="healthbarrd" file="healthbarrd.png"/>
 	<sprite name="healthbargr" file="healthbargr.png"/>
-  <sprite name="ShopCard_Damage_1" file="ShopCard_Damage_1.png"/>
+    <sprite name="ShopCard_Damage_1" file="ShopCard_Damage_1.png"/>
+    <sprite name="ShopCard_Blank" file="ShopCard_Blank.png"/>
   </sprites>
 
   <!-- sound -->

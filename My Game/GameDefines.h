@@ -22,6 +22,7 @@ enum class eSprite: UINT{
   HealthBarRD, HealthBarGR,
   //Keeping shop cards together for cleanliness
   ShopCard_Damage1,
+  ShopCard_Blank,
   Size  //MUST BE LAST
 }; //eSprite
 

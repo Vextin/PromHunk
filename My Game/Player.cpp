@@ -11,12 +11,9 @@
 CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
-  baseHealth = 10.0f;
-  moveVector = new Vector2(0, 0);
-  baseProjectileCount = 4;
-  baseProjectileSpeed = 1000.0f;
-  baseAttackSpeed = 4.0f;
+  baseHealth = 5.0f;
   health = baseHealth;
+  moveVector = new Vector2(0, 0);
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
   //weapon = new CRangedWeapon(this, &CObjectManager::PlayerTestShotgun);
 } //constructor
@@ -31,8 +28,8 @@ CPlayer::~CPlayer() {
 void CPlayer::move(){
   const float t = m_pTimer->GetFrameTime(); //time
   const Vector2 view = GetViewVector(); //view vector
-  m_vPos.x += moveVector->x * t * maxMoveSpeed;
-  m_vPos.y += moveVector->y * t * maxMoveSpeed;
+  m_vPos.x += moveVector->x * t * getSpeed();
+  m_vPos.y += moveVector->y * t * getSpeed();
 } //move
 
 /// Response to collision. If the object being collided with is a bullet, then

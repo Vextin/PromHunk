@@ -40,7 +40,13 @@ void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
         
         if (ent->TakeDamage(m_damage))
         {
-            m_pShop->ShowShopScreen();
+            CObjectManager::totalEnemiesKilled++;
+            CObjectManager::enemiesKilled++;
+            if(CObjectManager::enemiesKilled >= CObjectManager::nextShopEnemyCount){
+                CObjectManager::enemiesKilled = 0;
+                CObjectManager::nextShopEnemyCount *= 1.3f;
+                m_pShop->ShowShopScreen();                
+            }
         }
     }
     //m_pAudio->SetListenerPos();
