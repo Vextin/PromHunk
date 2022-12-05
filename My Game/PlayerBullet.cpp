@@ -23,8 +23,8 @@ CPlayerBullet::CPlayerBullet(eSprite t, const Vector2& p, float damage) : CBulle
 
 void CPlayerBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj) 
 {
-    //bullets do not die if they hit other bullets
-    if (dynamic_cast<CBullet*>(pObj) != nullptr) {
+    //bullets do not die if they hit other bullets or the player
+    if (dynamic_cast<CBullet*>(pObj) != nullptr  ||  dynamic_cast<CPlayer*>(pObj) != nullptr) {
         return;
     }
 
