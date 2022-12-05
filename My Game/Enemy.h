@@ -9,6 +9,8 @@ class CEnemy :
 	public CEntity
 {
 protected:
+	void draw() override;
+	void move();
 public:
 	CEnemy(eSprite t, const Vector2&); //constructor
 	virtual void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
