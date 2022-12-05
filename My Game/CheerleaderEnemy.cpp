@@ -13,8 +13,9 @@
 /// \param p Position of CheerleaderEnemy.
 
 CCheerleaderEnemy::CCheerleaderEnemy(const Vector2& p) : CEnemy(eSprite::CheerleaderEnemy, p) {
-    m_bStatic = false; //CheerleaderEnemys are not static
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weaponm
+    baseHealth = 1;
+    health = baseHealth;
 } //constructor
 
 CCheerleaderEnemy::~CCheerleaderEnemy() {
@@ -93,17 +94,6 @@ void CCheerleaderEnemy::RotateTowardsAndMove(const Vector2& pos) {
         m_vPos += speed * t * view;
     }
 }
-
-/// Response to collision. If colliding with an object, play a sound.
-/// \param norm Collision normal.
-/// \param d Overlap distance.
-/// \param pObj Pointer to object being collided with (defaults to `nullptr`,
-/// which means collision with a wall).
-
-void CCheerleaderEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) {
-    if (pObj && pObj->isBullet())
-        m_pAudio->play(eSound::Clang);
-} //CollisionResponse
 
 void CCheerleaderEnemy::CheerBuff(std::list<CObject*> m_stdObjectList) { //do something to allies (enemies to player) in aoe
     

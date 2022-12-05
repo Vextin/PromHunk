@@ -11,6 +11,7 @@ class CEnemy :
 protected:
 public:
 	CEnemy(eSprite t, const Vector2&); //constructor
+	virtual void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
 };
 
 #endif //__L4RC_GAME_ENEMY_H__

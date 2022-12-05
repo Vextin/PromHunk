@@ -12,35 +12,27 @@ CEnemyBullet::CEnemyBullet(eSprite t, const Vector2& p, float damage) : CBullet(
 
 
 void CEnemyBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj) {
-
-    if (pObj == nullptr) //collide with edge of world
-    m_pAudio->SetScale(75.0f);
-    m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
-
-    //CEntity* ent = dynamic_cast<CEntity*>(pObj);
-    //if (ent != nullptr)
-    //{
-    //    CPlayer* player = dynamic_cast<CPlayer*>(pObj);
-    //    if (player != nullptr) {
-    //        if (ent->TakeDamage(m_damage))
-    //        {
-    //            //hit player
-    //        }
-    //    }
-    //}
-
-    // If object is an entity, but not an enemy, apply damage
-    if (dynamic_cast<CEntity*>(pObj) != nullptr && dynamic_cast<CEnemy*>(pObj) == nullptr)
-        dynamic_cast<CEntity*>(pObj)->TakeDamage(m_damage);
-
-    // If object is a player, don't damage
-    if (dynamic_cast<CEnemy*>(pObj) != nullptr)
-        return;
-
-    //m_pAudio->SetListenerPos();
     //bullets do not die if they hit other bullets
     if (dynamic_cast<CBullet*>(pObj) != nullptr) {
         return;
+    }
+    //bullets do not die if they hit other enemies
+    if (dynamic_cast<CEnemy*>(pObj) != nullptr) {
+        return;
+    }
+
+    if (pObj == nullptr) { //collide with edge of world
+        m_pAudio->SetScale(75.0f);
+        m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
+    }
+
+    // If object is player apply damage
+    auto player = dynamic_cast<CPlayer*>(pObj);
+    if (player != nullptr) {
+        m_pAudio->play(eSound::Grunt);
+        if (player->TakeDamage(m_damage)) {
+            //game over
+        }
     }
 
     //bullets die on collision

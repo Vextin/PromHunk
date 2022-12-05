@@ -19,7 +19,6 @@ class CPlayer:
         //bool m_bStrafeLeft = false; ///< Strafe left.
         //bool m_bStrafeRight = false; ///< Strafe right.
         //bool m_bStrafeBack = false; ///< Strafe back.
-        float maxMoveSpeed = 100;
         Vector2* moveVector;
 
         void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
@@ -34,6 +33,7 @@ class CPlayer:
         void move() override; ///< Move player object.
         const Vector2& GetPos() const; ///< Get position.
         void Update() override;
+        void Die() override;
 }; //CPlayer
 
 #endif //__L4RC_GAME_PLAYER_H__

@@ -54,11 +54,17 @@ void CEntity::SetPercentAttackSpeedIncrease(float s)
 }
 void CEntity::SetFlatHealthIncrease(float h)
 {
+	float healthBefore = getMaxHealth();
 	flatHealthIncrease += h;
+	float healthAfter = getMaxHealth();
+	health += healthAfter - healthBefore;
 }
 void CEntity::SetPercentHealthIncrease(float h)
 {
+	float healthBefore = getMaxHealth();
 	percentHealthIncrease += h;
+	float healthAfter = getMaxHealth();
+	health += healthAfter - healthBefore;
 }
 void CEntity::SetFlatAuraDamageIncrease(float d)
 {

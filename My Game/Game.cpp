@@ -10,6 +10,8 @@
 #include "Shop.h"
 #include "shellapi.h"
 #include "Mouse.h"
+#include <sstream>
+#include <iomanip>
 
 /// Delete the particle engine and the object manager. The renderer needs to
 /// be deleted before this destructor runs so it will be done elsewhere.
@@ -62,6 +64,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
   m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
   m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
+  m_pRenderer->Load(eSprite::ShopCard_Blank, "ShopCard_Blank");
   m_pRenderer->EndResourceUpload();
 } //LoadImages
 
@@ -87,7 +90,7 @@ void CGame::Release(){
 void CGame::CreateObjects(){
   m_pRenderer->GetSize(eSprite::Background, m_vWorldSize.x, m_vWorldSize.y); //init m_vWorldSize
 
-  m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, Vector2(64.0f, 64.0f));
+  m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, m_vWorldSize/2);
   
   
   
@@ -219,12 +222,15 @@ void CGame::DrawHealthBar()
         float right = m_nWinWidth * 3 / 10; //Right ending position of max health bar from left of screen
         float rightc = (right - left) * hpratio + left; //Right position of current health bar
 
-        const Vector2 lbar = origin + Vector2(left, y_pos); //Vector for left starting position of both health bars
-        const Vector2 rbar = origin + Vector2(right, y_pos); //Vector for right ending position of max health bar
-        const Vector2 cbar = origin + Vector2(rightc, y_pos); //Vector for right ending position of current health bar
-        const Vector2 bartext = Vector2(left, m_nWinHeight - y_pos); //Vector position of health text
+        const Vector2 lbar = origin + Vector2(left, m_nWinHeight - y_pos); //Vector for left starting position of both health bars
+        const Vector2 rbar = origin + Vector2(right, m_nWinHeight - y_pos); //Vector for right ending position of max health bar
+        const Vector2 cbar = origin + Vector2(rightc, m_nWinHeight - y_pos); //Vector for right ending position of current health bar
+        const Vector2 bartext = Vector2(left, y_pos); //Vector position of health text
 
-        const std::string s = "Health: " + std::to_string(hpratio);
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(1) << m_pPlayer->health;
+        std::string healthString = ss.str();
+        const std::string s = "Health: " + healthString;
         m_pRenderer->DrawScreenText(s.c_str(), bartext);
         m_pRenderer->DrawLine(eSprite::HealthBarRD, lbar, rbar);
         m_pRenderer->DrawLine(eSprite::HealthBarGR, lbar, cbar);
@@ -260,6 +266,10 @@ void CGame::RenderFrame(){
 
   m_pParticleEngine->Draw(); //draw particles
   DrawHealthBar();
+  if (m_pShop->IsDisplaying()) {
+      m_pShop->DrawShopText();//draw text on top of shop cards
+  }
+
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
   m_pRenderer->EndFrame(); //required after rendering

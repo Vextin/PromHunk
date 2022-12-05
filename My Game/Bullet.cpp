@@ -7,6 +7,7 @@
 #include "ParticleEngine.h"
 #include "Helpers.h"
 #include "Player.h"
+#include "Enemy.h"
 
 /// Create and initialize a bullet object given its initial position.
 /// \param t Sprite type of bullet.
@@ -29,31 +30,6 @@ CBullet::CBullet(eSprite t, const Vector2& p, float damage): CObject(t, p){
 /// \param pObj Pointer to object being collided with (defaults to nullptr).
 
 void CBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
-
-    if (pObj == nullptr) //collide with edge of world
-        m_pAudio->SetScale(75.0f);
-    m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
-
-    if (dynamic_cast<CEntity*>(pObj) != nullptr)
-    {
-        CEntity *ent = dynamic_cast<CEntity*>(pObj);
-        
-        if (ent->TakeDamage(m_damage))
-        {
-            m_pShop->ShowShopScreen();
-        }
-    }
-    //m_pAudio->SetListenerPos();
-    //bullets do not die if they hit other bullets
-    if (dynamic_cast<CBullet*>(pObj) != nullptr) {
-        return;
-    }
-  
-  //bullets die on collision
-  if(!m_bDead){
-    m_bDead = true; //mark object for deletion
-    DeathFX();
-  } //if
 } //CollisionResponse
 
 /// Create a smoke particle effect to mark the death of the bullet.

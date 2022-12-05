@@ -162,6 +162,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CheerleaderEnemy.cpp" />
+    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyBullet.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Common.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BasicShooterEnemy.cpp" />
+    <ClCompile Include="PlayerBullet.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="BasicRunnerEnemy.cpp" />
     <ClCompile Include="Shop.cpp" />
@@ -185,6 +187,7 @@
   <ItemGroup>
     <ClInclude Include="BasicRunnerEnemy.h" />
     <ClInclude Include="CheerleaderEnemy.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="EnemyBullet.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Common.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BasicShooterEnemy.h" />
+    <ClInclude Include="PlayerBullet.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="Shop.h" />
     <ClInclude Include="ShopItem.h" />

@@ -15,11 +15,11 @@ protected:
     
     float baseDamage = 1.0f;
     float baseHealth = 3.0f;
-    float baseSpeed = 1.0f;
+    float baseSpeed = 100.0f;
     float baseAuraDamage = 0.0f;
     float baseAttackSpeed = 1.0f;
     int baseProjectileCount = 1; //number of bullets fired with each shot
-    float baseProjectileSpeed = 1.0f;
+    float baseProjectileSpeed = 400.0f;
 
     float flatDamageIncrease = 0.0f;
     float percentDamageIncrease = 0.0f;

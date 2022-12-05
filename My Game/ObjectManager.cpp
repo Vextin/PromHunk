@@ -18,12 +18,21 @@
 #include <string>
 #include <map>
 
+int CObjectManager::totalEnemiesKilled = 0;
+int CObjectManager::enemiesKilled = 0;
+int CObjectManager::nextShopEnemyCount = 5;
+
+CObjectManager::CObjectManager() {
+    CObjectManager::totalEnemiesKilled = 0;
+    CObjectManager::enemiesKilled = 0;
+    CObjectManager::nextShopEnemyCount = 5;
+}
+
 /// Create an object and put a pointer to it at the back of the object list
 /// `m_stdObjectList`, which it inherits from `LBaseObjectManager`.
 /// \param t Sprite type.
 /// \param pos Initial position.
 /// \return Pointer to the object created.
-
 CObject* CObjectManager::create(eSprite t, const Vector2& pos){
     CObject* pObj = nullptr;
 
@@ -68,7 +77,6 @@ CObject* CObjectManager::createBullet(eSprite t, const Vector2& pos, float damag
 /// \param norm [out] Collision normal.
 /// \param d [out] Overlap distance.
 /// \return true if the object overlaps the edge of the world.
-
 bool CObjectManager::AtWorldEdge(CObject* p, Vector2& norm, float& d) const{ 
     d = 0; //safety
 
@@ -100,29 +108,46 @@ bool CObjectManager::AtWorldEdge(CObject* p, Vector2& norm, float& d) const{
   return d > 0;
 } //AtWorldEdge
 
-/// Perform collision detection and response for each object with the world
-/// edges and for all objects with another object, making sure that each pair
-/// of objects is processed only once.
 void CObjectManager::SpawnEnemy(float x, float y, int z) {
+    CObject* obj;
     switch (z) {
     case 1:
-        m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(x, y));
+        obj = m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(x, y));
         break;
     case 2:
-        m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(x, y));
+        obj = m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(x, y));
         break;
     case 3:
-        m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(x, y));
+        obj = m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(x, y));
         break;
     } //switch
+    CEnemy* enemy = dynamic_cast<CEnemy*>(obj);
+    enemy->SetPercentHealthIncrease(0.01f * WaveNumber);
+    enemy->health = enemy->getMaxHealth();
 }
 
 void CObjectManager::SpawnNearPlayer(int z) {
     float playerx = m_pPlayer->m_vPos.x;
     float playery = m_pPlayer->m_vPos.y;
+    float randx = 0;
+    float randy = 0;
 
-    float randx = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
-    float randy = m_pRandom->randf() * 550.0f * RandomNegative();    //random distance needs to be pos/neg as well
+    randx = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    if (playerx + randx < 0) {//ensure pos is within bounds
+        randx = 0;
+    }
+    else if (playerx + randx >= m_vWorldSize.x) {
+        randx = m_vWorldSize.x -1;
+    }
+
+    randy = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    if (playery + randy < 0) {//ensure pos is within bounds
+        randy = 0;
+    }
+    else if (playery + randy >= m_vWorldSize.y) {
+        randy = m_vWorldSize.y - 1;
+    }
+
     SpawnEnemy(playerx + randx, playery + randy, z);
 }
 
@@ -200,7 +225,9 @@ void CObjectManager::WaveManager() {
 }
 
 void CObjectManager::SpawnNextWave() {
-    WaveTimer -= m_pTimer->GetFrameTime();
+    if (!m_pShop->IsDisplaying()) {
+        WaveTimer -= m_pTimer->GetFrameTime();
+    }
     
     if (WaveTimer <= 0)
     {
@@ -223,7 +250,9 @@ void CObjectManager::SpawnNextWave() {
 }
 
 void CObjectManager::RefillWave() {
-    RefillTimer -= m_pTimer->GetFrameTime();
+    if (!m_pShop->IsDisplaying()) {
+        RefillTimer -= m_pTimer->GetFrameTime();
+    }
 
     if (RefillTimer <= 0)
     {
@@ -279,7 +308,6 @@ void CObjectManager::BroadPhase(){
 /// with the objects in an arbitrary order.
 /// \param p0 Pointer to the first object.
 /// \param p1 Pointer to the second object.
-
 void CObjectManager::NarrowPhase(CObject* p0, CObject* p1){
     Vector2 vSep = p0->m_vPos - p1->m_vPos; //vector from *p1 to *p0
     const float d = p0->m_fRadius + p1->m_fRadius - vSep.Length(); //overlap
@@ -297,7 +325,6 @@ void CObjectManager::NarrowPhase(CObject* p0, CObject* p1){
 /// the direction that it is facing and continues moving in that direction.
 /// \param pObj Pointer to an object.
 /// \param bullet Sprite type of bullet.
-
 void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
     CBasicShooterEnemy* enemy = dynamic_cast<CBasicShooterEnemy*>(pObj);
     if (enemy) {
@@ -321,7 +348,7 @@ void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
     const float m = 2.0f*m_pRandom->randf() - 1.0f; //random deflection magnitude
     const Vector2 deflection = 0.01f*m*norm; //random deflection
 
-    pBullet->m_vVelocity = pObj->m_vVelocity + 500.0f*(view + deflection);
+    pBullet->m_vVelocity = pObj->m_vVelocity + 400.0f*(view + deflection);
     pBullet->m_fRoll = pObj->m_fRoll; 
 
     //particle effect for gun fire
