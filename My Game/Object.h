@@ -38,8 +38,7 @@ class CObject:
 
     LEventTimer* m_pGunFireEvent = nullptr; ///< Gun fire event.
     
-    virtual void CollisionResponse(const Vector2&, float,
-      CObject* = nullptr); ///< Collision response.
+    virtual void CollisionResponse(const Vector2&, float, CObject* = nullptr); ///< Collision response.
     virtual void DeathFX(); ///< Death special effects.
 
     const Vector2 GetViewVector() const; ///< Compute view vector.

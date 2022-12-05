@@ -16,7 +16,7 @@ protected:
 	static std::vector<ShopItem*> s_MasterShopItemList;
 	static std::vector<ShopItem*> s_AvailableItems;
 	static std::vector<CObject*> s_CardObjects;
-	static std::vector<ShopItem*> GenerateRandomCards();
+	static void GenerateRandomCards();
 	bool isDisplaying = false;
 	static void DeleteCards(); //Remove the cards from the screen
 public:

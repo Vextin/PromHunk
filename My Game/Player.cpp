@@ -22,6 +22,10 @@ CPlayer::~CPlayer() {
     delete weapon;
 }
 
+void CPlayer::Die() {
+    exit(0);
+}
+
 /// Move and rotate in response to device input. The amount of motion and
 /// rotation speed is proportional to the frame time.
 
@@ -41,10 +45,7 @@ void CPlayer::move(){
 /// which means collision with a wall).
 
 void CPlayer::CollisionResponse(const Vector2& norm, float d, CObject* pObj){
-  if(pObj && pObj->isBullet())
-    m_pAudio->play(eSound::Grunt);
-
-  else CObject::CollisionResponse(norm, d, pObj);
+    CObject::CollisionResponse(norm, d, pObj);
 } //CollisionResponse
 
 void CPlayer::Update() {

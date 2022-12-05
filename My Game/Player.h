@@ -33,6 +33,7 @@ class CPlayer:
         void move() override; ///< Move player object.
         const Vector2& GetPos() const; ///< Get position.
         void Update() override;
+        void Die() override;
 }; //CPlayer
 
 #endif //__L4RC_GAME_PLAYER_H__

@@ -23,45 +23,36 @@ CPlayerBullet::CPlayerBullet(eSprite t, const Vector2& p, float damage) : CBulle
 
 void CPlayerBullet::CollisionResponse(const Vector2& norm, float d, CObject* pObj) 
 {
-    if (pObj == nullptr) //collide with edge of world
-        m_pAudio->SetScale(75.0f);
-    m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
-
-
-
-    //if (dynamic_cast<CEntity*>(pObj) != nullptr)
-    //{
-    //    if (dynamic_cast<CEnemy*>(pObj) != nullptr)
-    //    {
-    //        CEntity* ent = dynamic_cast<CEnemy*>(pObj);
-
-    //        if (ent->TakeDamage(m_damage))
-    //        {
-    //            m_pShop->ShowShopScreen();
-    //        }
-    //    }
-    //    else
-    //    {
-    //        CEntity* ent = dynamic_cast<CEntity*>(pObj);
-    //        ent->TakeDamage(m_damage);
-    //    }  
-    //}
-    
-    // If object is an entity, but not a player, apply damage
-    if (dynamic_cast<CEntity*>(pObj) != nullptr && dynamic_cast<CPlayer*>(pObj) == nullptr)
-        dynamic_cast<CEntity*>(pObj)->TakeDamage(m_damage);
-
-    // If object is a player, don't damage
-    if (dynamic_cast<CPlayer*>(pObj) != nullptr)
-        return;
-
-    //m_pAudio->SetListenerPos();
     //bullets do not die if they hit other bullets
     if (dynamic_cast<CBullet*>(pObj) != nullptr) {
         return;
     }
 
-    //bullets die on collision
+    if (pObj == nullptr) { //collide with edge of world
+        m_pAudio->SetScale(75.0f);
+        m_pAudio->play(eSound::Ricochet, m_vPos, 1.0f);
+    }
+    else {
+        m_pAudio->play(eSound::Clang, m_vPos, 1.0f);
+    }
+
+    CEnemy* enemy = dynamic_cast<CEnemy*>(pObj);
+    if (enemy != nullptr)
+    {
+        if (enemy->TakeDamage(m_damage))
+        {
+            CObjectManager::totalEnemiesKilled++;
+            CObjectManager::enemiesKilled++;
+            if (CObjectManager::enemiesKilled >= CObjectManager::nextShopEnemyCount) {
+                CObjectManager::enemiesKilled = 0;
+                CObjectManager::nextShopEnemyCount *= 1.3f;
+                m_pShop->ShowShopScreen();
+            }
+        }
+    }
+    //m_pAudio->SetListenerPos();
+
+  //bullets die on collision
     if (!m_bDead) {
         m_bDead = true; //mark object for deletion
         DeathFX();

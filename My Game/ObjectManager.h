@@ -14,7 +14,8 @@
 
 class CObjectManager :
     public LBaseObjectManager<CObject>,
-    public CCommon
+    public CCommon,
+    public LSettings
 {
 private:
     struct EnemyStruct {

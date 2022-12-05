@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 std::vector<ShopItem*> Shop::s_MasterShopItemList = {};
 std::vector<ShopItem*> Shop::s_AvailableItems = {};
@@ -55,24 +56,16 @@ void Shop::LoadJSON()
 	}
 }
 
-std::vector<ShopItem*> Shop::GenerateRandomCards()
+void Shop::GenerateRandomCards()
 {
-	std::vector<ShopItem*> items;
-	int card1 = std::rand() % s_MasterShopItemList.size();
-	int card2 = std::rand() % s_MasterShopItemList.size();
-	int card3 = std::rand() % s_MasterShopItemList.size();
-
-	items.push_back(s_MasterShopItemList[card1]);
-	items.push_back(s_MasterShopItemList[card2]);
-	items.push_back(s_MasterShopItemList[card3]);
+	std::vector<ShopItem*> items = s_MasterShopItemList;
 
 	s_AvailableItems.clear();
-	s_AvailableItems.push_back(items[0]);
-	s_AvailableItems.push_back(items[1]);
-	s_AvailableItems.push_back(items[2]);
-
-	return items;
-
+	for (int i = 0; i < 3; i++) {
+		int card = std::rand() % items.size();
+		s_AvailableItems.push_back(items[card]); 
+		items.erase(std::remove(items.begin(), items.end(), items[card]), items.end());
+	}
 }
 
 void Shop::ShowShopScreen()
@@ -91,12 +84,12 @@ void Shop::ShowShopScreen()
 	camPos -= halfRes;
 
 	//Generate all of the cards, create objects for them centered on the screen.
-	std::vector<ShopItem*> items = Shop::GenerateRandomCards();
-	CObject* card1 = m_pObjectManager->create(items[0]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard, verticalCenter));
+	Shop::GenerateRandomCards();
+	CObject* card1 = m_pObjectManager->create(s_AvailableItems[0]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard, verticalCenter));
 	card1->m_fRoll = 0.0f;
-	CObject* card2 = m_pObjectManager->create(items[1]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard + cardOffset, verticalCenter));
+	CObject* card2 = m_pObjectManager->create(s_AvailableItems[1]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard + cardOffset, verticalCenter));
 	card2->m_fRoll = 0.0f;
-	CObject* card3 = m_pObjectManager->create(items[2]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard + (cardOffset * 2), verticalCenter));
+	CObject* card3 = m_pObjectManager->create(s_AvailableItems[2]->m_upgradeCard, camPos + Vector2(spaceBeforeFirstCard + (cardOffset * 2), verticalCenter));
 	card3->m_fRoll = 0.0f;
 
 	Shop::s_CardObjects.push_back(card1);
@@ -113,16 +106,21 @@ void Shop::DrawShopText() {
 	float textPadding = 30;
 	float nameY = m_nWinHeight / 2 - 80;
 	float descY = m_nWinHeight / 2 - 30;
+	float changeY = m_nWinHeight / 2  + 50;
 
 	for (int i = 0; i < 3; i++) {
+		float cardPos = leftCardPos + textPadding + cardOffset * i;
 		std::string name = s_AvailableItems[i]->name;
 		std::string description = s_AvailableItems[i]->description;
 		if (description.length() > 20) {
 			auto space = description.find(" ", 20);
 			description.replace(space, 1, "\n");
 		}
-		m_pRenderer->DrawScreenText(name.c_str(), Vector2(leftCardPos + textPadding + cardOffset * i, nameY), Colors::White);
-		m_pRenderer->DrawScreenText(description.c_str(), Vector2(leftCardPos + textPadding + cardOffset * i, descY), Colors::White);
+		m_pRenderer->DrawScreenText(name.c_str(), Vector2(cardPos, nameY), Colors::White);
+		m_pRenderer->DrawScreenText(description.c_str(), Vector2(cardPos, descY), Colors::White);
+
+		std::string currentStat = "Current " + s_AvailableItems[i]->StatName() + ": " + s_AvailableItems[i]->CurrentPlayerStat();
+		m_pRenderer->DrawScreenText(currentStat.c_str(), Vector2(cardPos, changeY), Colors::White);
 	}
 
 }
@@ -169,13 +167,16 @@ void Shop::BuyItem(ShopItem* item)
 		m_pPlayer->SetPercentDamageIncrease(item->amount);
 		break;
 	case ShopItem::Stat::FlatBulletCount:
-		m_pPlayer->SetPercentDamageIncrease(item->amount);
+		m_pPlayer->SetFlatBulletCountIncrease(item->amount);
 		break;
 	case ShopItem::Stat::FlatProjectileSpeed:
-		m_pPlayer->SetPercentDamageIncrease(item->amount);
+		m_pPlayer->SetFlatProjectileSpeedIncrease(item->amount);
 		break;
 	case ShopItem::Stat::PctProjectileSpeed:
-		m_pPlayer->SetPercentDamageIncrease(item->amount);
+		m_pPlayer->SetPercentProjectileSpeedIncrease(item->amount);
+		break;
+	case ShopItem::Stat::FullHeal:
+		m_pPlayer->health = m_pPlayer->getMaxHealth();
 		break;
 	}
 	isDisplaying = false;
