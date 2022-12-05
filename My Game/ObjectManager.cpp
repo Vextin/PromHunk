@@ -240,7 +240,7 @@ void CObjectManager::SpawnNextWave() {
         WaveTimer -= m_pTimer->GetFrameTime();
     }
     
-    if (WaveTimer <= 0)
+    if (WaveTimer <= 0 && WaveNumber != -1)
     {
         for (int i = 0; i < MaxEnemyCount.BasicRunner; i++) {
             SpawnNearPlayer(1);
