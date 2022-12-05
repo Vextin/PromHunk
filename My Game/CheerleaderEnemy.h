@@ -5,13 +5,13 @@
 #define __L4RC_GAME_CheerleaderEnemy_H__
 
 #include "RangedWeapon.h"	//TODO: Change for meleeweapon
-#include "Entity.h"
+#include "Enemy.h"
 
 /// \brief The CheerleaderEnemy object. 
 ///
 /// CheerleaderEnemy is the abstract representation of a CheerleaderEnemy object.
 
-class CCheerleaderEnemy : public CEntity {
+class CCheerleaderEnemy : public CEnemy {
 protected:
 	void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
