@@ -45,6 +45,8 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
         case eSprite::BasicShooterEnemy:  pObj = new CBasicShooterEnemy(pos); break;
         case eSprite::BasicRunnerEnemy: pObj = new CBasicRunnerEnemy(pos); break;
         case eSprite::CheerleaderEnemy: pObj = new CCheerleaderEnemy(pos); break;
+        case eSprite::FootballerEnemy: pObj = new CFootballerEnemy(pos); break;
+        case eSprite::PromQueenEnemy: pObj = new CPromQueenEnemy(pos); break;
 
         case eSprite::Bullet:  pObj = new CBullet(eSprite::Bullet,  pos); break;
         case eSprite::Bullet2: pObj = new CBullet(eSprite::Bullet2, pos); break;
