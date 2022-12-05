@@ -197,20 +197,29 @@ void CObjectManager::CheckEnemies() {
         }
     }
 }
+void CObjectManager::ResetWaveManager() {
+    WaveNumber = 0;
+}
 
+void CObjectManager::StartWaveManager() {
+    WaveNumber = 1;
+}
 void CObjectManager::WaveManager() {
     //enemyCount is max number of enemies
-    if (0 <= WaveNumber < 25) {
-        TotalEnemyCount = 10 * log(WaveNumber) + 5;
+    if (WaveNumber == -1) {
+        TotalEnemyCount = 0;
+    }
+    else if (0 <= WaveNumber < 25) {
+        TotalEnemyCount = 10 * log(WaveNumber) + 15;
     }
     else if (25 <= WaveNumber < 50) {
-        TotalEnemyCount = 25 * log(WaveNumber) + 5;
+        TotalEnemyCount = 25 * log(WaveNumber) + 15;
     }
     else if (50 <= WaveNumber < 100) {
-        TotalEnemyCount = 50 * log(WaveNumber) + 5;
+        TotalEnemyCount = 50 * log(WaveNumber) + 15;
     }
     else {
-        TotalEnemyCount = pow(WaveNumber, 1.15) + 505;
+        TotalEnemyCount = pow(WaveNumber, 1.15) + 515;
     }
 
 
@@ -219,9 +228,11 @@ void CObjectManager::WaveManager() {
     }
 
     // this roughly gets us to our desired goal of enemy mashup types, we use floor so that we can call re-fill early on to make the game seem more oppressively spawning enemies
-    MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
-    MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
-    MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);   //spawns at least 1 cheerleader
+    if (WaveNumber != -1) {
+        MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
+        MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
+        MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);   //spawns at least 1 cheerleader
+    }
 }
 
 void CObjectManager::SpawnNextWave() {

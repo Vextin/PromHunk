@@ -51,6 +51,8 @@ public:
 
     void CheckBuffs();
 
+    void ResetWaveManager();
+    void StartWaveManager();
     void CheckEnemies();    //called when Refill happens
     void WaveManager();     //needs to be called whenever we want data for next wave
     void SpawnNextWave();   //called on ~30s timer
