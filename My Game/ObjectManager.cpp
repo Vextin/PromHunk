@@ -5,10 +5,13 @@
 #include "ComponentIncludes.h"
 
 #include "Player.h"
+#include "Enemy.h"
 #include "BasicShooterEnemy.h"
 #include "BasicRunnerEnemy.h"
 #include "CheerleaderEnemy.h"
 #include "Bullet.h"
+#include "PlayerBullet.h"
+#include "EnemyBullet.h"
 #include "ParticleEngine.h"
 #include "Helpers.h"
 #include "GameDefines.h"
@@ -41,12 +44,16 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
     return pObj; //return pointer to created object
 } //create
 
-CObject* CObjectManager::createBullet(eSprite t, const Vector2& pos, float damage) {
+CObject* CObjectManager::createBullet(eSprite t, const Vector2& pos, float damage, bool isEnemyBullet) {
     CObject* pObj = nullptr;
 
     switch (t) { //create object of type t
-    case eSprite::Bullet:  pObj = new CBullet(eSprite::Bullet, pos, damage); break;
-
+    case eSprite::Bullet:
+        if (isEnemyBullet) 
+            pObj = new CEnemyBullet(eSprite::Bullet2, pos, damage);
+        else
+            pObj = new CPlayerBullet(eSprite::Bullet, pos, damage);
+        break;
     } //switch
 
     m_stdObjectList.push_back(pObj); //push pointer onto object list
@@ -296,9 +303,11 @@ void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
     if (enemy) {
         enemy->weapon->SetCooldown(0);
     }
-
+    bool isEnemyBullet = false;
+    if (dynamic_cast<CEnemy*>(pObj) != nullptr)
+        isEnemyBullet = true;
     m_pAudio->play(eSound::Gun);
-
+       
     const Vector2 view = pObj->GetViewVector(); //firing object view vector
     const float w0 = 0.5f*m_pRenderer->GetWidth(pObj->m_nSpriteIndex); //firing object width
     const float w1 = m_pRenderer->GetWidth(bullet); //bullet width
@@ -306,7 +315,7 @@ void CObjectManager::FireGun(CObject* pObj, eSprite bullet){
 
     //create bullet object
 
-    CObject* pBullet = createBullet(bullet, pos, enemy->getDamage()); //create bullet
+    CObject* pBullet = createBullet(bullet, pos, enemy->getDamage(), isEnemyBullet); //create bullet
 
     const Vector2 norm = VectorNormalCC(view); //normal to view direction
     const float m = 2.0f*m_pRandom->randf() - 1.0f; //random deflection magnitude

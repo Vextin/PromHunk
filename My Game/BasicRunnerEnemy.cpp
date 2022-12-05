@@ -5,12 +5,13 @@
 #include "ComponentIncludes.h"
 #include "ObjectManager.h"
 #include "Player.h"
+#include "PlayerBullet.h"
 #include "Helpers.h"
 
 /// Create and initialize a BasicRunnerEnemy object given its position.
 /// \param p Position of BasicRunnerEnemy.
 
-CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEntity(eSprite::BasicRunnerEnemy, p) {
+CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEnemy(eSprite::BasicRunnerEnemy, p) {
     m_bStatic = false; //BasicRunnerEnemys are not static
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
 } //constructor
@@ -99,6 +100,6 @@ void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
 /// which means collision with a wall).
 
 void CBasicRunnerEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) {
-    if (pObj && pObj->isBullet())
+    if (dynamic_cast<CPlayerBullet*>(pObj) != nullptr && pObj->isBullet())
         m_pAudio->play(eSound::Clang);
 } //CollisionResponse
