@@ -198,11 +198,11 @@ void CObjectManager::CheckEnemies() {
     }
 }
 void CObjectManager::ResetWaveManager() {
-    WaveNumber = 0;
+    WaveNumber = -1;
 }
 
 void CObjectManager::StartWaveManager() {
-    WaveNumber = 1;
+    WaveNumber = 0;
 }
 void CObjectManager::WaveManager() {
     //enemyCount is max number of enemies
