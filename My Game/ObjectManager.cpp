@@ -9,6 +9,8 @@
 #include "BasicShooterEnemy.h"
 #include "BasicRunnerEnemy.h"
 #include "CheerleaderEnemy.h"
+#include "FootballerEnemy.h"
+#include "PromQueenBossEnemy.h"
 #include "Bullet.h"
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
@@ -120,7 +122,14 @@ void CObjectManager::SpawnEnemy(float x, float y, int z) {
     case 3:
         obj = m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(x, y));
         break;
+    case 4:
+        obj = m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(x, y));
+        break;
+    case 5:
+        obj = m_pObjectManager->create(eSprite::PromQueenEnemy, Vector2(x, y));
+        break;
     } //switch
+
     CEnemy* enemy = dynamic_cast<CEnemy*>(obj);
     enemy->SetPercentHealthIncrease(0.01f * WaveNumber);
     enemy->health = enemy->getMaxHealth();
@@ -176,6 +185,8 @@ void CObjectManager::CheckEnemies() {
     EnemyCount.BasicRunner = 0;
     EnemyCount.BasicShooter = 0;
     EnemyCount.Cheerleader = 0;
+    EnemyCount.Footballer = 0;
+    EnemyCount.PromQueen = 0;
     CurrentEnemyCount = 0;
 
     for (auto const& p : m_stdObjectList) //for each object
@@ -191,6 +202,16 @@ void CObjectManager::CheckEnemies() {
             CurrentEnemyCount += 1;
         }
         if (dynamic_cast<CBasicShooterEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicShooter += 1;
+            CurrentEnemyCount += 1;
+        }
+        if (dynamic_cast<CFootballerEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicShooter += 1;
+            CurrentEnemyCount += 1;
+        }
+        if (dynamic_cast<CPromQueenEnemy*>(p) != nullptr)
         {
             EnemyCount.BasicShooter += 1;
             CurrentEnemyCount += 1;
@@ -231,7 +252,11 @@ void CObjectManager::WaveManager() {
     if (WaveNumber != -1) {
         MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
         MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
-        MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);   //spawns at least 1 cheerleader
+        MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);
+        MaxEnemyCount.Footballer = max(floor(TotalEnemyCount * .05), 1);   
+        if (BossWave == true) {
+            MaxEnemyCount.PromQueen = max(floor(TotalEnemyCount * .01), 1);
+        }
     }
 }
 
@@ -251,9 +276,12 @@ void CObjectManager::SpawnNextWave() {
         for (int i = 0; i < MaxEnemyCount.Cheerleader; i++) {
             SpawnNearPlayer(3);
         }
-        /*if (BossWave == true) {
-            SpawnNearPlayer(4)
-        }*/
+        for (int i = 0; i < MaxEnemyCount.Footballer; i++) {
+            SpawnNearPlayer(4);
+        }
+        for (int i = 0; i < MaxEnemyCount.PromQueen; i++) {
+            SpawnNearPlayer(5);
+        }
         WaveTimer = 30.0f;
         WaveNumber += 1;
         WaveManager();

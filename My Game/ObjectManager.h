@@ -22,6 +22,8 @@ private:
         int BasicShooter = 1;
         int BasicRunner = 1;
         int Cheerleader = 1;
+        int Footballer = 1;
+        int PromQueen = 0;
     } EnemyCount, MaxEnemyCount;
     int CurrentEnemyCount = 0; //current number of all types of enemies
     int TotalEnemyCount = 0; //max number of enemies we want on screen

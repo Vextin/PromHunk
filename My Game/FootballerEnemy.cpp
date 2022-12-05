@@ -98,27 +98,22 @@ void CFootballerEnemy::RotateTowardsAndMove(const Vector2& pos) {
     }
 }
 
-void CFootballerEnemy::CheerBuff(std::list<CObject*> m_stdObjectList) { //do something to allies (enemies to player) in aoe
+void CFootballerEnemy::Sprint() { //do something to allies (enemies to player) in aoe
 
     if (isPaused) return;
 
-    BuffCooldown -= m_pTimer->GetFrameTime();
+    SprintCooldown -= m_pTimer->GetFrameTime();
 
-    if (BuffCooldown <= 0) {
-        for (auto const& p : m_stdObjectList) {
-            if (dynamic_cast<CEntity*>(p) != nullptr) { //every enemy in ObjectList
-
-                const Vector2 vDiff = m_vPos - p->m_vPos; //vector from Cheerleader to Enemy
-                const float dSq = vDiff.LengthSquared(); //distance to cheerleader squared
-                const float dMin = 75.0f; //max distance to buff
-                const float dMinSq = dMin * dMin; //that distance squared
-
-
-                if (dSq < dMinSq) //cheerleader is close enough to enemy to buff
-                    dynamic_cast<CEntity*>(p)->health += 5; //buff that enemy
-            } //if
-        } //for
-        BuffCooldown = 10.0f;
-    } //if
+    if (SprintCooldown <= 0) {
+        SprintTimer = 1.0f;
+        SprintCooldown = 15.0f;
+    }
+    if (SprintTimer >= 0) {
+        SprintTimer -= m_pTimer->GetFrameTime();
+        speed = speed * 1.15;
+    }
+    else {
+        speed = speed / 1.15;
+    }
 }
 

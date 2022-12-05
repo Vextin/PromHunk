@@ -16,7 +16,8 @@ protected:
 	void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
 
-	float BuffCooldown = 10.0f;
+	float SprintCooldown = 15.0f;
+	float SprintTimer = 1.0f;
 
 public:
 	CRangedWeapon* weapon;
@@ -24,7 +25,7 @@ public:
 	CFootballerEnemy(const Vector2& p); ///< Constructor.
 	~CFootballerEnemy();///Deconstructor
 
-	void CheerBuff(std::list<CObject*>);
+	void Sprint();
 	void move() override; ///< Move FootballerEnemy
 }; //CBullet
 
