@@ -23,6 +23,7 @@ CBasicRunnerEnemy::~CBasicRunnerEnemy() {
 /// there is one, and rotate the BasicShooterEnemy at a constant speed otherwise.
 
 void CBasicRunnerEnemy::move() {
+    if (isPaused) return;
     if (m_pPlayer) {
         const Vector2 vDiff = m_vPos - m_pPlayer->m_vPos; //vector from player to BasicShooterEnemy
         const float dSq = vDiff.LengthSquared(); //distance to player squared
@@ -47,6 +48,7 @@ void CBasicRunnerEnemy::move() {
 /// \param pos Target point.
 
 void CBasicRunnerEnemy::RotateTowardsAndShootInRange(const Vector2& pos) {
+    if (isPaused) return;
     const Vector2 v = pos - m_vPos; //vector from target to BasicShooterEnemy
     const float theta = atan2f(v.y, v.x); //orientation of that vector
     float diff = m_fRoll - theta; //difference with BasicShooterEnemy orientation
@@ -68,6 +70,7 @@ void CBasicRunnerEnemy::RotateTowardsAndShootInRange(const Vector2& pos) {
 } //RotateTowards
 
 void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
+    if (isPaused) return;
     const Vector2 v = pos - m_vPos; //vector from target to BasicShooterEnemy
     const float theta = atan2f(v.y, v.x); //orientation of that vector
     const float t = m_pTimer->GetFrameTime(); //time
