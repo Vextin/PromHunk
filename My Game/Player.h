@@ -21,7 +21,7 @@ class CPlayer:
         //bool m_bStrafeBack = false; ///< Strafe back.
         float maxMoveSpeed = 100;
         Vector2* moveVector;
-
+        LSpriteDesc2D* crosshair;
         void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
 
     public:
@@ -34,6 +34,8 @@ class CPlayer:
         void move() override; ///< Move player object.
         const Vector2& GetPos() const; ///< Get position.
         void Update() override;
+        void draw() override;
+        void Die() override;
 }; //CPlayer
 
 #endif //__L4RC_GAME_PLAYER_H__
