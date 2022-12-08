@@ -16,8 +16,7 @@ protected:
 	void RotateTowardsAndShootInRange(const Vector2&); ///< Swivel towards position.
 	void RotateTowardsAndMove(const Vector2&);  ///< Move towards player
 
-	float SprintCooldown = 15.0f;
-	float SprintTimer = 1.0f;
+	float SprintCooldown = 10.0f;
 
 public:
 	CRangedWeapon* weapon;

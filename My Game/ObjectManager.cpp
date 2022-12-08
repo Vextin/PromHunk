@@ -192,6 +192,10 @@ void CObjectManager::CheckBuffs() {
         {
             dynamic_cast<CCheerleaderEnemy*>(p)->CheerBuff(m_stdObjectList); //buff
         }
+        if (dynamic_cast<CFootballerEnemy*> (p) != nullptr)
+        {
+            dynamic_cast<CFootballerEnemy*>(p)->Sprint();
+        }
     }
 }
 

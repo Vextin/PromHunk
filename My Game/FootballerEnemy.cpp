@@ -98,22 +98,15 @@ void CFootballerEnemy::RotateTowardsAndMove(const Vector2& pos) {
     }
 }
 
-void CFootballerEnemy::Sprint() { //do something to allies (enemies to player) in aoe
+void CFootballerEnemy::Sprint() {
 
     if (isPaused) return;
 
     SprintCooldown -= m_pTimer->GetFrameTime();
 
     if (SprintCooldown <= 0) {
-        SprintTimer = 1.0f;
-        SprintCooldown = 15.0f;
-    }
-    if (SprintTimer >= 0) {
-        SprintTimer -= m_pTimer->GetFrameTime();
-        speed = speed * 1.15;
-    }
-    else {
-        speed = speed / 1.15;
+        SprintCooldown = 10.0f;
+        speed += 10;
     }
 }
 
