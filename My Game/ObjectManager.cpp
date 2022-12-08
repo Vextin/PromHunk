@@ -138,28 +138,40 @@ void CObjectManager::SpawnEnemy(float x, float y, int z) {
 }
 
 void CObjectManager::SpawnNearPlayer(int z) {
-    float playerx = m_pPlayer->m_vPos.x;
-    float playery = m_pPlayer->m_vPos.y;
-    float randx = 0;
-    float randy = 0;
+    float randx = randomx();
+    float randy = randomy();
 
-    randx = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    SpawnEnemy(randx, randy, z);
+}
+
+float CObjectManager::randomx() {
+    float playerx = m_pPlayer->m_vPos.x;
+    float randx = (250 + m_pRandom->randf() * 550.0f)* RandomNegative();    //random distance needs to be pos/neg as well
+
+    //recursion baby B)
     if (playerx + randx < 0) {//ensure pos is within bounds
-        randx = 0;
+        randx = randomx();
     }
     else if (playerx + randx >= m_vWorldSize.x) {
-        randx = m_vWorldSize.x -1;
+        randx = randomx();
     }
 
-    randy = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    return playerx + randx;
+}
+
+float CObjectManager::randomy() {
+    float playery = m_pPlayer->m_vPos.y;
+    float randy = (250 + m_pRandom->randf() * 550.0f)* RandomNegative();    //random distance needs to be pos/neg as well
+
+    //recursion baby B)
     if (playery + randy < 0) {//ensure pos is within bounds
-        randy = 0;
+        randy = randomy();
     }
     else if (playery + randy >= m_vWorldSize.y) {
-        randy = m_vWorldSize.y - 1;
+        randy = randomy();
     }
 
-    SpawnEnemy(playerx + randx, playery + randy, z);
+    return playery + randy;
 }
 
 float CObjectManager::RandomNegative() {

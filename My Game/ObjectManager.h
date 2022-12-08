@@ -38,6 +38,8 @@ private:
 
     void SpawnEnemy(float x, float y, int z);
     void SpawnNearPlayer(int z);
+    float randomx();
+    float randomy();
     float RandomNegative();
 
 public:
