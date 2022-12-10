@@ -11,7 +11,7 @@
 CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
-  baseHealth = 5.0f;
+  baseHealth = 15.0f;
   health = baseHealth;
   moveVector = new Vector2(0, 0);
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon

@@ -22,6 +22,8 @@ private:
         int BasicShooter = 1;
         int BasicRunner = 1;
         int Cheerleader = 1;
+        int Footballer = 1;
+        int PromQueen = 0;
     } EnemyCount, MaxEnemyCount;
     int CurrentEnemyCount = 0; //current number of all types of enemies
     int TotalEnemyCount = 0; //max number of enemies we want on screen
@@ -36,6 +38,8 @@ private:
 
     void SpawnEnemy(float x, float y, int z);
     void SpawnNearPlayer(int z);
+    float randomx();
+    float randomy();
     float RandomNegative();
 
 public:
@@ -51,6 +55,8 @@ public:
 
     void CheckBuffs();
 
+    void ResetWaveManager();
+    void StartWaveManager();
     void CheckEnemies();    //called when Refill happens
     void WaveManager();     //needs to be called whenever we want data for next wave
     void SpawnNextWave();   //called on ~30s timer
