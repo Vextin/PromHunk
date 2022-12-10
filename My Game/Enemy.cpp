@@ -8,6 +8,22 @@ CEnemy::CEnemy(eSprite t, const Vector2& p) : CEntity(t, p) {
 	health = baseHealth;
 } //constructor
 
+void CEnemy::draw()
+{
+	float temp = m_fRoll;
+	m_fRoll = 0;
+	__super::draw();
+	m_fRoll = temp;
+
+}
+void CEnemy::move()
+{
+	Vector2* moveVector = new Vector2(m_pPlayer->m_vPos - m_vPos);
+	FlipSpriteToFacing(&m_fRoll, moveVector, &m_nCurrentFrame);
+
+
+	delete moveVector;
+}
 
 void CEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) { ///< Collision response.
 	CObject::CollisionResponse(norm, d, pObj);

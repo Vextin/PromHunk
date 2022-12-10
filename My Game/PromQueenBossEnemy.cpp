@@ -1,31 +1,29 @@
 /// \file BasicShooterEnemy.cpp
-/// \brief Code for the BasicShooterEnemy object class CBasicRunnerEnemy.
+/// \brief Code for the PromQueenEnemy object class CPromQueenEnemy.
 
-#include "BasicRunnerEnemy.h"
+#include "PromQueenBossEnemy.h"
 #include "ComponentIncludes.h"
 #include "ObjectManager.h"
 #include "Player.h"
 #include "Helpers.h"
 
-/// Create and initialize a BasicRunnerEnemy object given its position.
-/// \param p Position of BasicRunnerEnemy.
+/// Create and initialize a PromQueenEnemy object given its position.
+/// \param p Position of PromQueenEnemy.
 
-CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEnemy(eSprite::BasicRunnerEnemy, p) {
+CPromQueenEnemy::CPromQueenEnemy(const Vector2& p) : CEnemy(eSprite::PromQueenEnemy, p) {
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
-    baseHealth = 2;
+    baseHealth = 25;
     health = baseHealth;
 } //constructor
 
-CBasicRunnerEnemy::~CBasicRunnerEnemy() {
+CPromQueenEnemy::~CPromQueenEnemy() {
     delete weapon;
 }
 
-
-
-/// Rotate the BasicRunnerEnemy and fire the gun at at the closest available target if
+/// Rotate the PromQueenEnemy and fire the gun at at the closest available target if
 /// there is one, and rotate the BasicShooterEnemy at a constant speed otherwise.
 
-void CBasicRunnerEnemy::move() {
+void CPromQueenEnemy::move() {
     if (isPaused) return;
     if (m_pPlayer) {
         const Vector2 vDiff = m_vPos - m_pPlayer->m_vPos; //vector from player to BasicShooterEnemy
@@ -44,17 +42,13 @@ void CBasicRunnerEnemy::move() {
 
     m_fRoll += 0.2f * m_fRotSpeed * XM_2PI * m_pTimer->GetFrameTime(); //rotate
     NormalizeAngle(m_fRoll); //normalize to [-pi, pi] for accuracy
-    
-
-    __super::move();
-    
 } //move
 
 /// Rotate the turrent towards a target point and file the gun if it is facing
 /// sufficiently close to it.
 /// \param pos Target point.
 
-void CBasicRunnerEnemy::RotateTowardsAndShootInRange(const Vector2& pos) {
+void CPromQueenEnemy::RotateTowardsAndShootInRange(const Vector2& pos) {
     if (isPaused) return;
     const Vector2 v = pos - m_vPos; //vector from target to BasicShooterEnemy
     const float theta = atan2f(v.y, v.x); //orientation of that vector
@@ -76,7 +70,7 @@ void CBasicRunnerEnemy::RotateTowardsAndShootInRange(const Vector2& pos) {
     }
 } //RotateTowards
 
-void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
+void CPromQueenEnemy::RotateTowardsAndMove(const Vector2& pos) {
     if (isPaused) return;
     const Vector2 v = pos - m_vPos; //vector from target to BasicShooterEnemy
     const float theta = atan2f(v.y, v.x); //orientation of that vector

@@ -11,7 +11,7 @@
 CPlayer::CPlayer(const Vector2& p): CEntity(eSprite::Player, p){ 
   m_bIsTarget = true;
   m_bStatic = false;
-  baseHealth = 5.0f;
+  baseHealth = 15.0f;
   health = baseHealth;
   moveVector = new Vector2(0, 0);
   weapon = new CRangedWeapon(this, &CObjectManager::PlayerDefaultWeapon);//default player weapon
@@ -112,14 +112,8 @@ void CPlayer::ProcessInput()
     //player is moving to the left. Math!
     //there's a little bit of wiggle room so that moving almost exactly down with a 
     //gamepad doesn't cause jitter. Anticipating the bug, not even sure if it would happen.
-    if (moveVector->Dot(Vector2::UnitX) >= 0.1f)
-    {
-        m_nCurrentFrame = 0;
-    }
-    if (moveVector->Dot(Vector2::UnitX) <= -0.1f)
-    {
-        m_nCurrentFrame = 1;
-    }
+    m_fRoll = 0;
+    FlipSpriteToFacing(&m_fRoll, moveVector, &m_nCurrentFrame);
 
     //Spawn a crosshair particle that lasts 1 frame
     

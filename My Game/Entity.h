@@ -11,7 +11,6 @@ class CEntity :
 {
 protected:
     
-    float speed = 50.0f;
     
     float baseDamage = 1.0f;
     float baseHealth = 3.0f;
@@ -40,7 +39,10 @@ public:
     virtual bool TakeDamage(float d); //This entity should take d damage. Returns true if the entity is now dead or false if the enemy is still alive.
     virtual void Die();
     virtual void Update();
+    
+    void FlipSpriteToFacing(float* roll, Vector2* moveVector, UINT* currentFrame);
     float health;
+    float speed = 50.0f;
     void SetFlatDamageIncrease(float d);
     void SetPercentDamageIncrease(float d);
     void SetFlatSpeedIncrease( float s);
