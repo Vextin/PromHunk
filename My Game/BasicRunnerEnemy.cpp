@@ -14,6 +14,7 @@ CBasicRunnerEnemy::CBasicRunnerEnemy(const Vector2& p) : CEnemy(eSprite::BasicRu
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
     baseHealth = 2;
     health = baseHealth;
+    killxp = 1.5f;
 } //constructor
 
 CBasicRunnerEnemy::~CBasicRunnerEnemy() {

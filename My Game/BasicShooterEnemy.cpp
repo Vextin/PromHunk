@@ -14,6 +14,7 @@ CBasicShooterEnemy::CBasicShooterEnemy(const Vector2& p): CEnemy(eSprite::BasicS
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weapon
     baseHealth = 1;
     health = baseHealth;
+    killxp = 2.0f;
 } //constructor
 
 CBasicShooterEnemy::~CBasicShooterEnemy() {

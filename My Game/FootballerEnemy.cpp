@@ -16,6 +16,7 @@ CFootballerEnemy::CFootballerEnemy(const Vector2& p) : CEnemy(eSprite::Footballe
     weapon = new CRangedWeapon(this, &CObjectManager::FireGun);//default enemy weaponm
     baseHealth = 3;
     health = baseHealth;
+    killxp = 3.0f;
 } //constructor
 
 CFootballerEnemy::~CFootballerEnemy() {

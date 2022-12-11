@@ -70,6 +70,8 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::Dummy, "dummy");
   m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
   m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
+  m_pRenderer->Load(eSprite::XPBarBlue, "xpbarblu");
+  m_pRenderer->Load(eSprite::XPBarDarkBlue, "xpbardarkblu");
   m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
   m_pRenderer->Load(eSprite::ShopCard_Blank, "ShopCard_Blank");
   m_pRenderer->EndResourceUpload();
@@ -258,6 +260,41 @@ void CGame::DrawHealthBar()
     
 }
 
+/// Draws a xp bar for the player
+void CGame::DrawXPBar()
+{
+    if (m_pPlayer->health > 0)
+    {
+        if (m_pPlayer->getcurrentxp() > m_pPlayer->getmaxxp())
+        {
+            m_pPlayer->levelup();
+            ShowShop();
+        }
+        float hpratio = m_pPlayer->getcurrentxp() / m_pPlayer->getmaxxp(); //Current xp/max xp
+        Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
+        Vector2 origin = camPos - Vector2(m_nWinWidth / 2, m_nWinHeight / 2); //bottom left corner of screen in world space
+        float y_pos = m_nWinHeight * 1.5 / 10; //Y position of xp bar from bottom of screen
+        float left = m_nWinWidth * 1 / 10; //Left starting position of both xp bars from left of screen
+        float right = m_nWinWidth * 3 / 10; //Right ending position of max xp bar from left of screen
+        float rightc = (right - left) * hpratio + left; //Right position of current xp bar
+
+        const Vector2 lbar = origin + Vector2(left, m_nWinHeight - y_pos); //Vector for left starting position of both xp bars
+        const Vector2 rbar = origin + Vector2(right, m_nWinHeight - y_pos); //Vector for right ending position of max xp bar
+        const Vector2 cbar = origin + Vector2(rightc, m_nWinHeight - y_pos); //Vector for right ending position of current xp bar
+        const Vector2 bartext = Vector2(left, y_pos); //Vector position of xp text
+
+        std::stringstream cxps;
+        std::stringstream mxps;
+        cxps << std::fixed << std::setprecision(1) << m_pPlayer->getcurrentxp();
+        mxps << std::fixed << std::setprecision(1) << m_pPlayer->getmaxxp();
+        std::string xpstring = cxps.str() + "/" + mxps.str();
+        const std::string s = "XP: " + xpstring;
+        m_pRenderer->DrawScreenText(s.c_str(), bartext);
+        m_pRenderer->DrawLine(eSprite::XPBarDarkBlue, lbar, rbar);
+        m_pRenderer->DrawLine(eSprite::XPBarBlue, lbar, cbar);
+    }
+}
+
 /// Draw the current frame rate to a hard-coded position in the window.
 /// The frame rate will be drawn in a hard-coded position using the font
 /// specified in `gamesettings.xml`.
@@ -285,7 +322,10 @@ void CGame::RenderFrame(){
   m_pObjectManager->draw(); //draw objects
 
   m_pParticleEngine->Draw(); //draw particles
+
   DrawHealthBar();
+  DrawXPBar();
+
   if (m_pShop->IsDisplaying()) {
       m_pShop->DrawShopText();//draw text on top of shop cards
   }

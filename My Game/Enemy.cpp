@@ -35,3 +35,16 @@ void CEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) { //
 		m_pAudio->play(eSound::Grunt);
 	}
 }
+
+
+void CEnemy::Die() 
+{
+	m_bDead = true;
+	grantxp();
+}
+
+
+void CEnemy::grantxp() 
+{
+	m_pPlayer->addxp(killxp);
+}

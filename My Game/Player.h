@@ -22,6 +22,9 @@ class CPlayer:
         Vector2* moveVector;
         LSpriteDesc2D* crosshair;
         void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
+        long currentlevel = 0;
+        float currentxp = 0.0f;
+        float maxxp = 5.0f;
 
     public:
         CRangedWeapon* weapon;
@@ -36,6 +39,13 @@ class CPlayer:
 
         void draw() override;
         void Die() override;
+
+        void addxp(float xp);
+
+        float getcurrentxp() { return currentxp; };
+        float getmaxxp() { return maxxp; };
+        void levelup();
+
 }; //CPlayer
 
 #endif //__L4RC_GAME_PLAYER_H__
