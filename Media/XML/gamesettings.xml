@@ -47,6 +47,9 @@
     </sprite>
 
 	<sprite name="cheerleader" file="cheerleader.png"/>
+	<sprite name="promqueen" file="promqueen.png"/>
+	<sprite name="footballer" file="footballer.png"/>
+	
 	<sprite name="dummy" file="dummy.png"/>
 	<sprite name="healthbarrd" file="healthbarrd.png"/>
 	<sprite name="healthbargr" file="healthbargr.png"/>

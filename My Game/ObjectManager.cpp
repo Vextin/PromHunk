@@ -9,6 +9,8 @@
 #include "BasicShooterEnemy.h"
 #include "BasicRunnerEnemy.h"
 #include "CheerleaderEnemy.h"
+#include "FootballerEnemy.h"
+#include "PromQueenBossEnemy.h"
 #include "Bullet.h"
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
@@ -43,6 +45,8 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
         case eSprite::BasicShooterEnemy:  pObj = new CBasicShooterEnemy(pos); break;
         case eSprite::BasicRunnerEnemy: pObj = new CBasicRunnerEnemy(pos); break;
         case eSprite::CheerleaderEnemy: pObj = new CCheerleaderEnemy(pos); break;
+        case eSprite::FootballerEnemy: pObj = new CFootballerEnemy(pos); break;
+        case eSprite::PromQueenEnemy: pObj = new CPromQueenEnemy(pos); break;
 
         case eSprite::Bullet:  pObj = new CBullet(eSprite::Bullet,  pos); break;
         case eSprite::Bullet2: pObj = new CBullet(eSprite::Bullet2, pos); break;
@@ -120,35 +124,54 @@ void CObjectManager::SpawnEnemy(float x, float y, int z) {
     case 3:
         obj = m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(x, y));
         break;
+    case 4:
+        obj = m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(x, y));
+        break;
+    case 5:
+        obj = m_pObjectManager->create(eSprite::PromQueenEnemy, Vector2(x, y));
+        break;
     } //switch
+
     CEnemy* enemy = dynamic_cast<CEnemy*>(obj);
     enemy->SetPercentHealthIncrease(0.01f * WaveNumber);
     enemy->health = enemy->getMaxHealth();
 }
 
 void CObjectManager::SpawnNearPlayer(int z) {
-    float playerx = m_pPlayer->m_vPos.x;
-    float playery = m_pPlayer->m_vPos.y;
-    float randx = 0;
-    float randy = 0;
+    float randx = randomx();
+    float randy = randomy();
 
-    randx = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    SpawnEnemy(randx, randy, z);
+}
+
+float CObjectManager::randomx() {
+    float playerx = m_pPlayer->m_vPos.x;
+    float randx = (250 + m_pRandom->randf() * 550.0f)* RandomNegative();    //random distance needs to be pos/neg as well
+
+    //recursion baby B)
     if (playerx + randx < 0) {//ensure pos is within bounds
-        randx = 0;
+        randx = randomx();
     }
     else if (playerx + randx >= m_vWorldSize.x) {
-        randx = m_vWorldSize.x -1;
+        randx = randomx();
     }
 
-    randy = (50 + m_pRandom->randf() * 500.0f) * RandomNegative();    //random distance needs to be pos/neg as well
+    return playerx + randx;
+}
+
+float CObjectManager::randomy() {
+    float playery = m_pPlayer->m_vPos.y;
+    float randy = (250 + m_pRandom->randf() * 550.0f)* RandomNegative();    //random distance needs to be pos/neg as well
+
+    //recursion baby B)
     if (playery + randy < 0) {//ensure pos is within bounds
-        randy = 0;
+        randy = randomy();
     }
     else if (playery + randy >= m_vWorldSize.y) {
-        randy = m_vWorldSize.y - 1;
+        randy = randomy();
     }
 
-    SpawnEnemy(playerx + randx, playery + randy, z);
+    return playery + randy;
 }
 
 float CObjectManager::RandomNegative() {
@@ -169,6 +192,10 @@ void CObjectManager::CheckBuffs() {
         {
             dynamic_cast<CCheerleaderEnemy*>(p)->CheerBuff(m_stdObjectList); //buff
         }
+        if (dynamic_cast<CFootballerEnemy*> (p) != nullptr)
+        {
+            dynamic_cast<CFootballerEnemy*>(p)->Sprint();
+        }
     }
 }
 
@@ -176,6 +203,8 @@ void CObjectManager::CheckEnemies() {
     EnemyCount.BasicRunner = 0;
     EnemyCount.BasicShooter = 0;
     EnemyCount.Cheerleader = 0;
+    EnemyCount.Footballer = 0;
+    EnemyCount.PromQueen = 0;
     CurrentEnemyCount = 0;
 
     for (auto const& p : m_stdObjectList) //for each object
@@ -195,22 +224,41 @@ void CObjectManager::CheckEnemies() {
             EnemyCount.BasicShooter += 1;
             CurrentEnemyCount += 1;
         }
+        if (dynamic_cast<CFootballerEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicShooter += 1;
+            CurrentEnemyCount += 1;
+        }
+        if (dynamic_cast<CPromQueenEnemy*>(p) != nullptr)
+        {
+            EnemyCount.BasicShooter += 1;
+            CurrentEnemyCount += 1;
+        }
     }
 }
+void CObjectManager::ResetWaveManager() {
+    WaveNumber = -1;
+}
 
+void CObjectManager::StartWaveManager() {
+    WaveNumber = 0;
+}
 void CObjectManager::WaveManager() {
     //enemyCount is max number of enemies
-    if (0 <= WaveNumber < 25) {
-        TotalEnemyCount = 10 * log(WaveNumber) + 5;
+    if (WaveNumber == -1) {
+        TotalEnemyCount = 0;
+    }
+    else if (0 <= WaveNumber < 25) {
+        TotalEnemyCount = 10 * log(WaveNumber) + 15;
     }
     else if (25 <= WaveNumber < 50) {
-        TotalEnemyCount = 25 * log(WaveNumber) + 5;
+        TotalEnemyCount = 25 * log(WaveNumber) + 15;
     }
     else if (50 <= WaveNumber < 100) {
-        TotalEnemyCount = 50 * log(WaveNumber) + 5;
+        TotalEnemyCount = 50 * log(WaveNumber) + 15;
     }
     else {
-        TotalEnemyCount = pow(WaveNumber, 1.15) + 505;
+        TotalEnemyCount = pow(WaveNumber, 1.15) + 515;
     }
 
 
@@ -219,9 +267,15 @@ void CObjectManager::WaveManager() {
     }
 
     // this roughly gets us to our desired goal of enemy mashup types, we use floor so that we can call re-fill early on to make the game seem more oppressively spawning enemies
-    MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
-    MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
-    MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);   //spawns at least 1 cheerleader
+    if (WaveNumber != -1) {
+        MaxEnemyCount.BasicRunner = max(floor(TotalEnemyCount * .75), 1);
+        MaxEnemyCount.BasicShooter = max(floor(TotalEnemyCount * .25), 1);
+        MaxEnemyCount.Cheerleader = max(floor(TotalEnemyCount * .05), 1);
+        MaxEnemyCount.Footballer = max(floor(TotalEnemyCount * .05), 1);   
+        if (BossWave == true) {
+            MaxEnemyCount.PromQueen = max(floor(TotalEnemyCount * .01), 1);
+        }
+    }
 }
 
 void CObjectManager::SpawnNextWave() {
@@ -229,7 +283,7 @@ void CObjectManager::SpawnNextWave() {
         WaveTimer -= m_pTimer->GetFrameTime();
     }
     
-    if (WaveTimer <= 0)
+    if (WaveTimer <= 0 && WaveNumber != -1)
     {
         for (int i = 0; i < MaxEnemyCount.BasicRunner; i++) {
             SpawnNearPlayer(1);
@@ -240,9 +294,12 @@ void CObjectManager::SpawnNextWave() {
         for (int i = 0; i < MaxEnemyCount.Cheerleader; i++) {
             SpawnNearPlayer(3);
         }
-        /*if (BossWave == true) {
-            SpawnNearPlayer(4)
-        }*/
+        for (int i = 0; i < MaxEnemyCount.Footballer; i++) {
+            SpawnNearPlayer(4);
+        }
+        for (int i = 0; i < MaxEnemyCount.PromQueen; i++) {
+            SpawnNearPlayer(5);
+        }
         WaveTimer = 30.0f;
         WaveNumber += 1;
         WaveManager();

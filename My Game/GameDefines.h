@@ -18,7 +18,7 @@ enum class eGameState {
 
 enum class eSprite: UINT{
   Background, Bullet, Bullet2, Player, BasicShooterEnemy, 
-  Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, Crosshair, GameOver,
+  Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, Crosshair, GameOver, PromQueenEnemy, FootballerEnemy,
   HealthBarRD, HealthBarGR,
 
   PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet,

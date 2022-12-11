@@ -67,6 +67,8 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::BasicShooterEnemy,  "shooter");
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
+  m_pRenderer->Load(eSprite::FootballerEnemy, "footballer");
+  m_pRenderer->Load(eSprite::PromQueenEnemy, "promqueen");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
   m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
   m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
@@ -107,6 +109,7 @@ void CGame::CreateObjects(){
   
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
   m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
+  m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(600.0f, 600.0f));
 
   gameOverScreen = new LSpriteDesc2D(
       (UINT)eSprite::GameOver, 

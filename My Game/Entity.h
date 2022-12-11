@@ -11,7 +11,6 @@ class CEntity :
 {
 protected:
     
-    float speed = 50.0f;
     
     float baseDamage = 1.0f;
     float baseHealth = 3.0f;
@@ -43,6 +42,7 @@ public:
     
     void FlipSpriteToFacing(float* roll, Vector2* moveVector, UINT* currentFrame);
     float health;
+    float speed = 50.0f;
     void SetFlatDamageIncrease(float d);
     void SetPercentDamageIncrease(float d);
     void SetFlatSpeedIncrease( float s);
