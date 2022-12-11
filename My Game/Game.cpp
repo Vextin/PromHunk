@@ -68,6 +68,9 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::FootballerEnemy, "footballer");
   m_pRenderer->Load(eSprite::PromQueenEnemy, "promqueen");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
+  m_pRenderer->Load(eSprite::Basketball, "basketball");
+  m_pRenderer->Load(eSprite::WeightPlates, "weightplates");
+  m_pRenderer->Load(eSprite::Dumbells, "dumbells");
   m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
   m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
   m_pRenderer->Load(eSprite::XPBarBlue, "xpbarblu");
@@ -102,9 +105,18 @@ void CGame::CreateObjects(){
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, m_vWorldSize/2);
   
   
+  for (int i = 0; i < 50; i++)
+  {
+      float x = float(m_pRandom->randn(80, m_vWorldSize.x - 80));
+      float y = float(m_pRandom->randn(80, m_vWorldSize.y - 80));
+      switch (m_pRandom->randn(1, 3))
+      {
+      case 1: m_pObjectManager->create(eSprite::Basketball, Vector2(x, y)); break;
+      case 2: m_pObjectManager->create(eSprite::WeightPlates, Vector2(x, y)); break;
+      case 3: m_pObjectManager->create(eSprite::Dumbells, Vector2(x, y)); break;
+      }
+  }
   
-  //m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
-  //m_pTargetDummy->m_fRoll = 0;
 
   
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));

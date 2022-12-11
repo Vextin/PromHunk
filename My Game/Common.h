@@ -14,6 +14,7 @@ class LSpriteRenderer;
 class LParticleEngine2D;
 class CPlayer;
 class CEntity;
+class CObstacle;
 class Shop;
 /// \brief The common variables class.
 ///
@@ -32,6 +33,7 @@ class CCommon{
     static Vector2 m_vWorldSize; ///< World height and width.
     static CPlayer* m_pPlayer; ///< Pointer to player character.
     static CEntity* m_pTargetDummy;
+    static CObstacle* m_pObstacle;
     static CMouse* m_pMouse;
     static bool isPaused;
     static bool gameOver;

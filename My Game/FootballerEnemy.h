@@ -26,6 +26,7 @@ public:
 
 	void Sprint();
 	void move() override; ///< Move FootballerEnemy
+	virtual void CollisionResponse(const Vector2&, float, CObject* = nullptr) override; ///< Collision response.
 }; //CBullet
 
 #endif //__L4RC_GAME_FootballerEnemy_H__

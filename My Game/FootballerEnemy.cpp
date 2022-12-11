@@ -8,6 +8,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "Helpers.h"
+#include "Obstacle.h"
 
 /// Create and initialize a FootballerEnemy object given its position.
 /// \param p Position of FootballerEnemy.
@@ -111,3 +112,20 @@ void CFootballerEnemy::Sprint() {
     }
 }
 
+void CFootballerEnemy::CollisionResponse(const Vector2& norm, float d, CObject* pObj) { ///< Collision response.
+    CObject::CollisionResponse(norm, d, pObj);
+
+    auto player = dynamic_cast<CPlayer*>(pObj);
+    if (player) {
+        player->TakeDamage(getDamage());
+        m_vPos += (m_vPos - player->m_vPos);
+        m_pAudio->play(eSound::Grunt);
+    }
+    auto obstacle = dynamic_cast<CObstacle*>(pObj);
+    if (obstacle) {
+        obstacle->TakeDamage(5.0f);
+        m_vPos += (m_vPos - obstacle->m_vPos);
+        m_pAudio->play(eSound::Grunt);
+    }
+
+}
