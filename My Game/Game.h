@@ -38,6 +38,7 @@ class CGame:
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
     void DrawDamageText(); ///< Draw frame rate text to screen.
     void DrawTutorialText();
+    void DrawGameOverStats();
     void CreateObjects(); ///< Create game objects.
     //void SpawnCenterBox(); ///< Spawn enemy in each corner
     void FollowCamera(); ///< Make camera follow player character.
