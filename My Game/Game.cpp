@@ -56,6 +56,10 @@ void CGame::LoadImages(){
 
   m_pRenderer->Load(eSprite::PlayerSheet, "playerSheet");
   m_pRenderer->Load(eSprite::RunmanSheet, "runmanSheet");
+  m_pRenderer->Load(eSprite::CheerleaderSheet, "cheerleaderSheet");
+  m_pRenderer->Load(eSprite::ShooterSheet, "shooterSheet");
+  m_pRenderer->Load(eSprite::PromQueenSheet, "pqSheet");
+  m_pRenderer->Load(eSprite::FootballerSheet, "fbSheet");
 
   m_pRenderer->Load(eSprite::GameOver, "gameover");
   m_pRenderer->Load(eSprite::Crosshair, "crosshair");
@@ -65,7 +69,7 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::Bullet2, "bullet2");
   m_pRenderer->Load(eSprite::Smoke,   "smoke");
   m_pRenderer->Load(eSprite::Spark,   "spark");
-  m_pRenderer->Load(eSprite::BasicShooterEnemy,  "turret");
+  m_pRenderer->Load(eSprite::BasicShooterEnemy,  "shooter");
   m_pRenderer->Load(eSprite::BasicRunnerEnemy, "runman");
   m_pRenderer->Load(eSprite::CheerleaderEnemy, "cheerleader");
   m_pRenderer->Load(eSprite::FootballerEnemy, "footballer");
@@ -412,6 +416,7 @@ void CGame::ProcessGameState() {
 void CGame::ProcessFrame(){
     if (gameOver)
     {
+        //m_pObjectManager->ResetWaveManager();
         gameOverScreen->m_vPos = m_pRenderer->GetCameraPos().x * Vector2::UnitX + m_pRenderer->GetCameraPos().y * Vector2::UnitY;
         gameOverScreen->m_fAlpha += m_pTimer->GetFrameTime() * 1;
 

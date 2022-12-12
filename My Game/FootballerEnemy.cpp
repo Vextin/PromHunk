@@ -46,6 +46,7 @@ void CFootballerEnemy::move() {
 
     m_fRoll += 0.2f * m_fRotSpeed * XM_2PI * m_pTimer->GetFrameTime(); //rotate
     NormalizeAngle(m_fRoll); //normalize to [-pi, pi] for accuracy
+    __super::move();
 } //move
 
 /// Rotate the turrent towards a target point and file the gun if it is facing
