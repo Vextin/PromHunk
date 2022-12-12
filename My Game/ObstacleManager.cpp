@@ -22,6 +22,7 @@ void CObstacleManager::genMapObstacles()
 	{
 		for (int j = 0; j < nwidth; j++) //grid column
 		{
+			prob = 0.05f;
 			// border cases
 			if (j == 0 || i == 0)
 			{
@@ -60,52 +61,51 @@ void CObstacleManager::createObstacle(int x, int y)
 		case 2: obstObjArr[y][x] = m_pObjectManager->create(eSprite::WeightPlates, Vector2(float(x) * tilesize, float(y) * tilesize)); break;
 		case 3: obstObjArr[y][x] = m_pObjectManager->create(eSprite::Dumbells, Vector2(float(x) * tilesize, float(y) * tilesize)); break;
 		}
-		prob = 0.05f;
 		obstTypeArr[y][x] = 1;
+		if (y != 0)
+			obstTypeArr[y-1][x] = 1;
+		if (x != 0)
+			obstTypeArr[y][x - 1] = 1;
+		if (x != 0 && y != 0)
+			obstTypeArr[y - 1][x - 1] = 1;
+		if (y != nheight-1)
+			obstTypeArr[y + 1][x] = 1;
+		if (x != nwidth-1)
+			obstTypeArr[y][x + 1] = 1;
+		if (x != nwidth - 1 && y != nheight - 1)
+			obstTypeArr[y + 1][x + 1] = 1;
 	}
 }
 
 void CObstacleManager::checkNeighbour(int y, int x, int d)
 {
-	//left or above
-	if (obstTypeArr[y][x - d] == 0 || obstTypeArr[y - d][x] == 0)
-		prob += 0.0005;
-	//diagnolly left and above
-	else if (obstTypeArr[y - d][x - d] == 0)
-		prob += 0.00025;
-	//switch (d)
-	//{
-	//case 1:
-	//{
-	//	//left or above
-	//	if (obstTypeArr[y][x - d] == 0 || obstTypeArr[y - d][x] == 0)
-	//		prob += 0.005;
-	//	//diagnolly left and above
-	//	else if (obstTypeArr[y - d][x - d] == 0)
-	//		prob += 0.0025;
-	//	break;
-	//}
-	//case 2:
-	//{
-	//	//left or above
-	//	if (obstTypeArr[y][x - d] == 0 || obstTypeArr[y - d][x] == 0)
-	//		prob += 0.05;
-	//	//diagnolly left and above
-	//	else if (obstTypeArr[y - d][x - d] == 0)
-	//		prob += 0.025;
-	//	break;
-	//}
-	//case 3:
-	//{
-	//	//left or above
-	//	if (obstTypeArr[y][x - d] == 0 || obstTypeArr[y - d][x] == 0)
-	//		prob += 0.1;
-	//	//diagnolly left and above
-	//	else if (obstTypeArr[y - d][x - d] == 0)
-	//		prob += 0.05;
-	//	break;
-	//}
-	//}//switch
+	if (d == 1)
+	{
+		//left or above
+		if (obstTypeArr[y][x - 1] == 0 || obstTypeArr[y - 1][x] == 0)
+			prob += 0.005;
+		//diagnolly left and above
+		else if (obstTypeArr[y - 1][x - 1] == 0)
+			prob += 0.0025;
+	}
+	if (d == 2)
+	{
+		//left or above
+		if (obstTypeArr[y][x - 2] == 0 || obstTypeArr[y - 2][x] == 0)
+			prob += 0.0005;
+		//diagnolly left and above
+		else if (obstTypeArr[y - 2][x - 2] == 0)
+			prob += 0.00025;
+	}
+	if (d == 3)
+	{
+		//left or above
+		if (obstTypeArr[y][x - 3] == 0 || obstTypeArr[y - 3][x] == 0)
+			prob += 0.005;
+		//diagnolly left and above
+		else if (obstTypeArr[y - 3][x - 3] == 0)
+			prob += 0.0025;
+	}
 }
 
 // given a vector pos, get the x, y in the grid

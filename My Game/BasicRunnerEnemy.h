@@ -32,4 +32,4 @@ public:
 	void calcPath(); // calc path to player
 }; //CBullet
 
-#endif //__L4RC_GAME_BasicRunnerEnemy_H__
+#endif __L4RC_GAME_BasicRunnerEnemy_H__
