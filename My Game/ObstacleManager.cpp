@@ -7,12 +7,11 @@
 
 CObstacleManager::CObstacleManager()
 {
-	prob = 0.05f;
+	prob = 0.01f;
 }
 CObstacleManager::~CObstacleManager()
 {
-	delete obstTypeArr;
-	delete obstObjArr;
+
 };
 
 // Map grid is traversed, column first
@@ -22,30 +21,14 @@ void CObstacleManager::genMapObstacles()
 	{
 		for (int j = 0; j < nwidth; j++) //grid column
 		{
-			prob = 0.05f;
-			// border cases
-			if (j == 0 || i == 0)
+			prob = 0.01f;
+			if (i < 3 || j < 3)
 			{
-				createObstacle(i, j);
+				checkNeighbour(i, j, std::min(i, j));
 			}
-
-			else if (j == 1 || i == 1)
-			{
-				checkNeighbour(i, j, 1);
-				createObstacle(i, j);
-			}
-
-			else if (j == 2 || i == 2)
-			{
-				checkNeighbour(i, j, 2);
-				createObstacle(i, j);
-			}
-			// all cases
 			else
-			{
 				checkNeighbour(i, j, 3);
 				createObstacle(i, j);
-			}
 
 		}
 	}
@@ -62,18 +45,6 @@ void CObstacleManager::createObstacle(int x, int y)
 		case 3: obstObjArr[y][x] = m_pObjectManager->create(eSprite::Dumbells, Vector2(float(x) * tilesize, float(y) * tilesize)); break;
 		}
 		obstTypeArr[y][x] = 1;
-		if (y != 0)
-			obstTypeArr[y-1][x] = 1;
-		if (x != 0)
-			obstTypeArr[y][x - 1] = 1;
-		if (x != 0 && y != 0)
-			obstTypeArr[y - 1][x - 1] = 1;
-		if (y != nheight-1)
-			obstTypeArr[y + 1][x] = 1;
-		if (x != nwidth-1)
-			obstTypeArr[y][x + 1] = 1;
-		if (x != nwidth - 1 && y != nheight - 1)
-			obstTypeArr[y + 1][x + 1] = 1;
 	}
 }
 
@@ -83,10 +54,10 @@ void CObstacleManager::checkNeighbour(int y, int x, int d)
 	{
 		//left or above
 		if (obstTypeArr[y][x - 1] == 0 || obstTypeArr[y - 1][x] == 0)
-			prob += 0.005;
+			prob += 0.0005;
 		//diagnolly left and above
 		else if (obstTypeArr[y - 1][x - 1] == 0)
-			prob += 0.0025;
+			prob += 0.00025;
 	}
 	if (d == 2)
 	{
@@ -101,10 +72,10 @@ void CObstacleManager::checkNeighbour(int y, int x, int d)
 	{
 		//left or above
 		if (obstTypeArr[y][x - 3] == 0 || obstTypeArr[y - 3][x] == 0)
-			prob += 0.005;
+			prob += 0.0005;
 		//diagnolly left and above
 		else if (obstTypeArr[y - 3][x - 3] == 0)
-			prob += 0.0025;
+			prob += 0.00025;
 	}
 }
 
@@ -361,32 +332,3 @@ void CObstacleManager::aStarSearch(const Pair& src, const Pair& dest)
 	// blockages)
 	//printf("Failed to find the Destination Cell\n");
 }
-
-//// Driver program to test above function
-//int main()
-//{
-//    /* Description of the Grid-
-//    1--> The cell is not blocked
-//    0--> The cell is blocked */
-//    array<array<int, 10>, 9> grid{
-//        { { { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 } },
-//          { { 1, 1, 1, 0, 1, 1, 1, 0, 1, 1 } },
-//          { { 1, 1, 1, 0, 1, 1, 0, 1, 0, 1 } },
-//          { { 0, 0, 1, 0, 1, 0, 0, 0, 0, 1 } },
-//          { { 1, 1, 1, 0, 1, 1, 1, 0, 1, 0 } },
-//          { { 1, 0, 1, 1, 1, 1, 0, 1, 0, 0 } },
-//          { { 1, 0, 0, 0, 0, 1, 0, 0, 0, 1 } },
-//          { { 1, 0, 1, 1, 1, 1, 0, 1, 1, 1 } },
-//          { { 1, 1, 1, 0, 0, 0, 1, 0, 0, 1 } } }
-//    };
-//
-//    // Source is the left-most bottom-most corner
-//    Pair src(8, 0);
-//
-//    // Destination is the left-most top-most corner
-//    Pair dest(0, 0);
-//
-//    aStarSearch(grid, src, dest);
-//
-//    return 0;
-//}

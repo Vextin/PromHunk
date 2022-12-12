@@ -111,26 +111,11 @@ void CGame::CreateObjects(){
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, m_vWorldSize/2);
   
-  
-  //for (int i = 0; i < 50; i++)
-  //{
-  //    float x = float(m_pRandom->randn(80, m_vWorldSize.x - 80));
-  //    float y = float(m_pRandom->randn(80, m_vWorldSize.y - 80));
-  //    switch (m_pRandom->randn(1, 3))
-  //    {
-  //    case 1: m_pObjectManager->create(eSprite::Basketball, Vector2(x, y)); break;
-  //    case 2: m_pObjectManager->create(eSprite::WeightPlates, Vector2(x, y)); break;
-  //    case 3: m_pObjectManager->create(eSprite::Dumbells, Vector2(x, y)); break;
-  //    }
-  //}
   m_pObstacleManager->genMapObstacles();
-
-  //m_pObjectManager->create(eSprite::Dumbells, Vector2(1800, 900));
-  m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(430.0f, 430.0f));
   
-  //m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
-  //m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
-  //m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(600.0f, 600.0f));
+  m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
+  m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
+  m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(600.0f, 600.0f));
 
   gameOverScreen = new LSpriteDesc2D(
       (UINT)eSprite::GameOver, 
@@ -429,8 +414,8 @@ void CGame::ProcessFrame(){
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
     if(m_eGameState == eGameState::Playing) m_pObjectManager->move(); //move all objects
     m_pObjectManager->CheckBuffs(); //check for buffs, and apply them
-    //m_pObjectManager->SpawnNextWave();
-    //m_pObjectManager->RefillWave();
+    m_pObjectManager->SpawnNextWave();
+    m_pObjectManager->RefillWave();
     m_pObjectManager->Update();
     FollowCamera(); //make camera follow player
     m_pParticleEngine->step(); //advance particle animation

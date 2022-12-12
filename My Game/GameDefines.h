@@ -22,7 +22,7 @@ enum class eSprite: UINT{
   HealthBarRD, HealthBarGR, XPBarBlue, XPBarDarkBlue,
   Dummy, Basketball, WeightPlates, Dumbells,
 
-	PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet, PromQueenSheet, FootballerSheet,
+  PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet, PromQueenSheet, FootballerSheet,
   //Keeping shop cards together for cleanliness
   ShopCard_Damage1,
   ShopCard_Blank,

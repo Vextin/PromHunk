@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Helpers.h"
 #include "ObstacleManager.h"
+#include <stack>
 
 /// Create and initialize a BasicRunnerEnemy object given its position.
 /// \param p Position of BasicRunnerEnemy.
@@ -41,7 +42,6 @@ void CBasicRunnerEnemy::move() {
         const float dMin = 5.0f; //minimum distance at which player is invisible
         const float dMinSq = dMin * dMin; //that squared
 
-
         if (dSq < dMinSq) //player is close enough to BasicShooterEnemy
             RotateTowardsAndShootInRange(m_pPlayer->m_vPos);
         else 
@@ -52,12 +52,9 @@ void CBasicRunnerEnemy::move() {
                 calcPath();
                 PathFindCooldown = 2.0f;
             }
-                
-            Vector2 nextpos = m_pObstacleManager->getVector(path2player.top());
             if (m_pObstacleManager->getxyPair(m_vPos) == path2player.top())
                 path2player.pop();
-            //move untill in range
-            //RotateTowardsAndMove(m_pPlayer->m_vPos);
+            Vector2 nextpos = m_pObstacleManager->getVector(path2player.top());
             RotateTowardsAndMove(nextpos);
         }
     } //if
