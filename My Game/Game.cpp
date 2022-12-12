@@ -262,6 +262,13 @@ void CGame::DrawHealthBar()
     
 }
 
+void CGame::DrawTutorialText()
+{
+    const std::string s = "WASD to move. Mouse or WASD to aim. Spacebar or Left Click to shoot. 1|2|3 to purchase upgrade.";
+    const Vector2 pos((m_nWinWidth / 2) - 500.0f, 20.0f);
+    m_pRenderer->DrawScreenText(s.c_str(), pos);
+}
+
 /// Draw the current frame rate to a hard-coded position in the window.
 /// The frame rate will be drawn in a hard-coded position using the font
 /// specified in `gamesettings.xml`.
@@ -297,6 +304,11 @@ void CGame::RenderFrame(){
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
 
+
+  if (m_pTimer->GetTime() < 7.0f)
+  {
+      DrawTutorialText();
+  }
   m_pRenderer->Draw(gameOverScreen);
 
   m_pRenderer->EndFrame(); //required after rendering

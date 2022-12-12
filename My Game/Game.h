@@ -37,6 +37,7 @@ class CGame:
     void DrawHealthBar(); ///< Draw the health bar to the screen.
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
     void DrawDamageText(); ///< Draw frame rate text to screen.
+    void DrawTutorialText();
     void CreateObjects(); ///< Create game objects.
     //void SpawnCenterBox(); ///< Spawn enemy in each corner
     void FollowCamera(); ///< Make camera follow player character.
