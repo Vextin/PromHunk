@@ -301,6 +301,14 @@ void CGame::DrawXPBar()
     }
 }
 
+
+void CGame::DrawTutorialText()
+{
+    const std::string s = "WASD to move. Mouse or WASD to aim. Spacebar or Left Click to shoot. 1|2|3 to purchase upgrade.";
+    const Vector2 pos((m_nWinWidth / 2) - 500.0f, 20.0f);
+    m_pRenderer->DrawScreenText(s.c_str(), pos);
+}
+
 /// Draw the current frame rate to a hard-coded position in the window.
 /// The frame rate will be drawn in a hard-coded position using the font
 /// specified in `gamesettings.xml`.
@@ -317,6 +325,56 @@ void CGame::DrawDamageText() {
     m_pRenderer->DrawScreenText(s.c_str(), pos); //draw to screen
 } //DrawFrameRateText
 
+void CGame::DrawGameOverStats()
+{
+    
+    std::string dLabel = "Damage: ";
+    std::string pcLabel = "Bullet Count: ";
+    std::string asLabel = "Attack Speed: ";
+    std::string sLabel = "Speed: ";
+    std::string mhLabel = "Max Health: ";
+    std::string tekLabel = "Suitors Rejected: ";
+    std::string d = std::to_string(m_pPlayer->getDamage());
+    dLabel.append(d);
+    std::string pc = std::to_string(m_pPlayer->getProjectileCount());
+    pcLabel.append(pc);
+    const std::string as = std::to_string(m_pPlayer->getAttackSpeed());
+    asLabel.append(as);
+    const std::string s = std::to_string(m_pPlayer->getSpeed());
+    sLabel.append(s);
+    const std::string mh = std::to_string(m_pPlayer->getMaxHealth());
+    mhLabel.append(mh);
+    const std::string tek = std::to_string(m_pObjectManager->totalEnemiesKilled);
+    tekLabel.append(tek);
+
+    float verticalDistance = 30;
+    float horizontalMargin = 10;
+    float padding = 20;
+
+    Vector2 pos(horizontalMargin, verticalDistance); //hard-coded position
+    m_pRenderer->DrawScreenText(dLabel.c_str(), pos, Colors::White); //draw to screen
+    verticalDistance += padding;
+
+    pos = Vector2(horizontalMargin, verticalDistance);
+    m_pRenderer->DrawScreenText(pcLabel.c_str(), pos, Colors::White); //draw to screen
+    verticalDistance += padding;
+
+    pos = Vector2(horizontalMargin, verticalDistance);
+    m_pRenderer->DrawScreenText(asLabel.c_str(), pos, Colors::White); //draw to screen
+    verticalDistance += padding;
+
+    pos = Vector2(horizontalMargin, verticalDistance);
+    m_pRenderer->DrawScreenText(sLabel.c_str(), pos, Colors::White); //draw to screen
+    verticalDistance += padding;
+
+    pos = Vector2(horizontalMargin, verticalDistance);
+    m_pRenderer->DrawScreenText(mhLabel.c_str(), pos, Colors::White); //draw to screen
+    verticalDistance += padding;
+
+    pos = Vector2(horizontalMargin, verticalDistance);
+    m_pRenderer->DrawScreenText(tekLabel.c_str(), pos, Colors::White); //draw to screen
+
+}
 /// Ask the object manager to draw the game objects. The renderer is notified of
 /// the start and end of the frame so that it can let Direct3D do its
 /// pipelining jiggery-pokery.
@@ -339,7 +397,14 @@ void CGame::RenderFrame(){
   if(m_bDrawFrameRate)DrawFrameRateText(); //draw frame rate, if required
   if (m_bDrawDamage)DrawDamageText(); //draw frame rate, if required
 
+
+  if (m_pTimer->GetTime() < 7.0f)
+  {
+      DrawTutorialText();
+  }
   m_pRenderer->Draw(gameOverScreen);
+  
+  if (gameOver) DrawGameOverStats();
 
   m_pRenderer->EndFrame(); //required after rendering
 } //RenderFrame
