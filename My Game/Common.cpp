@@ -8,6 +8,7 @@
 
 LSpriteRenderer* CCommon::m_pRenderer = nullptr;
 CObjectManager* CCommon::m_pObjectManager = nullptr;
+CObstacleManager* CCommon::m_pObstacleManager = nullptr;
 LParticleEngine2D* CCommon::m_pParticleEngine = nullptr;
 Shop* CCommon::m_pShop = nullptr;
 Vector2 CCommon::m_vWorldSize = Vector2::Zero;

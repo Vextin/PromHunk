@@ -175,12 +175,11 @@
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Obstacle.cpp" />
-    <ClCompile Include="PathFinder.cpp" />
+    <ClCompile Include="ObstacleManager.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BasicShooterEnemy.cpp" />
     <ClCompile Include="PlayerBullet.cpp" />
-    <ClCompile Include="OrbitBullet.cpp" />
     <ClCompile Include="PromQueenBossEnemy.cpp" />
     <ClCompile Include="RangedWeapon.cpp" />
     <ClCompile Include="BasicRunnerEnemy.cpp" />
@@ -205,12 +204,11 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Obstacle.h" />
-    <ClInclude Include="PathFinder.h" />
+    <ClInclude Include="ObstacleManager.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="BasicShooterEnemy.h" />
     <ClInclude Include="PlayerBullet.h" />
-    <ClInclude Include="OrbitBullet.h" />
     <ClInclude Include="PromQueenBossEnemy.h" />
     <ClInclude Include="RangedWeapon.h" />
     <ClInclude Include="Shop.h" />

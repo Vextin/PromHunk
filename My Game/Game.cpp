@@ -12,6 +12,7 @@
 #include "Mouse.h"
 #include <sstream>
 #include <iomanip>
+#include "ObstacleManager.h"
 
 /// Delete the particle engine and the object manager. The renderer needs to
 /// be deleted before this destructor runs so it will be done elsewhere.
@@ -19,6 +20,7 @@
 CGame::~CGame(){
   delete m_pParticleEngine;
   delete m_pObjectManager;
+  delete m_pObstacleManager;
 } //destructor
 
 /// Create the renderer, the object manager, and the particle engine, load
@@ -30,6 +32,7 @@ void CGame::Initialize(){
   LoadImages(); //load images from xml file list
 
   m_pObjectManager = new CObjectManager; //set up the object manager 
+  m_pObstacleManager = new CObstacleManager; //set up the obstacle manager
   LoadSounds(); //load the sounds for this game
 
   m_pParticleEngine = new LParticleEngine2D(m_pRenderer);
@@ -105,18 +108,18 @@ void CGame::CreateObjects(){
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, m_vWorldSize/2);
   
   
-  for (int i = 0; i < 50; i++)
-  {
-      float x = float(m_pRandom->randn(80, m_vWorldSize.x - 80));
-      float y = float(m_pRandom->randn(80, m_vWorldSize.y - 80));
-      switch (m_pRandom->randn(1, 3))
-      {
-      case 1: m_pObjectManager->create(eSprite::Basketball, Vector2(x, y)); break;
-      case 2: m_pObjectManager->create(eSprite::WeightPlates, Vector2(x, y)); break;
-      case 3: m_pObjectManager->create(eSprite::Dumbells, Vector2(x, y)); break;
-      }
-  }
-  
+  //for (int i = 0; i < 50; i++)
+  //{
+  //    float x = float(m_pRandom->randn(80, m_vWorldSize.x - 80));
+  //    float y = float(m_pRandom->randn(80, m_vWorldSize.y - 80));
+  //    switch (m_pRandom->randn(1, 3))
+  //    {
+  //    case 1: m_pObjectManager->create(eSprite::Basketball, Vector2(x, y)); break;
+  //    case 2: m_pObjectManager->create(eSprite::WeightPlates, Vector2(x, y)); break;
+  //    case 3: m_pObjectManager->create(eSprite::Dumbells, Vector2(x, y)); break;
+  //    }
+  //}
+  m_pObstacleManager->genMapObstacles();
 
   
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
@@ -429,4 +432,3 @@ void CGame::ProcessFrame(){
   ProcessGameState();
   RenderFrame(); //render a frame of animation
 } //ProcessFrame
-

@@ -48,7 +48,7 @@ class CGame:
     eGameState m_eGameState = eGameState::Playing;
     ~CGame(); ///< Destructor.
     void ShowShop();
-
+    
     
     void Initialize(); ///< Initialize the game.
     void ProcessGameState(); ///< Process Game State
