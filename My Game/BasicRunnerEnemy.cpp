@@ -42,8 +42,8 @@ void CBasicRunnerEnemy::move() {
         const float dMin = 5.0f; //minimum distance at which player is invisible
         const float dMinSq = dMin * dMin; //that squared
 
-        if (dSq < dMinSq) //player is close enough to BasicShooterEnemy
-            RotateTowardsAndShootInRange(m_pPlayer->m_vPos);
+        if (dSq < 80.0f) //player within 80.0f dist
+            RotateTowardsAndMove(m_pPlayer->m_vPos);
         else 
         {
             PathFindCooldown -= m_pTimer->GetFrameTime();
