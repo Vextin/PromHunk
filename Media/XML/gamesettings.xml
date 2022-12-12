@@ -63,8 +63,14 @@
 	<sprite name="footballer" file="footballer.png"/>
 	
 	<sprite name="dummy" file="dummy.png"/>
+	<sprite name="basketball" file="basketball.png"/>
+	<sprite name="dumbells" file="dumbells.png"/>
+	<sprite name="weightplates" file="weightplates.png"/>
+	
 	<sprite name="healthbarrd" file="healthbarrd.png"/>
 	<sprite name="healthbargr" file="healthbargr.png"/>
+	<sprite name="xpbarblu" file="xpbarblu.png"/>
+	<sprite name="xpbardarkblu" file="xpbardarkblu.png"/>
     <sprite name="ShopCard_Damage_1" file="ShopCard_Damage_1.png"/>
     <sprite name="ShopCard_Blank" file="ShopCard_Blank.png"/>
   </sprites>

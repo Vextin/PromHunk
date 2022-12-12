@@ -12,6 +12,7 @@
 #include "Mouse.h"
 #include <sstream>
 #include <iomanip>
+#include "ObstacleManager.h"
 
 /// Delete the particle engine and the object manager. The renderer needs to
 /// be deleted before this destructor runs so it will be done elsewhere.
@@ -19,6 +20,7 @@
 CGame::~CGame(){
   delete m_pParticleEngine;
   delete m_pObjectManager;
+  delete m_pObstacleManager;
 } //destructor
 
 /// Create the renderer, the object manager, and the particle engine, load
@@ -30,6 +32,7 @@ void CGame::Initialize(){
   LoadImages(); //load images from xml file list
 
   m_pObjectManager = new CObjectManager; //set up the object manager 
+  m_pObstacleManager = new CObstacleManager; //set up the obstacle manager
   LoadSounds(); //load the sounds for this game
 
   m_pParticleEngine = new LParticleEngine2D(m_pRenderer);
@@ -72,8 +75,13 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::FootballerEnemy, "footballer");
   m_pRenderer->Load(eSprite::PromQueenEnemy, "promqueen");
   m_pRenderer->Load(eSprite::Dummy, "dummy");
+  m_pRenderer->Load(eSprite::Basketball, "basketball");
+  m_pRenderer->Load(eSprite::WeightPlates, "weightplates");
+  m_pRenderer->Load(eSprite::Dumbells, "dumbells");
   m_pRenderer->Load(eSprite::HealthBarRD, "healthbarrd");
   m_pRenderer->Load(eSprite::HealthBarGR, "healthbargr");
+  m_pRenderer->Load(eSprite::XPBarBlue, "xpbarblu");
+  m_pRenderer->Load(eSprite::XPBarDarkBlue, "xpbardarkblu");
   m_pRenderer->Load(eSprite::ShopCard_Damage1, "ShopCard_Damage_1");
   m_pRenderer->Load(eSprite::ShopCard_Blank, "ShopCard_Blank");
   m_pRenderer->EndResourceUpload();
@@ -103,11 +111,7 @@ void CGame::CreateObjects(){
 
   m_pPlayer = (CPlayer*)m_pObjectManager->create(eSprite::Player, m_vWorldSize/2);
   
-  
-  
-  //m_pTargetDummy = (CEntity*)m_pObjectManager->create(eSprite::Dummy, Vector2(475.0f, 475.0f));
-  //m_pTargetDummy->m_fRoll = 0;
-
+  m_pObstacleManager->genMapObstacles();
   
   m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
   m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
@@ -262,6 +266,42 @@ void CGame::DrawHealthBar()
     
 }
 
+/// Draws a xp bar for the player
+void CGame::DrawXPBar()
+{
+    if (m_pPlayer->health > 0)
+    {
+        if (m_pPlayer->getcurrentxp() > m_pPlayer->getmaxxp())
+        {
+            m_pPlayer->levelup();
+            ShowShop();
+        }
+        float hpratio = m_pPlayer->getcurrentxp() / m_pPlayer->getmaxxp(); //Current xp/max xp
+        Vector2 camPos = m_pRenderer->GetCameraPos(); //cam center pos in world space
+        Vector2 origin = camPos - Vector2(m_nWinWidth / 2, m_nWinHeight / 2); //bottom left corner of screen in world space
+        float y_pos = m_nWinHeight * 1.5 / 10; //Y position of xp bar from bottom of screen
+        float left = m_nWinWidth * 1 / 10; //Left starting position of both xp bars from left of screen
+        float right = m_nWinWidth * 3 / 10; //Right ending position of max xp bar from left of screen
+        float rightc = (right - left) * hpratio + left; //Right position of current xp bar
+
+        const Vector2 lbar = origin + Vector2(left, m_nWinHeight - y_pos); //Vector for left starting position of both xp bars
+        const Vector2 rbar = origin + Vector2(right, m_nWinHeight - y_pos); //Vector for right ending position of max xp bar
+        const Vector2 cbar = origin + Vector2(rightc, m_nWinHeight - y_pos); //Vector for right ending position of current xp bar
+        const Vector2 bartext = Vector2(left, y_pos); //Vector position of xp text
+
+        std::stringstream cxps;
+        std::stringstream mxps;
+        cxps << std::fixed << std::setprecision(1) << m_pPlayer->getcurrentxp();
+        mxps << std::fixed << std::setprecision(1) << m_pPlayer->getmaxxp();
+        std::string xpstring = cxps.str() + "/" + mxps.str();
+        const std::string s = "XP: " + xpstring;
+        m_pRenderer->DrawScreenText(s.c_str(), bartext);
+        m_pRenderer->DrawLine(eSprite::XPBarDarkBlue, lbar, rbar);
+        m_pRenderer->DrawLine(eSprite::XPBarBlue, lbar, cbar);
+    }
+}
+
+
 void CGame::DrawTutorialText()
 {
     const std::string s = "WASD to move. Mouse or WASD to aim. Spacebar or Left Click to shoot. 1|2|3 to purchase upgrade.";
@@ -346,7 +386,10 @@ void CGame::RenderFrame(){
   m_pObjectManager->draw(); //draw objects
 
   m_pParticleEngine->Draw(); //draw particles
+
   DrawHealthBar();
+  DrawXPBar();
+
   if (m_pShop->IsDisplaying()) {
       m_pShop->DrawShopText();//draw text on top of shop cards
   }
@@ -446,4 +489,3 @@ void CGame::ProcessFrame(){
   ProcessGameState();
   RenderFrame(); //render a frame of animation
 } //ProcessFrame
-

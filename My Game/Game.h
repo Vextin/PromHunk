@@ -35,6 +35,7 @@ class CGame:
     void ControllerHandler(); ///< The controller handler.
     void RenderFrame(); ///< Render an animation frame.
     void DrawHealthBar(); ///< Draw the health bar to the screen.
+    void DrawXPBar(); ///< Draw the xp bar to the screen.
     void DrawFrameRateText(); ///< Draw frame rate text to screen.
     void DrawDamageText(); ///< Draw frame rate text to screen.
     void DrawTutorialText();
@@ -49,7 +50,7 @@ class CGame:
     eGameState m_eGameState = eGameState::Playing;
     ~CGame(); ///< Destructor.
     void ShowShop();
-
+    
     
     void Initialize(); ///< Initialize the game.
     void ProcessGameState(); ///< Process Game State

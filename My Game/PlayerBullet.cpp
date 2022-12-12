@@ -46,7 +46,6 @@ void CPlayerBullet::CollisionResponse(const Vector2& norm, float d, CObject* pOb
             if (CObjectManager::enemiesKilled >= CObjectManager::nextShopEnemyCount) {
                 CObjectManager::enemiesKilled = 0;
                 CObjectManager::nextShopEnemyCount *= 1.3f;
-                m_pShop->ShowShopScreen();
             }
         }
     }

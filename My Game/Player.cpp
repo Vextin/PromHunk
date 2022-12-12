@@ -5,6 +5,8 @@
 #include "ComponentIncludes.h"
 #include "ObjectManager.h"
 #include "Helpers.h"
+#include "Shop.h"
+#include "Game.h"
 
 /// Create and initialize an player object given its initial position.
 /// \param p Initial position of player.
@@ -137,4 +139,24 @@ void CPlayer::Die()
     isPaused = true;
     gameOver = true;
     //__super::Die();
+}
+
+void CPlayer::addxp(float xp)
+{
+    currentxp += xp;
+    if (currentxp >= maxxp)
+    {
+        //levelup();
+        //currentlevel++;
+        //maxxp *= 1.1;
+        //currentxp = 0;
+        //m_pShop->ShowShopScreen(); /// Called in game.cpp to set game state for shop
+    }
+}
+
+void CPlayer::levelup()
+{
+    currentlevel++;
+    maxxp *= 1.2;
+    currentxp = 0;
 }

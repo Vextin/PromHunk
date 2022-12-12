@@ -14,6 +14,7 @@
 #include "Bullet.h"
 #include "PlayerBullet.h"
 #include "EnemyBullet.h"
+#include "Obstacle.h"
 #include "ParticleEngine.h"
 #include "Helpers.h"
 #include "GameDefines.h"
@@ -42,6 +43,10 @@ CObject* CObjectManager::create(eSprite t, const Vector2& pos){
         case eSprite::Player:  pObj = new CPlayer(pos); break;
 
         case eSprite::Dummy:    pObj = new CEntity(eSprite::Dummy, pos); break;
+        case eSprite::Basketball:    pObj = new CObstacle(eSprite::Basketball, pos); break;
+        case eSprite::Dumbells:    pObj = new CObstacle(eSprite::Dumbells, pos); break;
+        case eSprite::WeightPlates:    pObj = new CObstacle(eSprite::WeightPlates, pos); break;
+
         case eSprite::BasicShooterEnemy:  pObj = new CBasicShooterEnemy(pos); break;
         case eSprite::BasicRunnerEnemy: pObj = new CBasicRunnerEnemy(pos); break;
         case eSprite::CheerleaderEnemy: pObj = new CCheerleaderEnemy(pos); break;
