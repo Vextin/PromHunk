@@ -55,6 +55,8 @@ void CGame::LoadImages(){
   m_pRenderer->Load(eSprite::RunmanSheet, "runmanSheet");
   m_pRenderer->Load(eSprite::CheerleaderSheet, "cheerleaderSheet");
   m_pRenderer->Load(eSprite::ShooterSheet, "shooterSheet");
+  m_pRenderer->Load(eSprite::PromQueenSheet, "pqSheet");
+  m_pRenderer->Load(eSprite::FootballerSheet, "fbSheet");
 
   m_pRenderer->Load(eSprite::GameOver, "gameover");
   m_pRenderer->Load(eSprite::Crosshair, "crosshair");

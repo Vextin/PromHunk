@@ -22,6 +22,18 @@
     <sprite name="spark" file="spark.png"/>
     <sprite name="gameover" file="gameover.png"/>
 
+  <sprite name="pqSheet" file="promqueen.png"/>
+    <sprite name="promqueen" sheet="pqSheet" frames="2">
+        <frame index="0" left="0" top="0" right="70" bottom="120"/>
+        <frame index="1" left="70" top="0" right="140" bottom="120"/>
+    </sprite>
+
+    <sprite name="fbSheet" file="footballer.png"/>
+    <sprite name="footballer" sheet="fbSheet" frames="2">
+        <frame index="0" left="0" top="0" right="48" bottom="89"/>
+        <frame index="1" left="48" top="0" right="96" bottom="89"/>
+    </sprite>
+
 	<sprite name="runmanSheet" file="RunnerEnemySheet.png"/>
     <sprite name="runman" sheet="runmanSheet" frames="2">
         <frame index="0" left="0" top="0" right="80" bottom="116"/>

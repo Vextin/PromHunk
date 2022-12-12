@@ -16,12 +16,12 @@ enum class eGameState {
 	Menu, Playing, Shop
 }; //eGameState
 
-enum class eSprite: UINT{
-  Background, Bullet, Bullet2, Player, BasicShooterEnemy, 
-  Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, Crosshair, GameOver, PromQueenEnemy, FootballerEnemy,
-  HealthBarRD, HealthBarGR,
+enum class eSprite : UINT {
+	Background, Bullet, Bullet2, Player, BasicShooterEnemy,
+	Smoke, Spark, BasicRunnerEnemy, CheerleaderEnemy, Dummy, Crosshair, GameOver, PromQueenEnemy, FootballerEnemy,
+	HealthBarRD, HealthBarGR,
 
-  PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet,
+	PlayerSheet, RunmanSheet, CheerleaderSheet, ShooterSheet, PromQueenSheet, FootballerSheet,
   //Keeping shop cards together for cleanliness
   ShopCard_Damage1,
   ShopCard_Blank,
