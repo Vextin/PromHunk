@@ -6,6 +6,7 @@
 #include "ObjectManager.h"
 #include "Player.h"
 #include "Helpers.h"
+#include "ObstacleManager.h"
 
 /// Create and initialize a BasicRunnerEnemy object given its position.
 /// \param p Position of BasicRunnerEnemy.
@@ -21,7 +22,13 @@ CBasicRunnerEnemy::~CBasicRunnerEnemy() {
     delete weapon;
 }
 
-
+void CBasicRunnerEnemy::calcPath()
+{
+    Pair src = m_pObstacleManager->getxyPair(m_vPos); // location of self
+    Pair dest = m_pObstacleManager->getxyPair(m_pPlayer->m_vPos); // location of player
+    m_pObstacleManager->aStarSearch(src, dest); //a* search
+    path2player = m_pObstacleManager->path2targ;
+}
 
 /// Rotate the BasicRunnerEnemy and fire the gun at at the closest available target if
 /// there is one, and rotate the BasicShooterEnemy at a constant speed otherwise.
@@ -37,9 +44,21 @@ void CBasicRunnerEnemy::move() {
 
         if (dSq < dMinSq) //player is close enough to BasicShooterEnemy
             RotateTowardsAndShootInRange(m_pPlayer->m_vPos);
-        else {
+        else 
+        {
+            PathFindCooldown -= m_pTimer->GetFrameTime();
+            if (path2player.empty() || PathFindCooldown <= 0)
+            {
+                calcPath();
+                PathFindCooldown = 2.0f;
+            }
+                
+            Vector2 nextpos = m_pObstacleManager->getVector(path2player.top());
+            if (m_pObstacleManager->getxyPair(m_vPos) == path2player.top())
+                path2player.pop();
             //move untill in range
-            RotateTowardsAndMove(m_pPlayer->m_vPos);
+            //RotateTowardsAndMove(m_pPlayer->m_vPos);
+            RotateTowardsAndMove(nextpos);
         }
     } //if
 
@@ -88,7 +107,6 @@ void CBasicRunnerEnemy::RotateTowardsAndMove(const Vector2& pos) {
     NormalizeAngle(diff); //normalize to [-pi, pi]
 
     //set rotation speed from diff
-
     const float fAngleDelta = 0.05f; //allowable angle discrepancy
     const float fTrackingSpeed = 2.0f; //rotation speed when tracking
 

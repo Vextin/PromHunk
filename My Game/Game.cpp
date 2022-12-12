@@ -121,10 +121,12 @@ void CGame::CreateObjects(){
   //}
   m_pObstacleManager->genMapObstacles();
 
+  //m_pObjectManager->create(eSprite::Dumbells, Vector2(1800, 900));
+  m_pObjectManager->create(eSprite::BasicRunnerEnemy, Vector2(430.0f, 430.0f));
   
-  m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
-  m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
-  m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(600.0f, 600.0f));
+  //m_pObjectManager->create(eSprite::BasicShooterEnemy, Vector2(430.0f, 430.0f));
+  //m_pObjectManager->create(eSprite::CheerleaderEnemy, Vector2(550.0f, 550.0f));
+  //m_pObjectManager->create(eSprite::FootballerEnemy, Vector2(600.0f, 600.0f));
 
   gameOverScreen = new LSpriteDesc2D(
       (UINT)eSprite::GameOver, 
@@ -422,8 +424,8 @@ void CGame::ProcessFrame(){
   m_pTimer->Tick([&](){ //all time-dependent function calls should go here
     if(m_eGameState == eGameState::Playing) m_pObjectManager->move(); //move all objects
     m_pObjectManager->CheckBuffs(); //check for buffs, and apply them
-    m_pObjectManager->SpawnNextWave();
-    m_pObjectManager->RefillWave();
+    //m_pObjectManager->SpawnNextWave();
+    //m_pObjectManager->RefillWave();
     m_pObjectManager->Update();
     FollowCamera(); //make camera follow player
     m_pParticleEngine->step(); //advance particle animation
