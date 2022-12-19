@@ -1,5 +1,5 @@
 # Prom Hunk
-#### Developed my Natalie Johanek, Austin Carlin, Matt Mozingo, and Jawad Ahmed
+#### Developed by Natalie Johanek, Austin Carlin, Matt Mozingo, and Jawad Ahmed
 
 #### How to play:
 Run `game.exe`. 
